@@ -1,0 +1,61 @@
+#! /bin/sh
+
+# -- Autostart
+picom --fade-in-step=1 --fade-out-step=1 --fade-delta=0 &
+# feh --bg-fill /usr/share/backgrounds/manjaro-gnome/manjaro_wallpaper.jpg
+
+dunst &
+
+nm-applet &
+blueman-applet &
+pamac-tray &
+
+xsetroot -cursor_name left_ptr &
+
+xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Tapping Enabled" 1
+xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Left Handed Enabled" 1
+xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Natural Scrolling Enabled" 1
+xinput set-prop "HID 1bcf:08a0 Mouse" "libinput Left Handed Enabled" 1
+
+pactl -- set-sink-volume 0 100%
+
+wmname LG3D
+
+# -- Enable Keybindings
+pgrep -x sxhkd >/dev/null || sxhkd &
+
+# -- Start Polybar
+$HOME/.config/polybar/launch.sh
+
+redshift -x
+redshift -O 5000
+
+kdeconnect-indicator &
+play-with-mpv &
+
+# -- BSPWM Config
+bspc config external_rules_command ~/.config/bspwm/scripts/external_rules.sh
+
+bspc monitor -d 1 2 3 4 5 6
+
+bspc config border_width 1
+bspc config window_gap 8
+bspc config pointer_modifier shift
+bspc config pointer_action3 resize_corner
+
+bspc config normal_border_color "#ffffff"
+bspc config active_border_color "#ffffff"
+bspc config focused_border_color "#ffffff"
+bspc config presel_feedback_color "#ffffff"
+
+bspc config split_ratio 0.50
+bspc config borderless_monocle true
+bspc config gapless_monocle true
+bspc config focus_follows_pointer true
+
+bspc rule -a Brave-browser desktop="^2" following="on"
+bspc rule -a Microsoft\ Teams\ -\ Preview desktop="^3" following="on"
+bspc rule -a Audacious desktop="^3" follow="on"
+bspc rule -a discord desktop="^5" following="on"
+bspc rule -a Element desktop="^5" following="on"
+
