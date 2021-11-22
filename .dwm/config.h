@@ -80,7 +80,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *termcmd[]  = { "alacritty", NULL };
 static const char *browser[] = { "brave-browser", NULL };
 static const char *explorer[] = { "nautilus", NULL };
-static const char *music[] = { "rhythmbox", NULL };
+static const char *music[] = { "deadbeef", NULL };
 static const char *prtscr[] = { "gnome-screenshot",  NULL };
 static const char *prtscra[] = { "gnome-screenshot", "--area", NULL };
 

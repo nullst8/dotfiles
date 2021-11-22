@@ -14,6 +14,6 @@ case "$(echo -e "Shutdown\nRestart\nSuspend\nLock" | dmenu \
         Restart) exec systemctl reboot;;
         # Logout) exec bspc quit;;
         Suspend) exec systemctl suspend;;
-        Lock) exec betterlockscreen -l;;
+        Lock) exec slock;;
         # Lock) exec systemctl --user start lock.target;;
 esac

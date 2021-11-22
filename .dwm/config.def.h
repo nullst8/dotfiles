@@ -79,8 +79,8 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
 static const char *browser[] = { "brave-browser", NULL };
-static const char *explorer[] = { "nautilus", NULL };
-static const char *music[] = { "rhythmbox", NULL };
+static const char *explorer[] = { "thunar", NULL };
+static const char *music[] = { "deadbeef", NULL };
 static const char *prtscr[] = { "gnome-screenshot",  NULL };
 static const char *prtscra[] = { "gnome-screenshot", "--area", NULL };
 
