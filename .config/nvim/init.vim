@@ -3,13 +3,11 @@ syntax on
 so ~/.config/nvim/sets.vim
 so ~/.config/nvim/plugins.vim
 
-set background=dark
 let g:gruvbox_contrast_dark='medium'
 colorscheme gruvbox
+
+
 " lua require('colorbuddy').colorscheme('gruvbuddy')
-" Use terminal background
-"hi Normal guibg=none ctermbg=none
-"
 let mapleader = " "
 
 so ~/.config/nvim/telescope.vim
@@ -102,12 +100,5 @@ nnoremap <silent><C-e> :lua require("harpoon.ui").toggle_quick_menu()<CR>
 let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+'
 nnoremap <silent><C-n> :Ex<CR>
 
-let g:dashboard_default_executive ='telescope'
-nmap <Leader>ss :<C-u>SessionSave<CR>
-nmap <Leader>sl :<C-u>SessionLoad<CR>
-nnoremap <silent> <Leader>fh :DashboardFindHistory<CR>
-nnoremap <silent> <Leader>ff :DashboardFindFile<CR>
-nnoremap <silent> <Leader>tc :DashboardChangeColorscheme<CR>
-nnoremap <silent> <Leader>fa :DashboardFindWord<CR>
-nnoremap <silent> <Leader>fb :DashboardJumpMark<CR>
-nnoremap <silent> <Leader>cn :DashboardNewFile<CR>
+set background=dark
+" hi Normal guibg=none ctermbg=none

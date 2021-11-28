@@ -2,6 +2,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'tpope/vim-fugitive'
 Plug 'tmsvg/pear-tree'
+Plug 'sainnhe/gruvbox-material'
 Plug 'ThePrimeagen/harpoon'
 Plug 'altercation/vim-colors-solarized'
 Plug 'github/copilot.vim'

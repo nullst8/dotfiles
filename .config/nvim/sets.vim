@@ -8,7 +8,7 @@ set nobackup
 set nowritebackup
 set hidden
 set termguicolors
-set signcolumn=yes
+set signcolumn=no
 set shortmess+=c
 set tabstop=2 softtabstop=2
 set shiftwidth=2
@@ -21,6 +21,6 @@ set relativenumber
 set noswapfile
 set incsearch
 set encoding=utf-8
-set colorcolumn=80
+set colorcolumn=""
 set nohlsearch
 set cmdheight=2

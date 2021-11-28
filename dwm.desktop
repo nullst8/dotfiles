@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=DWM
+Comment=Dynamic window manager
+Exec=/home/csh4dow/.dwm/run.sh
+Icon=dwm
+Type=XSession

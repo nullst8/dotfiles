@@ -13,8 +13,8 @@ static const int systraypinningfailfirst = 1; /* 1: if pinning fails, display sy
 static const int showsystray = 1; /* 0 means no systray */
 static const int showbar = 1;     /* 0 means no bar */
 static const int topbar = 1;      /* 0 means bottom bar */
-static const char *fonts[] = {"Inconsolata Nerd Font:size=11"};
-static const char dmenufont[] = "Inconsolata Nerd Font:size=11";
+static const char *fonts[] = {"JetBrainsMono Nerd Font:size=9"};
+static const char dmenufont[] = "JetBrainsMono Nerd Font:size=9";
 static const char *upvol[] = {"/usr/bin/pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%", NULL};
 static const char *downvol[] = {"/usr/bin/pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%", NULL};
 static const char *mutevol[] = {"/usr/bin/pactl", "set-sink-mute", "@DEFAULT_SINK@", "toggle", NULL};
@@ -86,8 +86,8 @@ static const char *termcmd[] = {"alacritty", NULL};
 static const char *browser[] = {"brave-browser-beta", NULL};
 static const char *explorer[] = {"thunar", NULL};
 static const char *music[] = {"audacious", NULL};
-static const char *prtscr[] = {"gnome-screenshot", NULL};
-static const char *prtscra[] = {"gnome-screenshot", "--area", NULL};
+static const char *prtscr[] = {"scrot", NULL};
+static const char *prtscra[] = {"scrot", "-s", NULL};
 
 #include "selfrestart.c"
 #include "shiftview.c"

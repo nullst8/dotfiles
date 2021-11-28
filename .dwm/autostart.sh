@@ -1,10 +1,13 @@
-picom --fade-in-step=1 --fade-out-step=1 --fade-delta=0 &
-feh --bg-fill /usr/share/backgrounds/xfce/xfce-blue.jpg
+picom --fade-in-step=1 --fade-out-step=1 --fade-delta=0 --no-fading-openclose &
+#feh --bg-fill /usr/share/backgrounds/xfce/xfce-blue.jpg
+feh --bg-fill ~/Pictures/wp2.jpg
 
 brightnessctl s 100%
 
 dunst &
 
+killall volumeicon
+volumeicon &
 nm-applet &
 blueman-applet &
 
@@ -26,5 +29,5 @@ redshift -x
 redshift -O 5000
 
 kdeconnect-indicator &
-#/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-/usr/libexec/polkit-gnome-authentication-agent-1 &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+#/usr/libexec/polkit-gnome-authentication-agent-1 &
