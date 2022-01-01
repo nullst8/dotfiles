@@ -2,6 +2,7 @@ syntax on
 
 so ~/.config/nvim/sets.vim
 so ~/.config/nvim/plugins.vim
+" so ~/.config/nvim/coc.vim
 
 let g:gruvbox_contrast_dark='medium'
 colorscheme gruvbox
@@ -60,9 +61,6 @@ augroup fmt
   au BufWritePre * try | undojoin | Neoformat | catch /^Vim\%((\a\+)\)\=:E790/ | finally | silent Neoformat | endtry
 augroup END
 
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
-
 so ~/.config/nvim/startify.vim
 
 let g:neoformat_enabled_javascript = ['prettier']
@@ -102,3 +100,38 @@ nnoremap <silent><C-n> :Ex<CR>
 
 set background=dark
 " hi Normal guibg=none ctermbg=none
+
+lua << EOF
+require'lualine'.setup{
+options = {
+    icons_enabled = false,
+    theme = 'auto',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {},
+    always_divide_middle = true,
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {},
+  extensions = {'fugitive'}
+}
+EOF
+
+lua << EOF
+  require('Comment').setup()
+EOF

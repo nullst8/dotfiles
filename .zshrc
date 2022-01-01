@@ -1,21 +1,13 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
 # Path to your oh-my-zsh installation.
-export ZSH="/home/manas/.oh-my-zsh"
+export ZSH="/home/csh4dow/.oh-my-zsh"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
+
+# ZSH_THEME=""
 
 plugins=(
   zsh-autosuggestions
@@ -24,34 +16,10 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
+alias doas="doas "
 alias vim=nvim
-alias qpdfview="devour qpdfview"
-alias sudo="sudo "
-alias ls="exa --icons --group-directories-first"
-alias lsl="exa --icons --group-directories-first -la"
-alias sl="exa --icons --group-directories-first"
-alias cp="cp -i"
-alias cat="bat --theme gruvbox-dark"
-alias emulator="~/Android/Sdk/emulator/emulator"
-alias vlc="devour vlc"
-alias gparted="devour gparted"
-alias wine="devour wine"
-alias feh="devour feh"
-alias mpv="devour mpv"
-alias lollypop="devour lollypop"
-alias la='ls -a'
-alias lh="ls -la | rg '^\.'"
-alias ll='ls -la'
-alias paru=yay
-alias l='ls'
-alias l.="ls | egrep --color=no '^\.'"
-alias ssn="shutdown now"
-alias rn="reboot"
-alias ytmp3="youtube-dl -x --audio-format mp3"
-alias df="df -h"
+alias ls="ls -h --color=yes"
+alias la="ls -la"
 
 ## Advanced Tab Completion
 autoload -U compinit
@@ -61,8 +29,6 @@ _comp_options+=(globdots) # Include Hidden Files
 
 export EDITOR='nvim'
 export VISUAL='nvim'
-
-alias update-grub="grub-mkconfig -o /boot/grub/grub.cfg"
 
 ex ()
 {
@@ -89,6 +55,5 @@ ex ()
   fi
 }
 
-bindkey '^H' backward-kill-word
-
-alias "list.sh"="chsh -l | sed 's/^.*\///' | sort -u | grep -v git-shell"
+# PS1="%F{red}[%F{yellow}%n%F{green}@%F{blue}%m %F{magenta}%1~%F{red}]%f$ "
+PS1="%F{cyan}[%n@%m %1~]$%f "

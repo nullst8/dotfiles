@@ -7,6 +7,7 @@ static const int startwithgaps = 0;     /* 1 means gaps are used by default */
 static const unsigned int gappx = 5; /* default gap between windows in pixels */
 static const unsigned int snap = 32; /* snap pixel */
 static const unsigned int systraypinning = 0; /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
+static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const unsigned int systrayonleft = 0; /* 0: systray in the right corner, >0: systray on left of status text */
 static const unsigned int systrayspacing = 1; /* systray spacing */
 static const int systraypinningfailfirst = 1; /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
@@ -28,15 +29,31 @@ static const char *lock[] = {"slock", NULL};
 static const char *closen[] = {"dunstctl", "close", NULL};
 static const char *closean[] = {"dunstctl", "close-all", NULL};
 static const char *nhist[] = {"dunstctl", "history-pop", NULL};
-static const char col_gray1[] = "#222222";
+static const char col_gray1[] = "#282828";
 static const char col_gray2[] = "#444444";
 static const char col_gray3[] = "#bbbbbb";
 static const char col_gray4[] = "#eeeeee";
+// static const char col_cyan[] = "#79740e";
 static const char col_cyan[] = "#005577";
 static const char *colors[][3] = {
     /*               fg         bg         border   */
     [SchemeNorm] = {col_gray3, col_gray1, col_gray2},
     [SchemeSel] = {col_gray4, col_cyan, col_cyan},
+};
+
+
+typedef struct {
+	const char *name;
+	const void *cmd;
+} Sp;
+const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
+const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
+const char *spcmd3[] = {"keepassxc", NULL };
+static Sp scratchpads[] = {
+	/* name          cmd  */
+	{"spterm",      spcmd1},
+	{"spranger",    spcmd2},
+	{"keepassxc",   spcmd3},
 };
 
 /* tagging */
@@ -47,8 +64,14 @@ static const Rule rules[] = {
      *	WM_CLASS(STRING) = instance, class
      *	WM_NAME(STRING) = title
      */
-    /* class       instance    title       tags mask     isfloating   monitor */
-    {"Brave",       NULL,       NULL,          2,             0,        -1},
+  /* class    instance    title       tags mask     isfloating   monitor */
+  { "Brave",   NULL,       NULL,          2,             0,        -1 },
+  { NULL,		  "spterm",		 NULL,		    SPTAG(0),		     1,			   -1 },
+  { NULL,		  "spfm",		   NULL,		    SPTAG(1),		     1,			   -1 },
+  { "Gimp",    NULL,       NULL,           0,            1,        -1 },
+  { "Firefox", NULL,       NULL,         1 << 8,         0,        -1 },
+  { "St",      NULL,       NULL,           0,            0,        -1 },
+  { NULL,      NULL,     "Event Tester",   0,            0,        -1 }, /* xev */
 };
 
 /* layout(s) */
@@ -84,13 +107,19 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = {"dmenu_run", "-m",      dmenumon, "-fn",    dmenufont, "-nb",     col_gray1, "-nf",       col_gray3, "-sb",    col_cyan, "-sf",     col_gray4, NULL};
 static const char *termcmd[] = {"alacritty", NULL};
 static const char *browser[] = {"brave-browser-beta", NULL};
-static const char *explorer[] = {"thunar", NULL};
-static const char *music[] = {"audacious", NULL};
-static const char *prtscr[] = {"scrot", NULL};
-static const char *prtscra[] = {"scrot", "-s", NULL};
+static const char *explorer[] = {"pcmanfm", NULL};
+static const char *music[] = {"audacious2", NULL};
+//static const char *prtscr[] = {"scrot", "~/pictures/ss/ss.png", NULL};
+/* static const char *prtscra[] = {"scrot", "-s", "~/pictures/ss/ss.png", NULL}; */
+// static const char *prtscr[] = {"gnome-screenshot", NULL};
+// static const char *prtscra[] = {"gnome-screenshot", "--area", NULL};
+static const char *prtscr[] = {"xfce4-screenshooter", "-f", "-s", "~/pictures/ss/", NULL};
+static const char *prtscra[] = {"xfce4-screenshooter", "-r", "-s", "~/pictures/ss/", NULL};
 
 #include "selfrestart.c"
 #include "shiftview.c"
+
+
 
 static Key keys[] = {
  /* modifier                        key              function                       argument */
@@ -116,6 +145,9 @@ static Key keys[] = {
     {MODKEY,                        XK_t,             setlayout,                  {.v = &layouts[0]}},
     {MODKEY,                        XK_s,             setlayout,                  {.v = &layouts[1]}},
     {MODKEY,                        XK_m,             setlayout,                  {.v = &layouts[2]}},
+    {MODKEY,            			      XK_backslash,  	  togglescratch,              {.ui = 0 }},
+    {MODKEY|ShiftMask,            	XK_backslash,	    togglescratch,              {.ui = 1 }},
+    {MODKEY,            			      XK_x,	            togglescratch,              {.ui = 2 }},
     {MODKEY,                        XK_g,             setlayout,                  {.v = &layouts[3]}},
     {MODKEY|ControlMask,            XK_comma,         cyclelayout,                {.i = -1}},
     {MODKEY|ControlMask,            XK_period,        cyclelayout,                {.i = +1}},
@@ -169,6 +201,7 @@ static Button buttons[] = {
     {ClkClientWin,            ShiftMask,    Button1,        movemouse,      {0}},
     {ClkClientWin,            ShiftMask,    Button2,        togglefloating, {0}},
     {ClkClientWin,            ShiftMask,    Button3,        resizemouse,    {0}},
+	  {ClkClientWin,            MODKEY,       Button1,        resizemouse,    {0}},
     {ClkTagBar,               0,            Button1,        view,           {0}},
     {ClkTagBar,               0,            Button3,        toggleview,     {0}},
     {ClkTagBar,               MODKEY,       Button1,        tag,            {0}},
