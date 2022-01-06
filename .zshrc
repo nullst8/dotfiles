@@ -12,20 +12,22 @@ export ZSH="/home/csh4dow/.oh-my-zsh"
 plugins=(
   zsh-autosuggestions
   zsh-syntax-highlighting
+  zsh-vi-mode
 )
 
 source $ZSH/oh-my-zsh.sh
 
 alias doas="doas "
+alias irc=weechat
 alias vim=nvim
 alias ls="ls -h --color=yes"
-alias la="ls -la"
+alias la="ls -lA"
 
 ## Advanced Tab Completion
 autoload -U compinit
 zstyle ':completion*' menu select
 compinit
-_comp_options+=(globdots) # Include Hidden Files
+# _comp_options+=(globdots) # Include Hidden Files
 
 export EDITOR='nvim'
 export VISUAL='nvim'
@@ -57,3 +59,5 @@ ex ()
 
 # PS1="%F{red}[%F{yellow}%n%F{green}@%F{blue}%m %F{magenta}%1~%F{red}]%f$ "
 PS1="%F{cyan}[%n@%m %1~]$%f "
+
+ZVM_CURSOR_STYLE_ENABLED=false

@@ -99,7 +99,7 @@ let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+'
 nnoremap <silent><C-n> :Ex<CR>
 
 set background=dark
-" hi Normal guibg=none ctermbg=none
+hi Normal guibg=none ctermbg=none
 
 lua << EOF
 require'lualine'.setup{
