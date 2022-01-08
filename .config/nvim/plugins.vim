@@ -1,6 +1,7 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'tpope/vim-fugitive'
+Plug 'mbbill/undotree'
 Plug 'arcticicestudio/nord-vim'
 Plug 'mhartington/oceanic-next'
 Plug 'nvim-lualine/lualine.nvim'

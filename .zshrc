@@ -20,7 +20,7 @@ source $ZSH/oh-my-zsh.sh
 alias doas="doas "
 alias irc=weechat
 alias vim=nvim
-alias ls="ls -h --color=yes"
+alias ls="ls -h --color=yes --group-directories-first"
 alias la="ls -lA"
 
 ## Advanced Tab Completion
