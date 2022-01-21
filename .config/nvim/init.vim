@@ -5,8 +5,7 @@ so ~/.config/nvim/plugins.vim
 " so ~/.config/nvim/coc.vim
 
 let g:gruvbox_contrast_dark='medium'
-colorscheme gruvbox
-
+colorscheme darkplus
 
 " lua require('colorbuddy').colorscheme('gruvbuddy')
 let mapleader = " "
@@ -99,7 +98,7 @@ let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+'
 nnoremap <silent><C-n> :Ex<CR>
 
 set background=dark
-hi Normal guibg=none ctermbg=none
+" hi Normal guibg=none ctermbg=none
 
 lua << EOF
 require'lualine'.setup{

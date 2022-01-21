@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# case "$(echo -e "Shutdown\nRestart\nLogout\nSuspend\nLock" | dmenu \
-case "$(echo "Shutdown\nRestart\nSuspend\nLock" | dmenu \
+case "$(echo -e "Shutdown\nRestart\nLogout\nSuspend\nLock" | dmenu \
+#case "$(echo "Shutdown\nRestart\nSuspend\nLock" | dmenu \
     -nb "${COLOR_BACKGROUND:-#151515}" \
     -nf "${COLOR_DEFAULT:-#aaaaaa}" \
     -sf "${COLOR_HIGHLIGHT:-#589cc5}" \

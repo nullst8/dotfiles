@@ -1,4 +1,3 @@
-# Path to your oh-my-zsh installation.
 export ZSH="/home/csh4dow/.oh-my-zsh"
 
 # Uncomment the following line to use case-sensitive completion.
@@ -11,17 +10,19 @@ export ZSH="/home/csh4dow/.oh-my-zsh"
 
 plugins=(
   zsh-autosuggestions
+  zsh-history-substring-search
   zsh-syntax-highlighting
-  zsh-vi-mode
+  vi-mode
 )
 
 source $ZSH/oh-my-zsh.sh
 
-alias doas="doas "
+alias sudo="sudo "
 alias irc=weechat
 alias vim=nvim
-alias ls="ls -h --color=yes --group-directories-first"
-alias la="ls -lA"
+# alias ls="ls -h --color=yes --group-directories-first"
+alias ls="exa --group-directories-first"
+alias la="ls -la"
 
 ## Advanced Tab Completion
 autoload -U compinit
@@ -57,7 +58,10 @@ ex ()
   fi
 }
 
-# PS1="%F{red}[%F{yellow}%n%F{green}@%F{blue}%m %F{magenta}%1~%F{red}]%f$ "
-PS1="%F{cyan}[%n@%m %1~]$%f "
+# PS1="%B%F{blue}[%F{yellow}%n@%m %1~%f%F{blue}]$%f%b "
+# PS1="%B%F{red}[%F{yellow}%n%F{green}@%F{blue}%m %F{magenta}%1~%F{red}]%f%F{255}%f%b "
+PS1="%F{blue}%B[%n@%m %1~]$%b%f "
 
-ZVM_CURSOR_STYLE_ENABLED=false
+bindkey -v
+MODE_INDICATOR="%F{white}+%f"
+INSERT_MODE_INDICATOR="%F{yellow}+%f"
