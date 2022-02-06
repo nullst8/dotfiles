@@ -37,9 +37,9 @@ window:
   #
   # Specified in number of pixels.
   # If the position is not set, the window manager will handle the placement.
-  position:
-    x: 0
-    y: 0
+  # position:
+  #   x: 0
+  #   y: 0
 
   # Window padding (changes require restart)
   #
@@ -67,7 +67,7 @@ window:
   #
   # Window opacity as a floating point number from `0.0` to `1.0`.
   # The value `0.0` is completely transparent and `1.0` is opaque.
-  opacity: 1.0
+  opacity: 0.8
 
   # Startup Mode (changes require restart)
   #
@@ -156,7 +156,7 @@ font:
     style: Bold Italic
 
   # Point size
-  size: 7.5
+  size: 3
 
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter
@@ -185,8 +185,8 @@ font:
 colors:
   # Default colors
   primary:
-    background: '#000000'
-    foreground: '#dddddd'
+    background: '#1e1e1e'
+    foreground: '#d4d4d4'
 
     # Bright and dim foreground colors
     #
@@ -274,25 +274,25 @@ colors:
 
   # Normal colors
   normal:
-    black:   '#000000'
-    red:     '#cc0403'
-    green:   '#19cb00'
+    black:   '#1e1e1e'
+    red:     '#ff6665'
+    green:   '#4dc6ad'
     yellow:  '#cecb00'
-    blue:    '#0d73cc'
-    magenta: '#cb1ed1'
-    cyan:    '#0dcdcd'
-    white:   '#dddddd'
+    blue:    '#5498cf'
+    magenta: '#c586c0'
+    cyan:    '#9cdcfe'
+    white:   '#d4d4d4'
 
   # Bright colors
   bright:
-    black:   '#767676'
-    red:     '#f2201f'
-    green:   '#23fd00'
-    yellow:  '#fffd00'
-    blue:    '#1a8fff'
-    magenta: '#fd28ff'
-    cyan:    '#14ffff'
-    white:   '#ffffff'
+    black:   '#1e1e1e'
+    red:     '#ff6665'
+    green:   '#4dc6ad'
+    yellow:  '#cecb00'
+    blue:    '#5498cf'
+    magenta: '#c586c0'
+    cyan:    '#9cdcfe'
+    white:   '#d4d4d4'
   # Dim colors
   #
   # If the dim colors are not set, they will be calculated automatically based

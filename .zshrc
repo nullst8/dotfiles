@@ -13,6 +13,7 @@ plugins=(
   zsh-history-substring-search
   zsh-syntax-highlighting
   vi-mode
+  calc
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -65,3 +66,11 @@ PS1="%F{blue}%B[%n@%m %1~]$%b%f "
 bindkey -v
 MODE_INDICATOR="%F{white}+%f"
 INSERT_MODE_INDICATOR="%F{yellow}+%f"
+
+alias cmatrix=ncmatrix
+
+PATH="/home/csh4dow/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/csh4dow/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/csh4dow/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/csh4dow/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/csh4dow/perl5"; export PERL_MM_OPT;

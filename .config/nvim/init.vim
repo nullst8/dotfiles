@@ -2,12 +2,9 @@ syntax on
 
 so ~/.config/nvim/sets.vim
 so ~/.config/nvim/plugins.vim
-" so ~/.config/nvim/coc.vim
 
-let g:gruvbox_contrast_dark='medium'
-colorscheme darkplus
+colo darkplus
 
-" lua require('colorbuddy').colorscheme('gruvbuddy')
 let mapleader = " "
 
 so ~/.config/nvim/telescope.vim
@@ -66,8 +63,6 @@ let g:neoformat_enabled_javascript = ['prettier']
 let g:neoformat_enabled_javascriptreact = ['prettier']
 let g:neoformat_enabled_typescriptreact = ['prettier']
 let g:neoformat_enabled_typescript = ['prettier']
-
-command Gruvbuddy lua require('colorbuddy').colorscheme('gruvbuddy')
 
 so ~/.config/nvim/treesitter.vim
 so ~/.config/nvim/cmplsp.vim

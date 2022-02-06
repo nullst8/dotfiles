@@ -1,6 +1,5 @@
 picom --fade-in-step=1 --fade-out-step=1 --fade-delta=0 --no-fading-openclose &
-feh --bg-fill --randomize ~/.wallpapers
-# feh --bg-fill ~/pictures/arch.jpg
+feh --bg-fill /usr/share/backgrounds/Snow-Capped\ Mountain.jpg
 nvim --headless &
 
 brightnessctl s 100%
@@ -30,7 +29,6 @@ pactl -- set-sink-volume 0 100%
 # wmname LG3D
 
 redshift -x
-redshift -O 5000
+redshift -O 4000
 
-kdeconnect-indicator &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &

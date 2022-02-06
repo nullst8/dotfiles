@@ -114,8 +114,8 @@ static const char *element[] = {"element-desktop", NULL};
 static const char *browseri[] = {"brave-browser-beta", "--incognito", NULL};
 static const char *explorer[] = {"pcmanfm", NULL};
 static const char *music[] = {"audacious", NULL};
-static const char *prtscr[] = {"scrot", "/home/csh4dow/pictures/ss/ss.png", NULL};
-static const char *prtscra[] = {"scrot", "-s", "/home/csh4dow/pictures/ss/ss.png", NULL};
+static const char *prtscr[] = {"scrot", "/home/csh4dow/Pictures/ss/ss.png", NULL};
+static const char *prtscra[] = {"scrot", "-s", "/home/csh4dow/Pictures/ss/ss.png", NULL};
 // static const char *prtscr[] = {"gnome-screenshot", NULL};
 // static const char *prtscra[] = {"gnome-screenshot", "--area", NULL};
 
@@ -204,9 +204,9 @@ static Button buttons[] = {
     /* click                event mask      button          function      argument */
     {ClkLtSymbol,             0,            Button1,        setlayout,      {0}},
     {ClkWinTitle,             0,            Button2,        zoom,           {0}},
-    {ClkClientWin,            ShiftMask,    Button1,        movemouse,      {0}},
-    {ClkClientWin,            ShiftMask,    Button2,        togglefloating, {0}},
-    {ClkClientWin,            ShiftMask,    Button3,        resizemouse,    {0}},
+    {ClkClientWin,            Mod1Mask,     Button1,        movemouse,      {0}},
+    {ClkClientWin,            Mod1Mask,     Button2,        togglefloating, {0}},
+    {ClkClientWin,            Mod1Mask,     Button3,        resizemouse,    {0}},
 	  {ClkClientWin,            MODKEY,       Button1,        resizemouse,    {0}},
     {ClkTagBar,               0,            Button1,        view,           {0}},
     {ClkTagBar,               0,            Button3,        toggleview,     {0}},
