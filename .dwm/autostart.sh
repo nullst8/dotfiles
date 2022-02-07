@@ -29,6 +29,6 @@ pactl -- set-sink-volume 0 100%
 # wmname LG3D
 
 redshift -x
-redshift -O 4000
+redshift -O 5000
 
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &

@@ -64,7 +64,7 @@ static const Rule rules[] = {
      *	WM_NAME(STRING) = title
      */
   /* class        instance    title       tags mask     isfloating   monitor */
-  { "Brave",      NULL,        NULL,          2,             0,        -1 },
+  { "firefox",    NULL,        NULL,          2,             0,        -1 },
   { "discord",    NULL,        NULL,          4,             0,        -1 },
   { "Element",    NULL,        NULL,          4,             0,        -1 },
   { "galculator", NULL,        NULL,          0,             1,        -1 },
@@ -108,10 +108,10 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = {"dmenu_run", "-m",      dmenumon, "-fn",    dmenufont, "-nb",     col_gray1, "-nf",       col_gray3, "-sb",    col_cyan, "-sf",     col_gray4, NULL};
 static const char *termcmd[] = {"alacritty", NULL};
-static const char *browser[] = {"brave-browser-beta", NULL};
+static const char *browser[] = {"firefox", NULL};
 static const char *discord[] = {"discord", NULL};
 static const char *element[] = {"element-desktop", NULL};
-static const char *browseri[] = {"brave-browser-beta", "--incognito", NULL};
+static const char *browseri[] = {"firefox", "--private-window", NULL};
 static const char *explorer[] = {"pcmanfm", NULL};
 static const char *music[] = {"audacious", NULL};
 static const char *prtscr[] = {"scrot", "/home/csh4dow/Pictures/ss/ss.png", NULL};
