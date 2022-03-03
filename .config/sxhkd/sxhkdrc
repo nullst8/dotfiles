@@ -5,18 +5,10 @@ super + Return
 
 # browser
 super + w
-  brave
-
-# vs code
-super + c
-  code
-
-# discord
-super + d
-	dmenu_run
+  firefox
 
 # music player
-super + m
+super + a
 	audacious
 
 # Power Menu
@@ -28,7 +20,7 @@ super + p
   dmenu_run
 
 super + e
-  nautilus
+  pcmanfm
 
 # make sxhkd reload its configuration files:
 super + Escape

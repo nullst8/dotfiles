@@ -7,6 +7,6 @@ killall -q polybar
 while pgrep -x polybar >/dev/null; do sleep 1; done
 
 # Launch
-polybar main --config=/home/manas/.config/polybar/config.ini &
+polybar main --config=/home/csh4dow/.config/polybar/config.ini &
 
 echo "Bar launched..."

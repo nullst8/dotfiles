@@ -1,21 +1,29 @@
 #! /bin/sh
 
 # -- Autostart
-picom --fade-in-step=1 --fade-out-step=1 --fade-delta=0 &
-# feh --bg-fill /usr/share/backgrounds/manjaro-gnome/manjaro_wallpaper.jpg
+picom --fade-in-step=1 --fade-out-step=1 --fade-delta=0 --no-fading-openclose &
+feh --bg-fill /home/csh4dow/.dotfiles/.config/Snow-Capped\ Mountain.jpg
 
 dunst &
 
+killall volumeicon
+volumeicon &
 nm-applet &
+i3-battery-popup -n &
 blueman-applet &
-pamac-tray &
 
 xsetroot -cursor_name left_ptr &
+$HOME/.config/polybar/launch.sh
 
 xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Tapping Enabled" 1
 xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Left Handed Enabled" 1
 xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Natural Scrolling Enabled" 1
 xinput set-prop "HID 1bcf:08a0 Mouse" "libinput Left Handed Enabled" 1
+
+xrandr --dpi 96
+
+xset s off
+xset -dpms
 
 pactl -- set-sink-volume 0 100%
 
@@ -24,14 +32,11 @@ wmname LG3D
 # -- Enable Keybindings
 pgrep -x sxhkd >/dev/null || sxhkd &
 
-# -- Start Polybar
-$HOME/.config/polybar/launch.sh
 
 redshift -x
 redshift -O 5000
 
-kdeconnect-indicator &
-play-with-mpv &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
 # -- BSPWM Config
 bspc config external_rules_command ~/.config/bspwm/scripts/external_rules.sh

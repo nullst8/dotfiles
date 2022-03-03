@@ -1,5 +1,5 @@
 picom --fade-in-step=1 --fade-out-step=1 --fade-delta=0 --no-fading-openclose &
-feh --bg-fill /usr/share/backgrounds/Snow-Capped\ Mountain.jpg
+feh --bg-fill /home/csh4dow/.dotfiles/.config/Snow-Capped\ Mountain.jpg
 nvim --headless &
 
 brightnessctl s 100%
@@ -9,7 +9,6 @@ dunst &
 killall volumeicon
 volumeicon &
 nm-applet &
-#connman-ui-gtk &
 i3-battery-popup -n &
 blueman-applet &
 
@@ -24,7 +23,7 @@ xinput set-prop "HID 1bcf:08a0 Mouse" "libinput Left Handed Enabled" 1
 xset s off
 xset -dpms
 
-pactl -- set-sink-volume 0 100%
+pactl -- set-sink-volume 0 70%
 
 # wmname LG3D
 
@@ -32,3 +31,4 @@ redshift -x
 redshift -O 5000
 
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+xrandr --dpi 96

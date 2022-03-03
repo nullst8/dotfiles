@@ -3,7 +3,7 @@ syntax on
 so ~/.config/nvim/sets.vim
 so ~/.config/nvim/plugins.vim
 
-colo darkplus
+colo gruvbox
 
 let mapleader = " "
 
@@ -59,10 +59,10 @@ augroup END
 
 so ~/.config/nvim/startify.vim
 
-let g:neoformat_enabled_javascript = ['prettier']
-let g:neoformat_enabled_javascriptreact = ['prettier']
-let g:neoformat_enabled_typescriptreact = ['prettier']
-let g:neoformat_enabled_typescript = ['prettier']
+let g:neoformat_enabled_javascript = ['prettierd']
+let g:neoformat_enabled_javascriptreact = ['prettierd']
+let g:neoformat_enabled_typescriptreact = ['prettierd']
+let g:neoformat_enabled_typescript = ['prettierd']
 
 so ~/.config/nvim/treesitter.vim
 so ~/.config/nvim/cmplsp.vim
@@ -86,11 +86,31 @@ let g:vsnip_filetypes = {}
 let g:vsnip_filetypes.javascriptreact = ['javascript']
 let g:vsnip_filetypes.typescriptreact = ['typescript']
 
-nnoremap <silent><leader>a :lua require("harpoon.mark").add_file()<CR>
-nnoremap <silent><C-e> :lua require("harpoon.ui").toggle_quick_menu()<CR>
+" netrw
+let g:netrw_banner = 0      " hide banner
+let g:netrw_altv=1          " open splits to the right
+let g:netrw_liststyle=3     " tree view
+let g:netrw_list_hide=netrw_gitignore#Hide()
+let g:NetrwIsOpen=0
+let g:netrw_winsize = 25
 
-let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+'
-nnoremap <silent><C-n> :Ex<CR>
+function! ToggleNetrw()
+    if g:NetrwIsOpen
+        let i = bufnr("$")
+        while (i >= 1)
+            if (getbufvar(i, "&filetype") == "netrw")
+                silent exe "bwipeout " . i
+            endif
+            let i-=1
+        endwhile
+        let g:NetrwIsOpen=0
+    else
+        let g:NetrwIsOpen=1
+        silent Lexplore
+    endif
+endfunction
+
+nnoremap <silent><C-n> :call ToggleNetrw()<cr>
 
 set background=dark
 " hi Normal guibg=none ctermbg=none
@@ -144,3 +164,24 @@ if has("persistent_undo")
 endif
 
 nnoremap <silent><leader>u :UndotreeToggle<CR>
+
+" Move to previous/next
+nnoremap <silent>    <A-,> :BufferPrevious<CR>
+nnoremap <silent>    <A-.> :BufferNext<CR>
+" Re-order to previous/next
+nnoremap <silent>    <A-<> :BufferMovePrevious<CR>
+nnoremap <silent>    <A->> :BufferMoveNext<CR>
+" Goto buffer in position...
+nnoremap <silent>    <A-1> :BufferGoto 1<CR>
+nnoremap <silent>    <A-2> :BufferGoto 2<CR>
+nnoremap <silent>    <A-3> :BufferGoto 3<CR>
+nnoremap <silent>    <A-4> :BufferGoto 4<CR>
+nnoremap <silent>    <A-5> :BufferGoto 5<CR>
+nnoremap <silent>    <A-6> :BufferGoto 6<CR>
+nnoremap <silent>    <A-7> :BufferGoto 7<CR>
+nnoremap <silent>    <A-8> :BufferGoto 8<CR>
+nnoremap <silent>    <A-9> :BufferLast<CR>
+" Pin/unpin buffer
+nnoremap <silent>    <A-p> :BufferPin<CR>
+" Close buffer
+nnoremap <silent>    <A-c> :BufferClose<CR>

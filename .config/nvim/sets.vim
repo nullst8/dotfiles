@@ -1,4 +1,6 @@
 set errorbells
+set mouse+=a
+set autowriteall
 set ignorecase
 set smartcase
 set completeopt=menuone,noselect

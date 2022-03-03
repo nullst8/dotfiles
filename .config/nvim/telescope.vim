@@ -3,7 +3,7 @@ require('telescope').setup{
 defaults = {
   vimgrep_arguments = {
     'rg',
-    '--color=never',
+    '--color=yes',
     '--no-heading',
     '--with-filename',
     '--line-number',
@@ -32,7 +32,7 @@ generic_sorter =  require'telescope.sorters'.get_generic_fuzzy_sorter,
 winblend = 0,
 border = {},
 borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
-color_devicons = true,
+color_devicons = false,
 use_less = true,
 path_display = {},
 set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
