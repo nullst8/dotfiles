@@ -23,6 +23,5 @@ set relativenumber
 set noswapfile
 set incsearch
 set encoding=utf-8
-set colorcolumn=""
 set nohlsearch
 set cmdheight=2

@@ -2,15 +2,17 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'tpope/vim-fugitive'
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'romgrk/barbar.nvim'
 Plug 'gruvbox-community/gruvbox'
+Plug 'bling/vim-bufferline'
 Plug 'martinsione/darkplus.nvim'
-Plug 'gruvbox-community/gruvbox'
+Plug 'Shougo/ddu.vim'
+Plug 'vim-denops/denops.vim'
+Plug 'raghur/fruzzy', {'do': { -> fruzzy#install()}}
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'mbbill/undotree'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'tmsvg/pear-tree'
 Plug 'ellisonleao/glow.nvim'
-Plug 'cespare/vim-toml', { 'branch': 'main' }
 Plug 'ap/vim-css-color'
 Plug 'felipec/vim-felipec'
 Plug 'ryanoasis/vim-devicons'
@@ -18,7 +20,6 @@ Plug 'sbdchd/neoformat'
 Plug 'akinsho/nvim-toggleterm.lua'
 Plug 'numToStr/Comment.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'tree-sitter/tree-sitter'
 Plug 'ewilazarus/preto'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'

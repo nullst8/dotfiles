@@ -47,7 +47,6 @@ buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker
 EOF
 
 " Basic Refactoring
-nnoremap <C-p> <cmd>Telescope git_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <silent> <leader>ff :lua require('telescope.builtin').find_files()<cr>
