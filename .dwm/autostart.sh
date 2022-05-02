@@ -1,5 +1,5 @@
 picom --fade-in-step=1 --fade-out-step=1 --fade-delta=0 --no-fading-openclose &
-feh --bg-fill /home/csh4dow/.dotfiles/aot.jpg
+feh --bg-fill /home/csh4dow/.dotfiles/nature.jpg
 # feh --bg-fill /home/csh4dow/.dotfiles/.config/Snow-Capped\ Mountain.jpg
 nvim --headless &
 
@@ -11,7 +11,6 @@ killall volumeicon
 volumeicon &
 nm-applet &
 i3-battery-popup -n &
-blueman-applet &
 
 xsetroot -cursor_name left_ptr &
 slstatus &

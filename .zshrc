@@ -1,31 +1,9 @@
-export ZSH="/home/csh4dow/.oh-my-zsh"
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+setopt autocd extendedglob nomatch
+unsetopt beep
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# ZSH_THEME=""
-
-plugins=(
-  zsh-autosuggestions
-  zsh-history-substring-search
-  zsh-syntax-highlighting
-  vi-mode
-  calc
-)
-
-source $ZSH/oh-my-zsh.sh
-
-alias sudo="sudo "
-alias irc=weechat
-alias vim=nvim
-# alias ls="ls -h --color=yes --group-directories-first"
-alias ls="exa --group-directories-first"
-alias la="ls -la"
-
-## Advanced Tab Completion
 autoload -U compinit
 zstyle ':completion*' menu select
 compinit
@@ -33,6 +11,14 @@ compinit
 
 export EDITOR='nvim'
 export VISUAL='nvim'
+
+alias sudo="sudo "
+alias irc=weechat
+alias vim=nvim
+alias cmatrix=ncmatrix
+alias cat="bat --theme=gruvbox-dark"
+alias ls="exa --group-directories-first"
+alias la="ls -la"
 
 ex ()
 {
@@ -59,20 +45,44 @@ ex ()
   fi
 }
 
-# PS1="%B%F{blue}[%F{yellow}%n@%m %1~%f%F{blue}]$%f%b "
-# PS1="%B%F{red}[%F{yellow}%n%F{green}@%F{blue}%m %F{magenta}%1~%F{red}]%f%F{255}%f%b "
-PS1="%F{blue}%B[%n@%m %1~]$%b%f "
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
 
-bindkey -v
-MODE_INDICATOR="%F{white}+%f"
-INSERT_MODE_INDICATOR="%F{yellow}+%f"
+PS1="%F{76}%B[%n@%m %1~]$%b%f "
 
-alias cmatrix=ncmatrix
+# Plugins
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/zsh-sudo/sudo.plugin.zsh
+GOPATH=/home/csh4dow/.go
+export GOPATH
+PATH=$PATH:$GOPATH/bin # Add GOPATH/bin to PATH for scripting
+PATH=$PATH:/home/csh4dow/.local/bin
 
-PATH="/home/csh4dow/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/home/csh4dow/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/csh4dow/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/csh4dow/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/csh4dow/perl5"; export PERL_MM_OPT;
-: undercover && export PS1='C:${PWD//\//\\}> '
-: undercover && new_line_before_prompt=no
+fuck() {
+
+echo "\n"
+echo "                               \$\$\$\$"
+echo "                             \$\$    \$\$"
+echo "                             \$\$    \$\$"
+echo "                             \$\$    \$\$"
+echo "                             \$\$    \$\$"
+echo "                             \$\$    \$\$"
+echo "                         \$\$\$\$\$\$    \$\$\$\$\$\$"
+echo "                       \$\$    \$\$    \$\$    \$\$\$\$"
+echo "                       \$\$    \$\$    \$\$    \$\$  \$\$"
+echo "               \$\$\$\$\$\$  \$\$    \$\$    \$\$    \$\$    \$\$"
+echo "               \$\$    \$\$\$\$                \$\$    \$\$"
+echo "               \$\$      \$\$                      \$\$"
+echo "                 \$\$    \$\$                      \$\$"
+echo "                  \$\$\$  \$\$                      \$\$"
+echo "                   \$\$                          \$\$"
+echo "                    \$\$\$                        \$\$"
+echo "                     \$\$                      \$\$\$"
+echo "                      \$\$\$                    \$\$"
+echo "                       \$\$                    \$\$"
+echo "                        \$\$\$                \$\$\$"
+echo "                         \$\$                \$\$"
+echo "                         \$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$"
+echo "\n"
+}

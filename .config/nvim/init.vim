@@ -113,7 +113,7 @@ endfunction
 nnoremap <silent><C-n> :call ToggleNetrw()<cr>
 
 set background=dark
-" hi Normal guibg=none ctermbg=none
+hi Normal guibg=none ctermbg=none
 
 lua << EOF
 require'lualine'.setup{

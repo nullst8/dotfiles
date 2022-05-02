@@ -2,9 +2,9 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
-static const unsigned int borderpx = 1; /* border pixel of windows */
+static const unsigned int borderpx = 0; /* border pixel of windows */
 static const int startwithgaps = 1;     /* 1 means gaps are used by default */
-static const unsigned int gappx = 5; /* default gap between windows in pixels */
+static const unsigned int gappx = 8; /* default gap between windows in pixels */
 static const unsigned int snap = 32; /* snap pixel */
 static const unsigned int systraypinning = 0; /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
@@ -33,7 +33,7 @@ static const char col_gray1[] = "#1e1e1e";
 static const char col_gray2[] = "#444444";
 static const char col_gray3[] = "#bbbbbb";
 static const char col_gray4[] = "#d4d4d4";
-static const char col_cyan[] = "#005577";
+static const char col_cyan[] = "#219c22";
 static const char col_white[] = "#ffffff";
 static const char *colors[][3] = {
     /*               fg         bg         border   */
@@ -111,13 +111,13 @@ static const char *dmenucmd[] = {"dmenu_run", "-m",      dmenumon, "-fn",    dme
 static const char *termcmd[] = {"alacritty", NULL};
 static const char *tmuxcmd[] = {"alacritty", "-e", "tmux", NULL};
 static const char *browser[] = {"firefox", NULL};
-static const char *discord[] = {"discord", NULL};
 static const char *element[] = {"element-desktop", NULL};
 static const char *browseri[] = {"firefox", "--private-window", NULL};
 static const char *explorer[] = {"pcmanfm", NULL};
 static const char *music[] = {"audacious", NULL};
-static const char *prtscr[] = {"scrot", "/home/csh4dow/Pictures/ss/ss.png", NULL};
-static const char *prtscra[] = {"scrot", "-s", "/home/csh4dow/Pictures/ss/ss.png", NULL};
+static const char *killwm[] = {"pkill", "dwm", NULL};
+static const char *prtscr[] = {"scrot", "/home/csh4dow/pics/ss/ss.png", NULL};
+static const char *prtscra[] = {"scrot", "-s", "/home/csh4dow/pics/ss/ss.png", NULL};
 // static const char *prtscr[] = {"gnome-screenshot", NULL};
 // static const char *prtscra[] = {"gnome-screenshot", "--area", NULL};
 
@@ -131,7 +131,8 @@ static Key keys[] = {
     {MODKEY,                        XK_p,             spawn,                      {.v = dmenucmd}},
     {MODKEY,                        XK_a,             spawn,                      {.v = music}},
     {MODKEY,                        XK_w,             spawn,                      {.v = browser}},
-    {MODKEY|ShiftMask,              XK_d,             spawn,                      {.v = discord}},
+    {MODKEY|ShiftMask,              XK_j,             rotatestack,                {.i = +1 } },
+    {MODKEY|ShiftMask,              XK_k,             rotatestack,                {.i = -1 } },
     {MODKEY|ShiftMask,              XK_e,             spawn,                      {.v = element}},
     {MODKEY|ShiftMask,              XK_w,             spawn,                      {.v = browseri}},
     {MODKEY|ShiftMask,              XK_l,             spawn,                      {.v = lock}},
@@ -155,8 +156,7 @@ static Key keys[] = {
     {MODKEY,                        XK_s,             setlayout,                  {.v = &layouts[1]}},
     {MODKEY,                        XK_m,             setlayout,                  {.v = &layouts[2]}},
     {MODKEY,            			      XK_backslash,  	  togglescratch,              {.ui = 0 }},
-    {MODKEY|ShiftMask,            	XK_backslash,	    togglescratch,              {.ui = 1 }},
-    {MODKEY,            			      XK_x,	            togglescratch,              {.ui = 2 }},
+    {MODKEY|ShiftMask,            	XK_backslash,	    togglescratch,              {.ui = 2 }},
     {MODKEY,                        XK_g,             setlayout,                  {.v = &layouts[3]}},
     {MODKEY|ControlMask,            XK_comma,         cyclelayout,                {.i = -1}},
     {MODKEY|ControlMask,            XK_period,        cyclelayout,                {.i = +1}},
@@ -187,8 +187,8 @@ static Key keys[] = {
     TAGKEYS(                        XK_7,                                         6)
     TAGKEYS(                        XK_8,                                         7)
     TAGKEYS(                        XK_9,                                         8)
-    {MODKEY|ShiftMask,              XK_r,             self_restart,               {0}},
-    {MODKEY|ShiftMask,              XK_c,             quit,                       {0}},
+    {MODKEY|ShiftMask,              XK_c,             spawn,                      {.v = killwm}},
+    {MODKEY|ShiftMask,              XK_r,             quit,                       {0}},
     {MODKEY|ShiftMask,              XK_p,             spawn,                      {.v = powermenu}},
     {0,                    XF86XK_AudioLowerVolume,   spawn,                      {.v = downvol}},
     {0,                    XF86XK_AudioMute,          spawn,                      {.v = mutevol}},
@@ -198,6 +198,7 @@ static Key keys[] = {
     {0,                    XF86XK_AudioPlay,          spawn,                      {.v = plause}},
     {0,                    XF86XK_AudioNext,          spawn,                      {.v = next}},
     {0,                    XF86XK_AudioPrev,          spawn,                      {.v = prev}},
+    // {MODKEY,            			      XK_x,	            togglescratch,              {.ui = 2 }},
 };
 
 /* button definitions */
