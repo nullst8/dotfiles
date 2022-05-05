@@ -121,7 +121,6 @@ static const char *prtscra[] = {"scrot", "-s", "/home/csh4dow/pics/ss/ss.png", N
 // static const char *prtscr[] = {"gnome-screenshot", NULL};
 // static const char *prtscra[] = {"gnome-screenshot", "--area", NULL};
 
-#include "selfrestart.c"
 #include "shiftview.c"
 
 
@@ -129,19 +128,28 @@ static const char *prtscra[] = {"scrot", "-s", "/home/csh4dow/pics/ss/ss.png", N
 static Key keys[] = {
  /* modifier                        key              function                       argument */
     {MODKEY,                        XK_p,             spawn,                      {.v = dmenucmd}},
-    {MODKEY,                        XK_a,             spawn,                      {.v = music}},
-    {MODKEY,                        XK_w,             spawn,                      {.v = browser}},
-    {MODKEY|ShiftMask,              XK_j,             rotatestack,                {.i = +1 } },
-    {MODKEY|ShiftMask,              XK_k,             rotatestack,                {.i = -1 } },
+    {MODKEY,                        XK_Return,        spawn,                      {.v = termcmd}},
     {MODKEY|ShiftMask,              XK_e,             spawn,                      {.v = element}},
     {MODKEY|ShiftMask,              XK_w,             spawn,                      {.v = browseri}},
     {MODKEY|ShiftMask,              XK_l,             spawn,                      {.v = lock}},
     {MODKEY,                        XK_e,             spawn,                      {.v = explorer}},
-    {MODKEY,                        XK_Return,        spawn,                      {.v = termcmd}},
-    {MODKEY|ControlMask|ShiftMask,  XK_Return,        spawn,                      {.v = tmuxcmd}},
+    {MODKEY|ShiftMask,              XK_p,             spawn,                      {.v = powermenu}},
+    {0,                    XF86XK_AudioLowerVolume,   spawn,                      {.v = downvol}},
+    {0,                    XF86XK_AudioMute,          spawn,                      {.v = mutevol}},
+    {0,                    XF86XK_AudioRaiseVolume,   spawn,                      {.v = upvol}},
+    {0,                    XF86XK_MonBrightnessUp,    spawn,                      {.v = brupcmd}},
+    {0,                    XF86XK_MonBrightnessDown,  spawn,                      {.v = brdowncmd}},
+    {0,                    XF86XK_AudioPlay,          spawn,                      {.v = plause}},
+    {MODKEY|ShiftMask,              XK_c,             spawn,                      {.v = killwm}},
+    {0,                    XF86XK_AudioNext,          spawn,                      {.v = next}},
+    {0,                    XF86XK_AudioPrev,          spawn,                      {.v = prev}},
     {ControlMask,                   XK_space,         spawn,                      {.v = closen}},
     {ControlMask|ShiftMask,         XK_space,         spawn,                      {.v = closean}},
     {ControlMask|ShiftMask,         XK_grave,         spawn,                      {.v = nhist}},
+    {MODKEY,                        XK_a,             spawn,                      {.v = music}},
+    {MODKEY,                        XK_w,             spawn,                      {.v = browser}},
+    {MODKEY|ShiftMask,              XK_j,             rotatestack,                {.i = +1 } },
+    {MODKEY|ShiftMask,              XK_k,             rotatestack,                {.i = -1 } },
     {MODKEY,                        XK_b,             togglebar,                  {0}},
     {MODKEY,                        XK_j,             focusstack,                 {.i = +1}},
     {MODKEY,                        XK_k,             focusstack,                 {.i = -1}},
@@ -149,6 +157,7 @@ static Key keys[] = {
     {MODKEY,                        XK_d,             incnmaster,                 {.i = -1}},
     {MODKEY,                        XK_h,             setmfact,                   {.f = -0.05}},
     {MODKEY,                        XK_l,             setmfact,                   {.f = +0.05}},
+    {MODKEY|ControlMask|ShiftMask,  XK_Return,        spawn,                      {.v = tmuxcmd}},
     {MODKEY|ShiftMask,              XK_Return,        zoom,                       {0}},
     {Mod1Mask,                      XK_Tab,           view,                       {0}},
     {MODKEY|ShiftMask,              XK_q,             killclient,                 {0}},
@@ -187,17 +196,7 @@ static Key keys[] = {
     TAGKEYS(                        XK_7,                                         6)
     TAGKEYS(                        XK_8,                                         7)
     TAGKEYS(                        XK_9,                                         8)
-    {MODKEY|ShiftMask,              XK_c,             spawn,                      {.v = killwm}},
     {MODKEY|ShiftMask,              XK_r,             quit,                       {0}},
-    {MODKEY|ShiftMask,              XK_p,             spawn,                      {.v = powermenu}},
-    {0,                    XF86XK_AudioLowerVolume,   spawn,                      {.v = downvol}},
-    {0,                    XF86XK_AudioMute,          spawn,                      {.v = mutevol}},
-    {0,                    XF86XK_AudioRaiseVolume,   spawn,                      {.v = upvol}},
-    {0,                    XF86XK_MonBrightnessUp,    spawn,                      {.v = brupcmd}},
-    {0,                    XF86XK_MonBrightnessDown,  spawn,                      {.v = brdowncmd}},
-    {0,                    XF86XK_AudioPlay,          spawn,                      {.v = plause}},
-    {0,                    XF86XK_AudioNext,          spawn,                      {.v = next}},
-    {0,                    XF86XK_AudioPrev,          spawn,                      {.v = prev}},
     // {MODKEY,            			      XK_x,	            togglescratch,              {.ui = 2 }},
 };
 
