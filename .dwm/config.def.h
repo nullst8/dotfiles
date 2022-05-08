@@ -2,9 +2,9 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
-static const unsigned int borderpx = 0; /* border pixel of windows */
+static const unsigned int borderpx = 1; /* border pixel of windows */
 static const int startwithgaps = 1;     /* 1 means gaps are used by default */
-static const unsigned int gappx = 8; /* default gap between windows in pixels */
+static const unsigned int gappx = 5; /* default gap between windows in pixels */
 static const unsigned int snap = 32; /* snap pixel */
 static const unsigned int systraypinning = 0; /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
@@ -29,16 +29,18 @@ static const char *lock[] = {"slock", NULL};
 static const char *closen[] = {"dunstctl", "close", NULL};
 static const char *closean[] = {"dunstctl", "close-all", NULL};
 static const char *nhist[] = {"dunstctl", "history-pop", NULL};
-static const char col_gray1[] = "#1e1e1e";
+static const char col_gray1[] = "#282828";
+// static const char col_gray1[] = "#1e1e1e";
 static const char col_gray2[] = "#444444";
 static const char col_gray3[] = "#bbbbbb";
 static const char col_gray4[] = "#d4d4d4";
-static const char col_cyan[] = "#219c22";
-static const char col_white[] = "#ffffff";
+static const char col_green[] = "#689d6a";
+// static const char col_green[] = "#219c22";
+static const char col_white[] = "#d3d3d3";
 static const char *colors[][3] = {
     /*               fg         bg         border   */
-    [SchemeNorm] = {col_gray3, col_gray1, col_gray2},
-    [SchemeSel] = {col_gray4, col_cyan, col_white},
+    [SchemeNorm] = {col_green, col_gray1, col_gray2},
+    [SchemeSel] = {col_gray1, col_green, col_green},
 };
 
 
@@ -107,7 +109,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = {"dmenu_run", "-m",      dmenumon, "-fn",    dmenufont, "-nb",     col_gray1, "-nf",       col_gray3, "-sb",    col_cyan, "-sf",     col_gray4, NULL};
+static const char *dmenucmd[] = {"dmenu_run", "-m",      dmenumon, "-fn",    dmenufont, "-nb",     col_gray1, "-nf",       col_gray3, "-sb",    col_green, "-sf",     col_gray4, NULL};
 static const char *termcmd[] = {"alacritty", NULL};
 static const char *tmuxcmd[] = {"alacritty", "-e", "tmux", NULL};
 static const char *browser[] = {"firefox", NULL};

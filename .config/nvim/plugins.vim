@@ -3,6 +3,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'tpope/vim-fugitive'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'gruvbox-community/gruvbox'
+Plug 'navarasu/onedark.nvim'
 Plug 'bling/vim-bufferline'
 Plug 'martinsione/darkplus.nvim'
 Plug 'Shougo/ddu.vim'

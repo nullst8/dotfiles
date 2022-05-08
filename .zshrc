@@ -48,7 +48,7 @@ ex ()
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
-PS1="%F{76}%B[%n@%m %1~]$%b%f "
+PS1="%F{#689d6a}%B[%n@%m %1~]$%b%f "
 
 # Plugins
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -60,7 +60,6 @@ PATH=$PATH:$GOPATH/bin # Add GOPATH/bin to PATH for scripting
 PATH=$PATH:/home/csh4dow/.local/bin
 
 fuck() {
-
 echo "\n"
 echo "                               \$\$\$\$"
 echo "                             \$\$    \$\$"
