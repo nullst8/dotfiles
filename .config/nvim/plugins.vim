@@ -2,6 +2,10 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'tpope/vim-fugitive'
 Plug 'kyazdani42/nvim-web-devicons'
+Plug 'ishan9299/nvim-solarized-lua'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'preservim/nerdtree'
 Plug 'gruvbox-community/gruvbox'
 Plug 'navarasu/onedark.nvim'
 Plug 'bling/vim-bufferline'
@@ -9,7 +13,6 @@ Plug 'martinsione/darkplus.nvim'
 Plug 'Shougo/ddu.vim'
 Plug 'vim-denops/denops.vim'
 Plug 'raghur/fruzzy', {'do': { -> fruzzy#install()}}
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'mbbill/undotree'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'tmsvg/pear-tree'

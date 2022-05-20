@@ -19,6 +19,7 @@ alias cmatrix=ncmatrix
 alias cat="bat --theme=gruvbox-dark"
 alias ls="exa --group-directories-first"
 alias la="ls -la"
+alias bctl="bluetoothctl"
 
 ex ()
 {
@@ -47,8 +48,11 @@ ex ()
 
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
 
-PS1="%F{#689d6a}%B[%n@%m %1~]$%b%f "
+# PS1="%F{#689d6a}%B[%n@%m %1~]$%b%f "
+PS1="%F{#cc241d}%B[%F{#98971a}%n@%F{#b16286}%m %F{#d65d0e}%1~%F{#cc241d}]%F{#689d6a}$%b "
 
 # Plugins
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

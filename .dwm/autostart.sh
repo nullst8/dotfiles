@@ -1,5 +1,5 @@
-picom --fade-in-step=1 --fade-out-step=1 --fade-delta=0 --no-fading-openclose &
-feh --bg-fill /home/csh4dow/.dotfiles/astro.jpg
+# picom --fade-in-step=1 --fade-out-step=1 --fade-delta=0 --no-fading-openclose &
+feh --bg-fill /home/csh4dow/.wallpapers --randomize
 nvim --headless &
 
 brightnessctl s 100%

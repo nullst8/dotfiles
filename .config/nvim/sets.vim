@@ -25,3 +25,5 @@ set incsearch
 set encoding=utf-8
 set nohlsearch
 set cmdheight=2
+set splitright
+set splitbelow

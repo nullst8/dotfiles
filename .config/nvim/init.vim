@@ -86,32 +86,6 @@ let g:vsnip_filetypes = {}
 let g:vsnip_filetypes.javascriptreact = ['javascript']
 let g:vsnip_filetypes.typescriptreact = ['typescript']
 
-" netrw
-let g:netrw_banner = 0      " hide banner
-let g:netrw_altv=1          " open splits to the right
-let g:netrw_liststyle=3     " tree view
-let g:netrw_list_hide=netrw_gitignore#Hide()
-let g:NetrwIsOpen=0
-let g:netrw_winsize = 25
-
-function! ToggleNetrw()
-    if g:NetrwIsOpen
-        let i = bufnr("$")
-        while (i >= 1)
-            if (getbufvar(i, "&filetype") == "netrw")
-                silent exe "bwipeout " . i
-            endif
-            let i-=1
-        endwhile
-        let g:NetrwIsOpen=0
-    else
-        let g:NetrwIsOpen=1
-        silent Lexplore
-    endif
-endfunction
-
-nnoremap <silent><C-n> :call ToggleNetrw()<cr>
-
 set background=dark
 hi Normal guibg=none ctermbg=none
 
@@ -163,11 +137,7 @@ if has("persistent_undo")
     set undofile
 endif
 
-" ctrlp.vim
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+so ~/.config/nvim/nerdtree.vim
 
 " buffers
 " Move to previous/next
@@ -176,3 +146,7 @@ nnoremap <silent>    <A-.> :bn<CR>
 " delete buffer
 nnoremap <silent>    <A-c> :bd<CR>
 let g:bufferline_show_bufnr = 0
+
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'

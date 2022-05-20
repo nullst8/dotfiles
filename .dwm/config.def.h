@@ -2,7 +2,7 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
-static const unsigned int borderpx = 1; /* border pixel of windows */
+static const unsigned int borderpx = 3; /* border pixel of windows */
 static const int startwithgaps = 1;     /* 1 means gaps are used by default */
 static const unsigned int gappx = 5; /* default gap between windows in pixels */
 static const unsigned int snap = 32; /* snap pixel */
@@ -67,16 +67,13 @@ static const Rule rules[] = {
      *	WM_NAME(STRING) = title
      */
   /* class        instance    title       tags mask     isfloating   monitor */
-  { "firefox",    NULL,        NULL,          2,             0,        -1 },
+  { "Brave-browser",    NULL,        NULL,          2,             0,        -1 },
   { "discord",    NULL,        NULL,          4,             0,        -1 },
   { "Element",    NULL,        NULL,          4,             0,        -1 },
   { "galculator", NULL,        NULL,          0,             1,        -1 },
   { NULL,		      "spterm",		 NULL,		    SPTAG(0),		     1,			   -1 },
   { NULL,		      "spfm",		   NULL,		    SPTAG(1),		     1,			   -1 },
-  { "Gimp",       NULL,        NULL,           0,            1,        -1 },
-  { "Firefox",    NULL,        NULL,         1 << 8,         0,        -1 },
   { "St",         NULL,        NULL,           0,            0,        -1 },
-  { NULL,         NULL,      "Event Tester",   0,            0,        -1 }, /* xev */
 };
 
 /* layout(s) */
@@ -111,27 +108,23 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = {"dmenu_run", "-m",      dmenumon, "-fn",    dmenufont, "-nb",     col_gray1, "-nf",       col_gray3, "-sb",    col_green, "-sf",     col_gray4, NULL};
 static const char *termcmd[] = {"alacritty", NULL};
-static const char *tmuxcmd[] = {"alacritty", "-e", "tmux", NULL};
-static const char *browser[] = {"firefox", NULL};
-static const char *element[] = {"element-desktop", NULL};
-static const char *browseri[] = {"firefox", "--private-window", NULL};
+static const char *newsboat[] = {"alacritty", "-e", "newsboat", NULL};
+static const char *browser[] = {"brave", NULL};
+static const char *browseri[] = {"brave", "--incognito", NULL};
 static const char *explorer[] = {"pcmanfm", NULL};
 static const char *music[] = {"audacious", NULL};
 static const char *killwm[] = {"pkill", "dwm", NULL};
 static const char *prtscr[] = {"scrot", "/home/csh4dow/pics/ss/ss.png", NULL};
 static const char *prtscra[] = {"scrot", "-s", "/home/csh4dow/pics/ss/ss.png", NULL};
-// static const char *prtscr[] = {"gnome-screenshot", NULL};
-// static const char *prtscra[] = {"gnome-screenshot", "--area", NULL};
 
 #include "shiftview.c"
-
 
 
 static Key keys[] = {
  /* modifier                        key              function                       argument */
     {MODKEY,                        XK_p,             spawn,                      {.v = dmenucmd}},
     {MODKEY,                        XK_Return,        spawn,                      {.v = termcmd}},
-    {MODKEY|ShiftMask,              XK_e,             spawn,                      {.v = element}},
+    {MODKEY|ShiftMask,              XK_Return,        spawn,                      {.v = newsboat}},
     {MODKEY|ShiftMask,              XK_w,             spawn,                      {.v = browseri}},
     {MODKEY|ShiftMask,              XK_l,             spawn,                      {.v = lock}},
     {MODKEY,                        XK_e,             spawn,                      {.v = explorer}},
@@ -159,8 +152,7 @@ static Key keys[] = {
     {MODKEY,                        XK_d,             incnmaster,                 {.i = -1}},
     {MODKEY,                        XK_h,             setmfact,                   {.f = -0.05}},
     {MODKEY,                        XK_l,             setmfact,                   {.f = +0.05}},
-    {MODKEY|ControlMask|ShiftMask,  XK_Return,        spawn,                      {.v = tmuxcmd}},
-    {MODKEY|ShiftMask,              XK_Return,        zoom,                       {0}},
+    {MODKEY|ControlMask,            XK_Return,        zoom,                       {0}},
     {Mod1Mask,                      XK_Tab,           view,                       {0}},
     {MODKEY|ShiftMask,              XK_q,             killclient,                 {0}},
     {MODKEY,                        XK_t,             setlayout,                  {.v = &layouts[0]}},
