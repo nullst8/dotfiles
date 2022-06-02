@@ -7,7 +7,7 @@ colo gruvbox
 
 let mapleader = " "
 
-so ~/.config/nvim/telescope.vim
+" so ~/.config/nvim/telescope.vim
 
 nnoremap Y y$
 nnoremap n nzzzv
@@ -48,9 +48,6 @@ vnoremap K :m '<-2<cr>gv=gv
 vnoremap J :m '>+1<cr>gv=gv
 " Fugitive
 nmap <leader>gs :G<cr>
-" Terminal Toggle
-nnoremap <silent> <leader>l :ToggleTerm<cr>
-tnoremap <Esc> <C-\><C-n>
 " format on save
 augroup fmt
   autocmd!
@@ -89,36 +86,36 @@ let g:vsnip_filetypes.typescriptreact = ['typescript']
 set background=dark
 hi Normal guibg=none ctermbg=none
 
-lua << EOF
-require'lualine'.setup{
-options = {
-    icons_enabled = false,
-    theme = 'auto',
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
-    disabled_filetypes = {},
-    always_divide_middle = true,
-  },
-  sections = {
-    lualine_a = {'mode'},
-    lualine_b = {'branch', 'diff', 'diagnostics'},
-    lualine_c = {'filename'},
-    lualine_x = {'encoding', 'fileformat', 'filetype'},
-    lualine_y = {'progress'},
-    lualine_z = {'location'}
-  },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = {'filename'},
-    lualine_x = {'location'},
-    lualine_y = {},
-    lualine_z = {}
-  },
-  tabline = {},
-  extensions = {'fugitive'}
-}
-EOF
+" lua << EOF
+" require'lualine'.setup{
+" options = {
+"     icons_enabled = false,
+"     theme = 'auto',
+"     component_separators = { left = '', right = ''},
+"     section_separators = { left = '', right = ''},
+"     disabled_filetypes = {},
+"     always_divide_middle = true,
+"   },
+"   sections = {
+"     lualine_a = {'mode'},
+"     lualine_b = {'branch', 'diff', 'diagnostics'},
+"     lualine_c = {'filename'},
+"     lualine_x = {'encoding', 'fileformat', 'filetype'},
+"     lualine_y = {'progress'},
+"     lualine_z = {'location'}
+"   },
+"   inactive_sections = {
+"     lualine_a = {},
+"     lualine_b = {},
+"     lualine_c = {'filename'},
+"     lualine_x = {'location'},
+"     lualine_y = {},
+"     lualine_z = {}
+"   },
+"   tabline = {},
+"   extensions = {'fugitive'}
+" }
+" EOF
 
 lua << EOF
   require('Comment').setup()
@@ -139,14 +136,36 @@ endif
 
 so ~/.config/nvim/nerdtree.vim
 
-" buffers
-" Move to previous/next
-nnoremap <silent>    <A-,> :bp<CR>
-nnoremap <silent>    <A-.> :bn<CR>
-" delete buffer
-nnoremap <silent>    <A-c> :bd<CR>
-let g:bufferline_show_bufnr = 0
+let g:bufferline_show_bufnr = 1
 
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
+
+" Move to previous/next
+nnoremap <silent>    <A-,> :BufferPrevious<CR>
+nnoremap <silent>    <A-.> :BufferNext<CR>
+" Re-order to previous/next
+nnoremap <silent>    <A-<> :BufferMovePrevious<CR>
+nnoremap <silent>    <A->> :BufferMoveNext<CR>
+" Goto buffer in position...
+nnoremap <silent>    <A-1> :BufferGoto 1<CR>
+nnoremap <silent>    <A-2> :BufferGoto 2<CR>
+nnoremap <silent>    <A-3> :BufferGoto 3<CR>
+nnoremap <silent>    <A-4> :BufferGoto 4<CR>
+nnoremap <silent>    <A-5> :BufferGoto 5<CR>
+nnoremap <silent>    <A-6> :BufferGoto 6<CR>
+nnoremap <silent>    <A-7> :BufferGoto 7<CR>
+nnoremap <silent>    <A-8> :BufferGoto 8<CR>
+nnoremap <silent>    <A-9> :BufferLast<CR>
+" Pin/unpin buffer
+nnoremap <silent>    <A-p> :BufferPin<CR>
+" Close buffer
+nnoremap <silent>    <A-c> :BufferClose<CR>
+
+lua << EOF
+require('el').setup()
+EOF
+
+nnoremap <leader>ff <cmd>OneTerm files_or_git_files<cr>
+nnoremap <leader>l <cmd>OneTerm term<cr>

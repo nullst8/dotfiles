@@ -13,6 +13,9 @@ export EDITOR='nvim'
 export VISUAL='nvim'
 
 alias sudo="sudo "
+alias doas="doas "
+alias zathura="devour zathura"
+alias sxiv="devour sxiv"
 alias irc=weechat
 alias vim=nvim
 alias cmatrix=ncmatrix
@@ -52,7 +55,7 @@ bindkey '^[[H' beginning-of-line
 bindkey '^[[F' end-of-line
 
 # PS1="%F{#689d6a}%B[%n@%m %1~]$%b%f "
-PS1="%F{#cc241d}%B[%F{#98971a}%n@%F{#b16286}%m %F{#d65d0e}%1~%F{#cc241d}]%F{#689d6a}$%b "
+PS1="%F{#cc241d}%B[%F{#98971a}%n%F{#689d6a}@%F{#b16286}%m %F{#d65d0e}%1~%F{#cc241d}]%F{#689d6a}$%f%b "
 
 # Plugins
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -63,7 +66,7 @@ export GOPATH
 PATH=$PATH:$GOPATH/bin # Add GOPATH/bin to PATH for scripting
 PATH=$PATH:/home/csh4dow/.local/bin
 
-fuck() {
+fcuk() {
 echo "\n"
 echo "                               \$\$\$\$"
 echo "                             \$\$    \$\$"

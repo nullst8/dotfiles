@@ -5,7 +5,7 @@ autocmd filetype c nnoremap <leader>x :w <bar> !gcc -Wall -lm % -o %:r<cr>
 autocmd filetype python nnoremap <C-x> :w <bar> !python % <cr>
 autocmd filetype perl nnoremap <C-x> :w <bar> !perl % <cr>
 autocmd filetype sh nnoremap <C-x> :w <bar> !./% <cr>
-autocmd filetype rust nnoremap <C-x> :w <bar> !cargo run <cr>
+autocmd filetype rust nnoremap <C-x> :w <bar> !cargo run -q <cr>
 autocmd filetype rust nnoremap <leader>x :w <bar> !cargo build <cr>
 autocmd filetype sh nnoremap <C-x> :w <bar> !./% <cr>
 autocmd filetype lua nnoremap <C-x> :w <bar> !lua % <cr>

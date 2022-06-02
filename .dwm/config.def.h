@@ -2,7 +2,7 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
-static const unsigned int borderpx = 3; /* border pixel of windows */
+static const unsigned int borderpx = 2; /* border pixel of windows */
 static const int startwithgaps = 1;     /* 1 means gaps are used by default */
 static const unsigned int gappx = 5; /* default gap between windows in pixels */
 static const unsigned int snap = 32; /* snap pixel */
@@ -33,8 +33,8 @@ static const char col_gray1[] = "#282828";
 // static const char col_gray1[] = "#1e1e1e";
 static const char col_gray2[] = "#444444";
 static const char col_gray3[] = "#bbbbbb";
-static const char col_gray4[] = "#d4d4d4";
-static const char col_green[] = "#689d6a";
+static const char col_gray4[] = "#a89984";
+static const char col_green[] = "#458588";
 // static const char col_green[] = "#219c22";
 static const char col_white[] = "#d3d3d3";
 static const char *colors[][3] = {
@@ -67,7 +67,7 @@ static const Rule rules[] = {
      *	WM_NAME(STRING) = title
      */
   /* class        instance    title       tags mask     isfloating   monitor */
-  { "Brave-browser",    NULL,        NULL,          2,             0,        -1 },
+  { "librewolf",  NULL,        NULL,          2,             0,        -1 },
   { "discord",    NULL,        NULL,          4,             0,        -1 },
   { "Element",    NULL,        NULL,          4,             0,        -1 },
   { "galculator", NULL,        NULL,          0,             1,        -1 },
@@ -106,11 +106,11 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = {"dmenu_run", "-m",      dmenumon, "-fn",    dmenufont, "-nb",     col_gray1, "-nf",       col_gray3, "-sb",    col_green, "-sf",     col_gray4, NULL};
+static const char *dmenucmd[] = {"dmenu_run", "-m",      dmenumon, "-fn",    dmenufont, "-nb",     col_gray1, "-nf",       col_gray3, "-sb",    col_green, "-sf",     col_gray1, NULL};
 static const char *termcmd[] = {"alacritty", NULL};
 static const char *newsboat[] = {"alacritty", "-e", "newsboat", NULL};
-static const char *browser[] = {"brave", NULL};
-static const char *browseri[] = {"brave", "--incognito", NULL};
+static const char *browser[] = {"librewolf", NULL};
+static const char *browseri[] = {"librewolf", "--private-window", NULL};
 static const char *explorer[] = {"pcmanfm", NULL};
 static const char *music[] = {"audacious", NULL};
 static const char *killwm[] = {"pkill", "dwm", NULL};
