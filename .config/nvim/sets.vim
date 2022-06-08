@@ -1,4 +1,5 @@
 set errorbells
+set ar
 set mouse+=a
 set autowriteall
 set ignorecase

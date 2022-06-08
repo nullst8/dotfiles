@@ -1,6 +1,7 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'tpope/vim-fugitive'
+Plug 'onsails/lspkind.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'ishan9299/nvim-solarized-lua'
 Plug 'Mofiqul/vscode.nvim'

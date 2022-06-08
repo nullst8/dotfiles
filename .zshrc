@@ -14,6 +14,8 @@ export VISUAL='nvim'
 
 alias sudo="sudo "
 alias doas="doas "
+alias l="ls"
+alias p="paru"
 alias zathura="devour zathura"
 alias sxiv="devour sxiv"
 alias irc=weechat
