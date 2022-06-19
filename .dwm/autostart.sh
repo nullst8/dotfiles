@@ -19,9 +19,6 @@ xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Left Handed Enabled" 1
 xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Natural Scrolling Enabled" 1
 # xinput set-prop "HID 1bcf:08a0 Mouse" "libinput Left Handed Enabled" 1
 
-xset s off
-xset -dpms
-
 redshift -x
 redshift -O 5000
 

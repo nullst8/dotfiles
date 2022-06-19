@@ -1,13 +1,11 @@
 syntax on
 
-so ~/.config/nvim/sets.vim
 so ~/.config/nvim/plugins.vim
 
 colo gruvbox
 
 let mapleader = " "
 
-" so ~/.config/nvim/telescope.vim
 
 nnoremap Y y$
 nnoremap n nzzzv
@@ -138,10 +136,6 @@ so ~/.config/nvim/nerdtree.vim
 
 let g:bufferline_show_bufnr = 1
 
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
-
 " Move to previous/next
 nnoremap <silent>    <A-,> :BufferPrevious<CR>
 nnoremap <silent>    <A-.> :BufferNext<CR>
@@ -167,5 +161,6 @@ lua << EOF
 require('el').setup()
 EOF
 
-nnoremap <leader>ff <cmd>OneTerm files_or_git_files<cr>
 nnoremap <leader>l <cmd>OneTerm term<cr>
+so ~/.config/nvim/sets.vim
+so ~/.config/nvim/telescope.vim

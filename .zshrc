@@ -4,7 +4,7 @@ SAVEHIST=1000
 setopt autocd extendedglob nomatch
 unsetopt beep
 
-autoload -U compinit
+autoload -Uz compinit && compinit
 zstyle ':completion*' menu select
 compinit
 # _comp_options+=(globdots) # Include Hidden Files
@@ -68,7 +68,7 @@ export GOPATH
 PATH=$PATH:$GOPATH/bin # Add GOPATH/bin to PATH for scripting
 PATH=$PATH:/home/csh4dow/.local/bin
 
-fcuk() {
+fuck() {
 echo "\n"
 echo "                               \$\$\$\$"
 echo "                             \$\$    \$\$"
@@ -94,3 +94,7 @@ echo "                         \$\$                \$\$"
 echo "                         \$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$"
 echo "\n"
 }
+
+autoload edit-command-line
+zle -N edit-command-line
+bindkey '^Xe' edit-command-line

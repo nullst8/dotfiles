@@ -29,18 +29,15 @@ static const char *lock[] = {"slock", NULL};
 static const char *closen[] = {"dunstctl", "close", NULL};
 static const char *closean[] = {"dunstctl", "close-all", NULL};
 static const char *nhist[] = {"dunstctl", "history-pop", NULL};
-static const char col_gray1[] = "#282828";
-// static const char col_gray1[] = "#1e1e1e";
-static const char col_gray2[] = "#444444";
-static const char col_gray3[] = "#bbbbbb";
-static const char col_gray4[] = "#a89984";
-static const char col_green[] = "#458588";
-// static const char col_green[] = "#219c22";
-static const char col_white[] = "#d3d3d3";
+static const char col_gray1[]       = "#282828";
+static const char col_gray2[]       = "#444444";
+static const char col_gray3[]       = "#bbbbbb";
+static const char col_gray4[]       = "#eeeeee";
+static const char col_yellow[]      = "#d79921";
 static const char *colors[][3] = {
     /*               fg         bg         border   */
-    [SchemeNorm] = {col_green, col_gray1, col_gray2},
-    [SchemeSel] = {col_gray1, col_green, col_green},
+    [SchemeNorm] = {col_gray3, col_gray1, col_gray2},
+    [SchemeSel] = {col_gray4, col_yellow, col_yellow},
 };
 
 
@@ -106,7 +103,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = {"dmenu_run", "-m",      dmenumon, "-fn",    dmenufont, "-nb",     col_gray1, "-nf",       col_gray3, "-sb",    col_green, "-sf",     col_gray1, NULL};
+static const char *dmenucmd[] = {"dmenu_run", "-m",      dmenumon, "-fn",    dmenufont, "-nb",     col_gray1, "-nf",       col_gray3, "-sb",    col_yellow, "-sf",     col_gray1, NULL};
 static const char *termcmd[] = {"alacritty", NULL};
 static const char *newsboat[] = {"alacritty", "-e", "newsboat", NULL};
 static const char *browser[] = {"librewolf", NULL};
@@ -126,7 +123,7 @@ static Key keys[] = {
     {MODKEY,                        XK_Return,        spawn,                      {.v = termcmd}},
     {MODKEY|ShiftMask,              XK_Return,        spawn,                      {.v = newsboat}},
     {MODKEY|ShiftMask,              XK_w,             spawn,                      {.v = browseri}},
-    {MODKEY|ShiftMask,              XK_l,             spawn,                      {.v = lock}},
+    {ControlMask|ShiftMask,         XK_l,             spawn,                      {.v = lock}},
     {MODKEY,                        XK_e,             spawn,                      {.v = explorer}},
     {MODKEY|ShiftMask,              XK_p,             spawn,                      {.v = powermenu}},
     {0,                    XF86XK_AudioLowerVolume,   spawn,                      {.v = downvol}},
@@ -161,6 +158,9 @@ static Key keys[] = {
     {MODKEY,            			      XK_backslash,  	  togglescratch,              {.ui = 0 }},
     {MODKEY|ShiftMask,            	XK_backslash,	    togglescratch,              {.ui = 2 }},
     {MODKEY,                        XK_g,             setlayout,                  {.v = &layouts[3]}},
+    {MODKEY|ShiftMask,              XK_h,             setcfact,                   {.f = +0.25}},
+    {MODKEY|ShiftMask,              XK_l,             setcfact,                   {.f = -0.25}},
+    {MODKEY|ShiftMask,              XK_o,             setcfact,                   {.f =  0.00}},
     {MODKEY|ControlMask,            XK_comma,         cyclelayout,                {.i = -1}},
     {MODKEY|ControlMask,            XK_period,        cyclelayout,                {.i = +1}},
     {MODKEY,                        XK_space,         setlayout,                  {0}},
