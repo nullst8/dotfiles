@@ -2,7 +2,7 @@
 
 # -- Autostart
 picom --fade-in-step=1 --fade-out-step=1 --fade-delta=0 --no-fading-openclose &
-feh --bg-fill /home/csh4dow/.dotfiles/.config/Snow-Capped\ Mountain.jpg
+feh --bg-fill /home/csh4dow/.wallpapers --randomize
 
 dunst &
 
@@ -13,17 +13,17 @@ i3-battery-popup -n &
 blueman-applet &
 
 xsetroot -cursor_name left_ptr &
-$HOME/.config/polybar/launch.sh
+polybar &
 
 xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Tapping Enabled" 1
 xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Left Handed Enabled" 1
 xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Natural Scrolling Enabled" 1
 xinput set-prop "HID 1bcf:08a0 Mouse" "libinput Left Handed Enabled" 1
 
-xrandr --dpi 96
+# xrandr --dpi 96
 
-xset s off
-xset -dpms
+# xset s off
+# xset -dpms
 
 pactl -- set-sink-volume 0 100%
 
@@ -57,10 +57,3 @@ bspc config split_ratio 0.50
 bspc config borderless_monocle true
 bspc config gapless_monocle true
 bspc config focus_follows_pointer true
-
-bspc rule -a Brave-browser desktop="^2" following="on"
-bspc rule -a Microsoft\ Teams\ -\ Preview desktop="^3" following="on"
-bspc rule -a Audacious desktop="^3" follow="on"
-bspc rule -a discord desktop="^5" following="on"
-bspc rule -a Element desktop="^5" following="on"
-

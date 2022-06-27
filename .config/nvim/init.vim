@@ -2,6 +2,7 @@ syntax on
 
 so ~/.config/nvim/plugins.vim
 
+let g:gruvbox_italic=1
 colo gruvbox
 
 let mapleader = " "
@@ -15,15 +16,39 @@ nnoremap <leader>j :m .+1<cr>
 
 so ~/.config/nvim/execute.vim
 
+lua << EOF
+require('telescope').setup{
+  -- see :help telescope.setup()
+  defaults = {
+    -- The below pattern is lua regex and not wildcard
+    file_ignore_patterns = {"node_modules","%.out"},
+  }
+}
+EOF
+
+" Find files using Telescope command-line sugar.
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
 fun! TrimWhiteSpace()
   let l:save = winsaveview()
   keeppatterns %s/\s\+$//e
   call winrestview(l:save)
 endfun
 
-augroup MANAS
+fun! IsGit()
+  if isdirectory(".git")
+    nnoremap <C-p> <cmd>Telescope git_files<cr>
+  else
+    nnoremap <c-p> <cmd>Telescope find_files<cr>
+  endif
+endfun
+
+augroup ATTIC
   autocmd!
   autocmd BufWritePre * :call TrimWhiteSpace()
+  autocmd VimEnter * :call IsGit()
 augroup END
 
 nnoremap <C-Left> <C-w>h
@@ -40,11 +65,11 @@ nnoremap <silent> <C-j> :resize -3<cr>
 nnoremap <silent> <C-s> :w<cr>
 
 " Set Current direcotry based on the file opened
-autocmd BufEnter * silent! lcd %:p:h
+" autocmd BufEnter * silent! lcd %:p:h
 "Replace Line
 vnoremap K :m '<-2<cr>gv=gv
 vnoremap J :m '>+1<cr>gv=gv
-" Fugitive
+" Fugitive1e1e1e
 nmap <leader>gs :G<cr>
 " format on save
 augroup fmt
@@ -161,6 +186,7 @@ lua << EOF
 require('el').setup()
 EOF
 
-nnoremap <leader>l <cmd>OneTerm term<cr>
 so ~/.config/nvim/sets.vim
-so ~/.config/nvim/telescope.vim
+
+tmap <Esc> <C-\><C-n>
+nnoremap <silent><leader>l :OneTerm term<cr>
