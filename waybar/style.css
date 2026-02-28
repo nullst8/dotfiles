@@ -1,0 +1,80 @@
+/* ===== GLOBAL ===== */
+* {
+  border: none;
+  border-radius: 6px;
+  font-family: "JetBrainsMono Nerd Font", "RobotoMono Nerd Font";
+  font-size: 13px;
+}
+
+/* ===== BAR ===== */
+window#waybar {
+  background-color: #000000;
+  color: #d6d6d6; /* brighter but not white */
+}
+
+/* ===== WORKSPACES ===== */
+#workspaces button {
+  background: #1a1a1a; /* raised from #0f */
+  color: #cfcfcf;
+  padding: 0 10px;
+  margin: 2px;
+  border: 1px solid #242424; /* subtle separation */
+}
+
+#workspaces button.active {
+  background-color: #2f2f2f;
+  color: #ffffff;
+}
+
+#workspaces button.urgent {
+  background-color: #703030;
+  color: #ffffff;
+}
+
+/* ===== MODULES ===== */
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#network,
+#pulseaudio,
+#tray,
+#custom-launcher,
+#custom-power {
+  background-color: #1a1a1a;
+  color: #dcdcdc;
+  padding: 0 12px;
+  margin: 2px;
+  border: 1px solid #242424;
+}
+
+/* ===== STATES ===== */
+
+#network.disconnected,
+#pulseaudio.muted {
+  color: #cc5555;
+}
+
+#battery.critical:not(.charging) {
+  background-color: #703030;
+  color: #ffffff;
+}
+
+#temperature.critical {
+  background-color: #805a2b;
+  color: #ffffff;
+}
+
+/* ===== LAUNCHER ===== */
+#custom-launcher {
+  background-color: #262626;
+  color: #ffffff;
+}
+
+/* ===== POWER ===== */
+#custom-power {
+  background-color: #552222;
+  color: #ffffff;
+}
