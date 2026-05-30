@@ -1,0 +1,7 @@
+zsh-users/zsh-history-substring-search
+jeffreytse/zsh-vi-mode
+zsh-users/zsh-autosuggestions
+agkozak/zsh-z
+zsh-users/zsh-syntax-highlighting
+
+

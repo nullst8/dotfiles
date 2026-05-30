@@ -14,4 +14,16 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({ { import = "nullst8.plugins" } })
+require("lazy").setup({ { import = "nullst8.plugins" } }, {
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "matchparen",
+        "tarPlugin",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
+})

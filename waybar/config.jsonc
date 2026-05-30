@@ -1,149 +1,79 @@
 {
-    "layer": "top",
-    "position": "top",
-    "height": 30,
-    "spacing": 0,
-    "margin-top": 0,
-    "margin-bottom": 0,
+  "layer": "top",
+  "position": "top",
+  "spacing": 4,
+  "margin-top": 0,
+  "margin-bottom": 0,
 
-    // Choose the order of the modules
+  "modules-left": ["hyprland/workspaces"],
 
-    "modules-left": [
-      "hyprland/workspaces"
-    ],
+  "modules-center": ["clock"],
 
-    "modules-center": [
-                        "clock"
-      ],
+  "modules-right": [
+    "pulseaudio",
+    "cpu",
+    "memory",
+    "battery",
+    "custom/notification",
+    "tray"
+  ],
 
-      "modules-right": [
-                        "pulseaudio", 
-                        "battery", 
-                        "tray"
-      ],
+  "tray": {
+    "icon-size": 20,
+    "spacing": 10
+  },
 
-    // Modules configuration
+  "clock": {
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format": "{:%H:%M}",
+    "interval": 60
+  },
 
-    "keyboard-state": {
-        "numlock": true,
-        "capslock": true,
-        "format": " {name} {icon}",
-        "format-icons": {
-            "locked": "",
-            "unlocked": ""
-        }
+  "cpu": {
+    "format": "{usage}% CPU",
+    "tooltip": false,
+    "interval": 10
+  },
+
+  "memory": {
+    "format": "{}% RAM",
+    "interval": 10
+  },
+
+  "battery": {
+    "states": {
+      "warning": 30,
+      "critical": 20
     },
-    "sway/mode": {
-        "format": "<span style=\"italic\">{}</span>"
+    "format": "{capacity}% {icon}",
+    "format-charging": "{capacity}% ",
+    "format-plugged": "{capacity}% ",
+    "format-icons": ["", "", "", "", ""]
+  },
+
+  "pulseaudio": {
+    "format": "{volume}% {icon}",
+    "format-bluetooth": "{volume}% {icon}",
+    "format-muted": "",
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", "", ""]
     },
-    "idle_inhibitor": {
-        "format": "{icon}",
-        "format-icons": {
-            "activated": "",
-            "deactivated": ""
-        }
-    },
-    "tray": {
-        "icon-size": 20,
-        "spacing": 10
-    },
-    "clock": {
-        // "timezone": "America/New_York",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%Y-%m-%d}"
-    },
-    "cpu": {
-        "format": "{usage}% CPU",
-        "tooltip": false
-    },
-    "memory": {
-        "format": "{}% RAM"
-    },
-    "temperature": {
-        // "thermal-zone": 2,
-        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-        "critical-threshold": 80,
-        // "format-critical": "{temperatureC}°C {icon}",
-        "format": "{temperatureC}°C",
-        "format-icons": ["", "", ""]
-    },
-    "backlight": {
-        // "device": "acpi_video1",
-        "format": "{percent}% {icon}",
-        "format-icons": ["", ""]
-    },
-    "battery": {
-        "states": {
-            // "good": 95,
-            "warning": 30,
-            "critical": 20
-        },
-        "format": "{capacity}% {icon}",
-        "format-charging": "{capacity}% ",
-        "format-plugged": "{capacity}% ",
-        "format-alt": "{time} {icon}",
-        // "format-good": "", // An empty format will hide the module
-        // "format-full": "",
-        "format-icons": ["", "", "", "", ""]
-    },
-    "network": {
-        // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "{essid} ({signalStrength}%) ",
-        "format-ethernet": "Connected  ",
-        "tooltip-format": "{ifname} via {gwaddr} ",
-        "format-linked": "{ifname} (No IP) ",
-        "format-disconnected": "Disconnected ⚠",
-        "format-alt": "{ifname}: {ipaddr}/{cidr}",
-        "on-click-right": "bash ~/.config/rofi/wifi_menu/rofi_wifi_menu"
-    },
-    "pulseaudio": {
-        // "scroll-step": 1, // %, can be a float
-        "format": "{volume}% {icon}",
-        "format-bluetooth": "{volume}% {icon}",
-        "format-bluetooth-muted": "{icon} {format_source}",
-        "format-muted": "{format_source}",
-        "format-source": "",
-        "format-source-muted": "",
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", "", ""]
-        },
-        "on-click": "pavucontrol"
-    },
-    "custom/media": {
-        "format": "{}",
-        "return-type": "json",
-        "max-length": 25,
-        "format-icons": {
-            "spotify": " ",
-            "default": " "
-        },
-        "escape": true,
-        "exec": "$HOME/.config/scripts/mediaplayer.py 2> /dev/null",
-        "on-click": "playerctl play-pause"
-    },
-    "custom/power":{
-        "format": "🔒",
-        "on-click": "wlogout",
-        "on-click-right": "killall wlogout"
-    },
-    "custom/updater":{
-        "format": "{} Updates",
-        "exec": "paru -Qu | wc -l",
-        "exec-if": "[[ $(paru -Qu | wc -l) != 0 ]]",
-        "interval": 15,
-        "on-click": "wezterm start -- fish -c paru"
-    },
-    "custom/weather": {
-        "format": "{}",
-	"exec": "curl 'wttr.in/Ljubljana?format=1",
-	"interval": 1800,
-	"on-click": "firefox 'https://www.meteoblue.com/en/weather/week/ljubljana_slovenia_3196359'"
-    }
+    "on-click": "pavucontrol"
+  },
+
+  "custom/notification": {
+    "exec": "swaync-client -c",
+    "on-click": "swaync-client -t",
+    "return-type": "number",
+    "format": " {}",
+    "interval": 30,
+    "tooltip": false,
+    "signal": 8
+  }
 }
-

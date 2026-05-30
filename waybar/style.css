@@ -32,17 +32,13 @@ window#waybar {
 }
 
 /* ===== MODULES ===== */
+#custom-notification,
 #clock,
 #battery,
 #cpu,
 #memory,
-#disk,
-#temperature,
-#network,
 #pulseaudio,
-#tray,
-#custom-launcher,
-#custom-power {
+#tray {
   background-color: #1a1a1a;
   color: #dcdcdc;
   padding: 0 12px;
@@ -50,31 +46,17 @@ window#waybar {
   border: 1px solid #242424;
 }
 
+#custom-notification {
+  min-width: 35px;
+}
+
 /* ===== STATES ===== */
 
-#network.disconnected,
 #pulseaudio.muted {
   color: #cc5555;
 }
 
 #battery.critical:not(.charging) {
   background-color: #703030;
-  color: #ffffff;
-}
-
-#temperature.critical {
-  background-color: #805a2b;
-  color: #ffffff;
-}
-
-/* ===== LAUNCHER ===== */
-#custom-launcher {
-  background-color: #262626;
-  color: #ffffff;
-}
-
-/* ===== POWER ===== */
-#custom-power {
-  background-color: #552222;
   color: #ffffff;
 }

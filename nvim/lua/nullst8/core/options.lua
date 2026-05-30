@@ -8,6 +8,7 @@ opt.softtabstop = 2
 opt.shiftwidth = 2
 opt.expandtab = true
 opt.autoindent = true
+opt.cindent = true
 
 opt.wrap = false
 
@@ -35,6 +36,8 @@ opt.scrolloff = 8
 
 opt.updatetime = 50
 
-opt.signcolumn = "no"
+opt.signcolumn = "auto"
 
 opt.pumheight = 10
+
+opt.shada = "!,'20,<50,s10,h"

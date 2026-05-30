@@ -22,7 +22,6 @@ keymap.set("n", "<leader>Y", [["+Y]])
 
 keymap.set({ "n", "v" }, "<leader>d", "\"_d")
 
-
 keymap.set("n", "Q", "<nop>")
 
 keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
