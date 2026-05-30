@@ -43,9 +43,10 @@ link() {
   fi
 
   if [[ -e "$dst" ]]; then
-    warn "Backing up $dst → $BACKUP_DIR/"
-    mkdir -p "$BACKUP_DIR/$(dirname "$dst")"
-    mv "$dst" "$BACKUP_DIR/$dst"
+    local rel="${dst#/}"
+    warn "Backing up $dst"
+    mkdir -p "$BACKUP_DIR/$(dirname "$rel")"
+    mv "$dst" "$BACKUP_DIR/$rel"
   fi
 
   ln -sf "$src" "$dst"
@@ -74,6 +75,47 @@ link "$DOTFILES/.tmux.conf" "$HOME/.tmux.conf"
 # Wallpapers
 link "$DOTFILES/.wallpaper.jpg" "$HOME/.wallpaper.jpg"
 link "$DOTFILES/.wallpaper.png" "$HOME/.wallpaper.png"
+
+# --- Install TPM ---
+TPM_DIR="$HOME/.tmux/plugins/tpm"
+if [[ ! -d "$TPM_DIR/.git" ]]; then
+  echo -e "\n${YELLOW}tmux plugin manager (TPM) not found.${NC}"
+  read -p "Clone TPM to $TPM_DIR? [Y/n] " -n 1 -r
+  echo
+  if [[ ! "$REPLY" =~ ^[Nn]$ ]]; then
+    git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
+    info "TPM cloned to $TPM_DIR"
+  fi
+fi
+
+# --- Install dependencies (Arch Linux) ---
+if [[ -f /etc/os-release ]]; then
+  . /etc/os-release
+fi
+
+if [[ "${ID:-}" == "arch" || "${ID_LIKE:-}" == *"arch"* ]]; then
+  OFFICIAL_PKGS=(neovim kitty tmux zsh hyprland hypridle hyprlock swaync dunst yazi waybar)
+  AUR_PKGS=(antidote)
+
+  echo -e "\n${YELLOW}Arch Linux detected.${NC}"
+  echo "  Official: ${OFFICIAL_PKGS[*]}"
+  echo "  AUR:      ${AUR_PKGS[*]}"
+  read -p "Install these packages? [y/N] " -n 1 -r
+  echo
+  if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+    if command -v paru &>/dev/null; then
+      paru -S --needed --noconfirm "${OFFICIAL_PKGS[@]}" "${AUR_PKGS[@]}"
+    elif command -v yay &>/dev/null; then
+      yay -S --needed --noconfirm "${OFFICIAL_PKGS[@]}" "${AUR_PKGS[@]}"
+    elif command -v sudo &>/dev/null; then
+      sudo pacman -S --needed --noconfirm "${OFFICIAL_PKGS[@]}"
+      warn "AUR packages not installed: ${AUR_PKGS[*]} — install paru or yay first"
+    else
+      err "sudo not available — install packages manually"
+    fi
+    info "Package installation complete"
+  fi
+fi
 
 # --- Post-setup hints ---
 BOLD='\033[1m'
