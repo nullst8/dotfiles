@@ -1,0 +1,5 @@
+# Neovim debug artifacts
+nvim/.gdb_history
+
+# Yazi backup files
+yazi/*.toml-*
