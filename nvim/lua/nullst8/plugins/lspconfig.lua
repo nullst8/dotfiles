@@ -4,34 +4,49 @@ return {
   dependencies = {
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
-    "hrsh7th/cmp-nvim-lsp",
+    "saghen/blink.cmp",
   },
 
   config = function()
     local mason = require("mason")
     local mason_lspconfig = require("mason-lspconfig")
-    local capabilities = require("cmp_nvim_lsp").default_capabilities()
+    local capabilities = require("blink.cmp").get_lsp_capabilities()
 
     mason.setup()
 
-    local servers = { "lua_ls", "rust_analyzer", "clangd", "ts_ls" }
+    -- rust_analyzer is managed by rustaceanvim, but install the binary via Mason
+    -- bacon_ls provides cargo check diagnostics for Rust
+    local auto_enable_servers = { "lua_ls", "clangd", "ts_ls", "pyright", "bacon_ls" }
+    local ensure_installed_servers = { "lua_ls", "rust_analyzer", "clangd", "ts_ls", "pyright", "bacon_ls" }
     mason_lspconfig.setup({
-      ensure_installed = servers,
-      -- Only enable these servers, not all 18 mason-installed ones
-      automatic_enable = servers,
+      ensure_installed = ensure_installed_servers,
+      -- Only auto-enable these servers; rust_analyzer is handled by rustaceanvim
+      automatic_enable = auto_enable_servers,
     })
 
     vim.lsp.config("*", {
       capabilities = capabilities,
     })
 
-    vim.lsp.config("rust_analyzer", {
+    vim.lsp.config("bacon_ls", {
+      -- live diagnostics while typing (cargo backend only)
+      init_options = {
+        cargo = {
+          updateOnInsert = true,
+        },
+      },
       settings = {
-        ["rust-analyzer"] = {
-          check = { command = "check" },
-          diagnostics = { enable = true },
-          cargo = { loadOutDirsFromCheck = true },
-          files = { excludeDirs = { "target", "node_modules" } },
+        bacon_ls = {
+          -- Use the cargo backend: bacon-ls runs `cargo check` directly,
+          -- no separate `bacon` process or terminal needed.
+          backend = "cargo",
+          cargo = {
+            command = "check",              -- faster than clippy
+            checkOnSave = true,             -- run check on save
+            cancelRunning = true,           -- cancel stale runs
+            refreshIntervalSeconds = 1,     -- publish partial results every second
+            updateOnInsertDebounceMillis = 500, -- debounce live typing diagnostics
+          },
         },
       },
     })
@@ -46,11 +61,22 @@ return {
       },
     })
 
+    vim.lsp.config("pyright", {
+      settings = {
+        python = {
+          analysis = {
+            typeCheckingMode = "basic",
+            autoImportCompletions = true,
+          },
+        },
+      },
+    })
+
     vim.diagnostic.config({
       virtual_text = true,
       signs = true,
       underline = true,
-      update_in_insert = false,
+      update_in_insert = true,
     })
   end,
 }
