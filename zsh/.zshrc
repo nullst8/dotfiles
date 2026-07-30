@@ -70,7 +70,6 @@ alias df='df -h'
 alias du='du -h'
 alias du1='du -d 1 -h'
 alias free='free -h'
-alias mount='mount | column -t'
 
 # grep -> ripgrep
 alias grep='rg'
@@ -227,3 +226,5 @@ zle-line-finish() {
   transient_prompt
 }
 zle -N zle-line-finish
+export PATH="/opt/cuda/bin:$PATH"
+export NVCC_CCBIN="/usr/bin/gcc"
