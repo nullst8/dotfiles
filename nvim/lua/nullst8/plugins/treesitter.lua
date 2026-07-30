@@ -24,6 +24,8 @@ return {
         "rust",
         "jsdoc",
         "bash",
+        "markdown",
+        "markdown_inline",
       },
     })
   end,
