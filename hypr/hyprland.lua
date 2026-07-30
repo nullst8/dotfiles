@@ -38,9 +38,10 @@ hl.config({
 	general = {
 		gaps_in = 4,
 		gaps_out = 4,
-		border_size = 0,
+		border_size = 1,
 		col = {
-			active_border = "rgba(ffffffff)",
+			active_border = "rgba(cba6f7ff)",
+			inactive_border = "rgba(6c7086ff)",
 		},
 		resize_on_border = false,
 		allow_tearing = false,
@@ -53,18 +54,38 @@ hl.config({
 		rounding = 6,
 		active_opacity = 0.85,
 		inactive_opacity = 0.9,
-		dim_inactive = true,
+		dim_inactive = false,
 		blur = {
 			enabled = true,
-			size = 4,
-			passes = 2,
+			size = 8,
+			passes = 3,
+			new_optimizations = true,
+			noise = 0.01,
+			contrast = 0.9,
+			brightness = 1.0,
+			vibrancy = 0.1,
 		},
 		shadow = {
-			enabled = false,
+			enabled = true,
+			range = 12,
+			render_power = 3,
+			color = "rgba(1a1a1acc)",
 		},
 	},
 	animations = {
-		enabled = false,
+		enabled = true,
+		bezier = {
+			"overshot, 0.05, 0.9, 0.1, 1.05",
+			"smoothOut, 0.36, 0, 0.66, -0.56",
+			"smoothIn, 0.25, 1, 0.5, 1",
+		},
+		animation = {
+			"windows, 1, 5, smoothOut, popin",
+			"windowsOut, 1, 5, smoothIn, popin 80%",
+			"fade, 1, 5, smoothOut",
+			"workspaces, 1, 6, overshot, slidevert",
+			"border, 1, 5, smoothOut",
+		},
 	},
 	dwindle = {
 		preserve_split = true,
@@ -83,6 +104,7 @@ hl.config({
 		swallow_regex = "^(Alacritty|kitty|footclient)$",
 		mouse_move_enables_dpms = true,
 		key_press_enables_dpms = true,
+		animate_mouse_windowdragging = true,
 	},
 	render = {
 		direct_scanout = false,
@@ -187,6 +209,7 @@ hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManagerG))
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd(power))
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(browser))
+hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("~/.scripts/wallpaper-select"))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + ESCAPE", hl.dsp.exec_cmd("~/.local/share/quickshell-lockscreen/lock.sh"))
@@ -194,8 +217,8 @@ hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 
 hl.bind(mainMod .. " + Tab", hl.dsp.focus({ workspace = "previous" }))
 
-hl.bind(mainMod .. " + H", hl.dsp.window.resize({ x = -15, y = 0 }), { repeating = true })
-hl.bind(mainMod .. " + L", hl.dsp.window.resize({ x = 15, y = 0 }), { repeating = true })
+hl.bind(mainMod .. " + H", hl.dsp.window.resize({ x = -15, y = 0, relative = true }), { repeating = true })
+hl.bind(mainMod .. " + L", hl.dsp.window.resize({ x = 15, y = 0, relative = true }), { repeating = true })
 hl.bind(mainMod .. " + K", hl.dsp.focus({ direction = "up" }), { repeating = true })
 hl.bind(mainMod .. " + J", hl.dsp.focus({ direction = "down" }), { repeating = true })
 
@@ -203,6 +226,7 @@ hl.bind(mainMod .. " + SHIFT + H", hl.dsp.window.move({ direction = "left" }))
 hl.bind(mainMod .. " + SHIFT + L", hl.dsp.window.move({ direction = "right" }))
 hl.bind(mainMod .. " + SHIFT + K", hl.dsp.window.move({ direction = "up" }))
 hl.bind(mainMod .. " + SHIFT + J", hl.dsp.window.move({ direction = "down" }))
+hl.bind(mainMod .. " + SHIFT + M", hl.dsp.layout("swapwithmaster"))
 
 for i = 1, 9 do
 	hl.bind(mainMod .. " + " .. i, hl.dsp.focus({ workspace = i }))
