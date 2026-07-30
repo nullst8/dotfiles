@@ -14,11 +14,11 @@ window#waybar {
 
 /* ===== WORKSPACES ===== */
 #workspaces button {
-  background: #1a1a1a; /* raised from #0f */
+  background: #1a1a1a;
   color: #cfcfcf;
   padding: 0 10px;
   margin: 2px;
-  border: 1px solid #242424; /* subtle separation */
+  border: 1px solid #242424;
 }
 
 #workspaces button.active {

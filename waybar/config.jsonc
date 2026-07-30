@@ -5,6 +5,7 @@
   "margin-top": 0,
   "margin-bottom": 0,
 
+
   "modules-left": ["hyprland/workspaces"],
 
   "modules-center": ["clock"],
@@ -26,6 +27,7 @@
   "clock": {
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     "format": "{:%H:%M}",
+    "format-alt": "{:%A, %B %d}",
     "interval": 60
   },
 
