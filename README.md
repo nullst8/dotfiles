@@ -1,1 +1,342 @@
-# dotfiles
+# nullst8/dotfiles
+
+> A personal, declarative Linux environment built around [Hyprland](https://hyprland.org/), [Neovim](https://neovim.io/), [Zsh](https://www.zsh.org/), and [Tmux](https://github.com/tmux/tmux). Managed with a single `setup.sh` and symlinked into `~/.config`.
+
+## Overview
+
+This repository contains my entire day-to-day Unix environment. It is designed for:
+
+- **Window Manager:** Hyprland (Wayland), configured with the experimental Lua DSL.
+- **Terminal:** Kitty, with JetBrainsMono Nerd Font and a custom dark color palette.
+- **Editor:** Neovim (Lazy.nvim plugin manager, LSP, Mason, blink.cmp, conform, snacks, opencode.nvim).
+- **Shell:** Zsh with the [antidote](https://getantidote.github.io/) plugin manager, zsh-vi-mode, autosuggestions, syntax highlighting, and a custom async git prompt.
+- **Multiplexer:** Tmux with TPM and sensible defaults.
+- **System UI:** Waybar, SwayNC notifications, Dunst fallback.
+- **File Manager:** Yazi (terminal-based).
+
+The repo is kept simple: config files live here directly and `setup.sh` symlinks them into place.
+
+## Repository Layout
+
+```
+.dotfiles/
+├── setup.sh                 # One-shot install / symlink script
+├── README.md                # This file
+├── .tmux.conf               # Tmux configuration
+├── .wallpaper.jpg           # Default wallpaper
+├── .wallpaper.png           # Alternative wallpaper
+├── dunst/                   # Dunst notification daemon config
+├── hypr/                    # Hyprland, Hypridle, Hyprlock configs
+├── kitty/                   # Kitty terminal config
+├── nvim/                    # Neovim config (init.lua + lua/nullst8/)
+├── swaync/                  # SwayNC notification center config
+├── waybar/                  # Waybar status bar config
+├── yazi/                    # Yazi file manager config
+└── zsh/                     # Zsh config (.zshrc, .zsh_plugins.*)
+```
+
+## Requirements
+
+### Primary Target
+
+- **OS:** Arch Linux (or an Arch-based distro)
+- **Display:** Wayland compositor
+- **Shell:** Zsh
+
+### Fonts
+
+A [Nerd Font](https://www.nerdfonts.com/) is **strongly recommended** for Waybar, SwayNC, and any terminal glyphs. The config expects:
+
+- `JetBrainsMono Nerd Font` (primary)
+- `RobotoMono Nerd Font` (fallback)
+
+### Optional External Tools
+
+Some Hyprland keybindings and aliases call custom scripts that live outside this repo (e.g. `~/.scripts/tmux-sessionizer`, `~/.scripts/toggle-grayscale.sh`, `~/.scripts/wallpaper-select`, `~/.scripts/setrandwall`, `power-menu.sh`, `awww-daemon`, `quickshell-lockscreen`). The environment will work without them, but a handful of shortcuts will be no-ops.
+
+## Installation
+
+1. Clone the repo:
+
+   ```bash
+   git clone https://github.com/nullst8/dotfiles.git ~/.dotfiles
+   cd ~/.dotfiles
+   ```
+
+2. Run the install script:
+
+   ```bash
+   ./setup.sh
+   ```
+
+   `setup.sh` will:
+
+   - Symlink the relevant directories/files into `~/.config` and `$HOME`.
+   - Back up any existing dotfiles that collide.
+   - Optionally install TPM (Tmux Plugin Manager).
+   - On Arch Linux, optionally install the core packages via `paru`, `yay`, or `sudo pacman`.
+
+3. Change your default shell to Zsh (if it is not already):
+
+   ```bash
+   chsh -s $(command -v zsh)
+   ```
+
+4. Log out and back in (or start Hyprland from a TTY/display manager).
+
+### Non-Destructive / Manual
+
+If you prefer to cherry-pick, just symlink the files you want:
+
+```bash
+ln -s ~/.dotfiles/nvim ~/.config/nvim
+ln -s ~/.dotfiles/zsh/.zshrc ~/.zshrc
+ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
+# ...etc
+```
+
+## What's Inside
+
+### Hyprland (`hypr/`)
+
+- `hyprland.lua` — Main configuration written in the experimental Lua DSL. Sets the window rules, keybindings, startup applications, monitor configuration, and animations.
+- `hypridle.conf` — Idle / suspend / lock behavior.
+- `hyprlock.conf` — Lock screen with date/time widget and wallpaper background.
+- `wallpaper2.jpg` — Lock-screen wallpaper.
+
+Highlights:
+
+- `SUPER + Enter` — Open Kitty
+- `SUPER + W` — Open Zen browser
+- `SUPER + D` — Open Rofi launcher
+- `SUPER + H/J/K/L` — Focus / resize windows
+- `SUPER + Print` — Region screenshot via `grim` + `slurp`
+- `XF86Audio*` / `XF86MonBrightness*` — Volume and brightness
+
+### Neovim (`nvim/`)
+
+Managed by `lazy.nvim` with `lua/nullst8/` as the config namespace.
+
+| Plugin / Feature | Purpose |
+| --- | --- |
+| `lazy.nvim` | Plugin manager |
+| `mason.nvim` + `mason-lspconfig.nvim` | LSP server management |
+| `nvim-lspconfig` | LSP configs |
+| `saghen/blink.cmp` | Autocompletion |
+| `L3MON4D3/LuaSnip` | Snippets |
+| `stevearc/conform.nvim` | Auto-formatting (stylua, black, clang-format, prettier, rustfmt) |
+| `folke/snacks.nvim` | Picker, lazygit, notifier, indent, etc. |
+| `nvim-treesitter` | Syntax highlighting |
+| `nvim-treesitter-context` | Sticky context lines |
+| `rose-pine` | Default colorscheme |
+| `nvim-autopairs` | Auto-pairs |
+| `telescope.nvim` | Currently disabled (snacks picker is used instead) |
+| `opencode.nvim` | AI assistant integration |
+| `firenvim` | Browser editor integration |
+| `rustaceanvim` | Rust-specific tooling |
+
+Languages with out-of-the-box LSP support:
+
+- Lua (`lua_ls`)
+- Rust (`rust_analyzer` via rustaceanvim, `bacon_ls` via cargo backend)
+- C/C++ (`clangd`)
+- TypeScript/JavaScript (`ts_ls`)
+- Python (`pyright`)
+
+### Zsh (`zsh/`)
+
+- `.zshrc` — Main shell config with a hand-rolled async git prompt, completion, history, and extensive aliases.
+- `.zsh_plugins.txt` — Antidote plugin bundle list.
+- `.zsh_plugins.zsh` — Generated bundle file (rebuilt automatically when `.zsh_plugins.txt` is newer).
+
+Plugins managed by antidote:
+
+- `zsh-users/zsh-history-substring-search`
+- `jeffreytse/zsh-vi-mode`
+- `zsh-users/zsh-autosuggestions`
+- `agkozak/zsh-z`
+- `zsh-users/zsh-syntax-highlighting`
+
+Notable aliases:
+
+- `vim` → `nvim`
+- `cat` → `bat --theme=gruvbox-dark --pager=never`
+- `ls` → `eza`, `ll` → `eza -l`, `la` → `eza -la`
+- `grep` → `rg`
+- `p` → `paru`, `update` → `paru -Syu`
+- `g` → `git`, `gs` → `git status`, `glog` → `git log --oneline --decorate --graph`
+- `t` → `tmux`, `tx` → `~/.scripts/tmux-sessionizer`
+
+### Tmux (`.tmux.conf`)
+
+- Prefix: `Ctrl + a`
+- Mouse support enabled
+- Pane switching with `Ctrl + h/j/k/l` (no prefix)
+- Pane resizing with `Alt + h/j/k/l`
+- Plugins: `tpm`, `tmux-sensible`, `tmux-continuum` (auto-restore)
+- Copy mode with vi keys
+
+### Kitty (`kitty/`)
+
+- JetBrainsMono Nerd Font at 10.8pt
+- Custom dark colors (`colors.conf`)
+- Block cursor, no ligatures
+- `Ctrl + Shift + Alt + Super + F12` — show GPU info
+
+### Waybar (`waybar/`)
+
+- Top bar with: Hyprland workspaces, centered clock, and a right-side block containing CPU, RAM, battery, pulseaudio, notification count, and tray.
+- Minimal dark theme (`style.css`).
+
+### SwayNC (`swaync/`)
+
+- Notification daemon and control center.
+- Styled to match the dark Waybar theme.
+- `SUPER + Space` — Close latest notification
+- `SUPER + Shift + Space` — Toggle notification center
+
+### Dunst (`dunst/`)
+
+- Fallback notification daemon config.
+- Mostly used when SwayNC is not available.
+
+### Yazi (`yazi/`)
+
+- `Ctrl + T` — Open a Kitty terminal at the current directory.
+- Default editor set to `nvim`.
+
+## Keybindings Cheatsheet
+
+### Hyprland
+
+| Key | Action |
+| --- | --- |
+| `SUPER + Enter` | Open terminal (Kitty) |
+| `SUPER + Shift + Enter` | Open file manager (Yazi in Kitty) |
+| `SUPER + E` | Open GUI file manager (pcmanfm) |
+| `SUPER + W` | Open browser (Zen) |
+| `SUPER + D` | Rofi run menu |
+| `SUPER + P` | Power menu |
+| `SUPER + Q` | Close window |
+| `SUPER + F` | Fullscreen toggle |
+| `SUPER + V` | Float toggle |
+| `SUPER + H/J/K/L` | Focus window |
+| `SUPER + Shift + H/J/K/L` | Move window |
+| `SUPER + 1…9` | Switch workspace |
+| `SUPER + Shift + 1…9` | Move window to workspace |
+| `SUPER + S` | Toggle special workspace |
+| `SUPER + Tab` | Previous workspace |
+| `Print` | Full screenshot |
+| `SUPER + Print` | Region screenshot |
+| `SUPER + ;` | Full screenshot |
+| `SUPER + Shift + ;` | Region screenshot to clipboard |
+| `XF86AudioRaiseVolume` | Volume up |
+| `XF86AudioLowerVolume` | Volume down |
+| `XF86AudioMute` | Mute |
+| `XF86MonBrightnessUp` | Brightness up |
+| `XF86MonBrightnessDown` | Brightness down |
+| `SUPER + Escape` | Lock screen |
+| `SUPER + Shift + C` | Exit Hyprland |
+
+### Tmux
+
+| Key | Action |
+| --- | --- |
+| `Ctrl + a` | Prefix |
+| `Ctrl + a` then `c` | New window |
+| `Ctrl + a` then `h/j/k/l` | Switch pane (or `Ctrl + h/j/k/l` without prefix) |
+| `Alt + h/j/k/l` | Resize pane |
+| `Ctrl + a` then `r` | Reload config |
+| `Ctrl + a` then `S` | Toggle status bar |
+
+### Neovim
+
+| Key | Action |
+| --- | --- |
+| `Space` | Leader |
+| `<leader>pv` | Open file explorer |
+| `<leader>ff` | Snacks file picker |
+| `<leader>fg` | Snacks live grep |
+| `<Ctrl + p>` | Git files picker |
+| `<leader>gg` | LazyGit |
+| `<leader>s` | Replace word under cursor |
+| `<leader>x` | Make current file executable |
+| `Ctrl + a` | Ask opencode |
+| `Ctrl + x` | Select opencode |
+| `Ctrl + .` | Toggle opencode |
+
+## Post-Install Notes
+
+After running `setup.sh`:
+
+1. **Neovim:** Open `nvim`. `lazy.nvim` will download and install all plugins automatically.
+2. **Tmux:** Start `tmux`, press `Ctrl + a` then `I` (capital i) to install TPM plugins.
+3. **Zsh:** The first prompt will generate the antidote bundle; the second prompt will be fully loaded.
+4. **Mason:** Inside Neovim, run `:Mason` to install any missing LSP/formatters.
+5. **LSPs:** For Rust, `rustaceanvim` will attach automatically when opening a `Cargo.toml` project.
+6. **Waybar / SwayNC:** Restart them manually if they were already running:
+
+   ```bash
+   killall waybar && waybar
+   killall swaync && swaync
+   ```
+
+## Maintenance
+
+### Updating the dotfiles
+
+```bash
+cd ~/.dotfiles
+git pull
+./setup.sh
+```
+
+### Updating Neovim plugins
+
+```bash
+nvim
+# Run inside Neovim:
+:Lazy update
+```
+
+### Updating Tmux plugins
+
+```bash
+# Inside tmux:
+Ctrl + a I
+```
+
+### Updating Zsh plugins
+
+Antidote regenerates the bundle automatically when `.zsh_plugins.txt` changes. To force an update:
+
+```bash
+rm ~/.zsh_plugins.zsh
+source ~/.zshrc
+```
+
+## Troubleshooting
+
+### Shebang on `setup.sh`
+
+The script is executable and should be run as `./setup.sh`. If your shell complains, make sure the first line is:
+
+```bash
+#!/bin/bash
+```
+
+### Hyprland Lua config does not load
+
+The `hyprland.lua` file uses the **experimental Hyprland Lua DSL**. It requires a Hyprland build that supports Lua configuration. If your build only supports the standard `hyprland.conf` syntax, you will need to convert the file or use the appropriate Hyprland version.
+
+### `opencode.nvim` keymaps conflict
+
+`<Ctrl + a>` and `<Ctrl + x>` are remapped by `opencode.nvim`. The config remaps the original increment/decrement operations to `+` and `-` in normal mode.
+
+### Missing external scripts
+
+Several shortcuts depend on custom scripts in `~/.scripts/`. Search `hyprland.lua` for `~/.scripts/` to see which ones are expected.
+
+## License
+
+This repository is personal configuration. Use it as a reference or fork it freely.

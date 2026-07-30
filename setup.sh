@@ -1,6 +1,5 @@
-# Setup Script
-
 #!/bin/bash
+# Setup Script
 set -euo pipefail
 
 DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
@@ -17,6 +16,16 @@ cleanup() {
   [[ -d "$BACKUP_DIR" && ! "$(ls -A "$BACKUP_DIR")" ]] && rmdir "$BACKUP_DIR"
 }
 trap cleanup EXIT
+
+# --- CLI flags ---
+INSTALL_DEPS=true
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --no-deps) INSTALL_DEPS=false; shift ;;
+    -h|--help) echo "Usage: $0 [--no-deps]"; exit 0 ;;
+    *) err "Unknown option: $1"; echo "Usage: $0 [--no-deps]"; exit 1 ;;
+  esac
+done
 
 # --- Clone or update repo ---
 if [[ -d "$DOTFILES/.git" ]]; then
@@ -37,7 +46,8 @@ link() {
   mkdir -p "$(dirname "$dst")"
 
   if [[ -L "$dst" ]]; then
-    local current=$(readlink "$dst")
+    local current
+    current=$(readlink "$dst")
     if [[ "$current" == "$src" ]]; then
       info "Already linked: $dst → $src"
       return
@@ -78,6 +88,10 @@ link "$DOTFILES/.tmux.conf" "$HOME/.tmux.conf"
 link "$DOTFILES/.wallpaper.jpg" "$HOME/.wallpaper.jpg"
 link "$DOTFILES/.wallpaper.png" "$HOME/.wallpaper.png"
 
+# --- Neovim undodir ---
+mkdir -p "$HOME/.vim/undodir"
+info "Created $HOME/.vim/undodir"
+
 # --- Install TPM ---
 TPM_DIR="$HOME/.tmux/plugins/tpm"
 if [[ ! -d "$TPM_DIR/.git" ]]; then
@@ -95,7 +109,7 @@ if [[ -f /etc/os-release ]]; then
   . /etc/os-release
 fi
 
-if [[ "${ID:-}" == "arch" || "${ID_LIKE:-}" == *"arch"* ]]; then
+if [[ "$INSTALL_DEPS" == true && ("${ID:-}" == "arch" || "${ID_LIKE:-}" == *"arch"*) ]]; then
   OFFICIAL_PKGS=(neovim kitty tmux zsh hyprland hypridle hyprlock swaync dunst yazi waybar)
   AUR_PKGS=(antidote)
 
