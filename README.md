@@ -261,8 +261,8 @@ Notable aliases:
 | `<leader>gg` | LazyGit |
 | `<leader>s` | Replace word under cursor |
 | `<leader>x` | Make current file executable |
-| `Ctrl + a` | Ask opencode |
-| `Ctrl + x` | Select opencode |
+| `<leader>oa` | Ask opencode |
+| `<leader>ox` | Select opencode |
 | `Ctrl + .` | Toggle opencode |
 
 ## Post-Install Notes
@@ -328,10 +328,6 @@ The script is executable and should be run as `./setup.sh`. If your shell compla
 ### Hyprland Lua config does not load
 
 The `hyprland.lua` file uses the **experimental Hyprland Lua DSL**. It requires a Hyprland build that supports Lua configuration. If your build only supports the standard `hyprland.conf` syntax, you will need to convert the file or use the appropriate Hyprland version.
-
-### `opencode.nvim` keymaps conflict
-
-`<Ctrl + a>` and `<Ctrl + x>` are remapped by `opencode.nvim`. The config remaps the original increment/decrement operations to `+` and `-` in normal mode.
 
 ### Missing external scripts
 
