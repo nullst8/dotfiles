@@ -19,7 +19,7 @@ require("lazy").setup({ { import = "nullst8.plugins" } }, {
     rtp = {
       disabled_plugins = {
         "gzip",
-        "matchit",
+        -- "matchit", -- keep % matching for language constructs
         -- "netrwPlugin", -- keep netrw so `vim .` opens a directory listing
         "rplugin",
         "tarPlugin",

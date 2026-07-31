@@ -321,7 +321,7 @@ source ~/.zshrc
 
 Neovim is tuned for low startup and runtime overhead:
 
-- `lazy.nvim` disables unused built-in plugins (`gzip`, `matchit`, `rplugin`, `tarPlugin`, `tohtml`, `tutor`, `zipPlugin`). `netrwPlugin` is kept so `vim .` opens a directory listing.
+- `lazy.nvim` disables unused built-in plugins (`gzip`, `rplugin`, `tarPlugin`, `tohtml`, `tutor`, `zipPlugin`). `matchit` and `netrwPlugin` are kept.
 - Alternative colorschemes (`rose-pine`, `gruvbox`) are lazy-loaded; `dark2026` loads eagerly.
 - `updatetime` is 250 ms to reduce CPU usage from `CursorHold` events.
 - LSP log level is set to `WARN`.
