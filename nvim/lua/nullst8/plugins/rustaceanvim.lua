@@ -29,6 +29,16 @@ return {
             procMacro = {
               enable = true,
             },
+            -- Disable heavy visual features to keep rust-analyzer responsive.
+            -- Toggle them per-buffer if needed.
+            semanticHighlighting = {
+              enable = false,
+            },
+            inlayHints = {
+              chainingHints = { enable = false },
+              typeHints = { enable = false },
+              parameterHints = { enable = false },
+            },
           },
         },
       },

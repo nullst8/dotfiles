@@ -128,7 +128,9 @@ Managed by `lazy.nvim` with `lua/nullst8/` as the config namespace.
 | `folke/snacks.nvim` | Picker, lazygit, notifier, indent, etc. |
 | `nvim-treesitter` | Syntax highlighting |
 | `nvim-treesitter-context` | Sticky context lines |
-| `rose-pine` | Default colorscheme |
+| `dark2026.nvim` | Default colorscheme |
+| `rose-pine` | Alternative colorscheme |
+| `gruvbox.nvim` | Alternative colorscheme |
 | `nvim-autopairs` | Auto-pairs |
 | `telescope.nvim` | Currently disabled (snacks picker is used instead) |
 | `opencode.nvim` | AI assistant integration |
@@ -313,6 +315,27 @@ Antidote regenerates the bundle automatically when `.zsh_plugins.txt` changes. T
 ```bash
 rm ~/.zsh_plugins.zsh
 source ~/.zshrc
+```
+
+## Performance
+
+Neovim is tuned for low startup and runtime overhead:
+
+- `lazy.nvim` disables unused built-in plugins (`gzip`, `matchit`, `netrwPlugin`, `rplugin`, `tarPlugin`, `tohtml`, `tutor`, `zipPlugin`).
+- Alternative colorschemes (`rose-pine`, `gruvbox`) are lazy-loaded; `dark2026` loads eagerly.
+- `updatetime` is 250 ms to reduce CPU usage from `CursorHold` events.
+- LSP log level is set to `WARN`.
+- Rust-specific speedups:
+  - `rustaceanvim` manages `rust-analyzer` with diagnostics offloaded to `bacon-ls`.
+  - `rust-analyzer` semantic highlighting and inlay hints are disabled.
+  - `cargo check` is used instead of `clippy`.
+
+### Profiling startup
+
+```bash
+nvim --startuptime /tmp/startup.log
+# Inspect:
+sort -k2 -nr /tmp/startup.log | head -20
 ```
 
 ## Troubleshooting

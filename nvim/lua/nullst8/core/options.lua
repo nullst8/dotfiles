@@ -34,7 +34,8 @@ opt.incsearch = true
 
 opt.scrolloff = 10
 
-opt.updatetime = 50
+-- 250ms balances responsiveness with lower CPU usage from CursorHold events.
+opt.updatetime = 250
 
 opt.signcolumn = "no"
 
