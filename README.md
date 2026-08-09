@@ -145,8 +145,8 @@ Managed by `lazy.nvim` with `lua/nullst8/` as the config namespace.
 | `folke/snacks.nvim` | Picker, lazygit, notifier, indent, etc. |
 | `nvim-treesitter` | Syntax highlighting |
 | `nvim-treesitter-context` | Sticky context lines |
-| `rose-pine` | Default colorscheme |
-| `dark2026.nvim` | Alternative colorscheme |
+| `dark2026.nvim` | Default colorscheme |
+| `rose-pine` | Alternative colorscheme |
 | `gruvbox.nvim` | Alternative colorscheme |
 | `nvim-autopairs` | Auto-pairs |
 | `telescope.nvim` | Currently disabled (snacks picker is used instead) |
@@ -275,8 +275,8 @@ Notable aliases:
 | `<leader>gg` | LazyGit |
 | `<leader>s` | Replace word under cursor |
 | `<leader>x` | Make current file executable |
-| `Ctrl + a` | Ask opencode |
-| `Ctrl + x` | Select opencode |
+| `<leader>oa` | Ask opencode |
+| `<leader>ox` | Select opencode |
 | `Ctrl + .` | Toggle opencode |
 
 ## Post-Install Notes
