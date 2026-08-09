@@ -57,6 +57,7 @@ alias la='eza -la'
 alias tree='eza --tree'
 alias open="mimeopen"
 alias devour="devour"
+alias oc=opencode
 
 # Safety / confirmations
 alias cp='cp -iv'
@@ -139,7 +140,16 @@ alias zmv='noglob zmv'
 # =========================
 export ANTIDOTE_HOME="$HOME/.local/share/antidote"
 
-source /usr/share/zsh-antidote/antidote.zsh
+# Try distro-packaged antidote first, then common user install locations.
+if [[ -f /usr/share/zsh-antidote/antidote.zsh ]]; then
+  source /usr/share/zsh-antidote/antidote.zsh
+elif [[ -f "$HOME/.antidote/antidote.zsh" ]]; then
+  source "$HOME/.antidote/antidote.zsh"
+elif (( $+commands[antidote] )); then
+  source "$(antidote home)/antidote.zsh"
+else
+  echo "antidote not found — install it or set ANTIDOTE_HOME manually" >&2
+fi
 
 zsh_plugins=${ZDOTDIR:-~}/.zsh_plugins
 [[ -f ${zsh_plugins}.txt ]] || touch ${zsh_plugins}.txt
@@ -226,5 +236,9 @@ zle-line-finish() {
   transient_prompt
 }
 zle -N zle-line-finish
-export PATH="/opt/cuda/bin:$PATH"
-export NVCC_CCBIN="/usr/bin/gcc"
+
+# CUDA toolchain (only when installed)
+if [[ -d /opt/cuda ]]; then
+  export PATH="/opt/cuda/bin:$PATH"
+  export NVCC_CCBIN="/usr/bin/gcc"
+fi
