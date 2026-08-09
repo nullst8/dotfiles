@@ -201,7 +201,7 @@
   color: #888888;
 }
 
-.widget-mprins {
+.widget-mpris {
   background-color: #1a1a1a;
   border: 1px solid #242424;
   margin: 4px 8px;
@@ -209,6 +209,6 @@
   color: #dcdcdc;
 }
 
-.widget-mprins > * {
+.widget-mpris > * {
   margin: 4px 0;
 }
