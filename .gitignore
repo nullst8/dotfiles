@@ -3,3 +3,6 @@ nvim/.gdb_history
 
 # Yazi backup files
 yazi/*.toml-*
+
+# Editor / config backup files
+*.bak
