@@ -19,10 +19,12 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("blueman-applet")
 	hl.exec_cmd("swaync")
 	hl.exec_cmd("nm-applet")
-	hl.exec_cmd("/home/nullst8/.scripts/setrandwall")
+	hl.exec_cmd(os.getenv("HOME") .. "/.scripts/setrandwall")
 	hl.exec_cmd("awww-daemon")
 	hl.exec_cmd(
-		"sleep 1 && awww img /home/nullst8/.dotfiles/.wallpaper.jpg --transition-type fade --transition-duration 0.5"
+		"sleep 1 && awww img "
+			.. (os.getenv("DOTFILES") or os.getenv("HOME") .. "/.dotfiles")
+			.. "/.wallpaper.jpg --transition-type fade --transition-duration 0.5"
 	)
 	hl.exec_cmd("i3-battery-popup -L20")
 end)
