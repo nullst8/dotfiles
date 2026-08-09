@@ -11,7 +11,7 @@ This repository contains my entire day-to-day Unix environment. It is designed f
 - **Editor:** Neovim (Lazy.nvim plugin manager, LSP, Mason, blink.cmp, conform, snacks, opencode.nvim).
 - **Shell:** Zsh with the [antidote](https://getantidote.github.io/) plugin manager, zsh-vi-mode, autosuggestions, syntax highlighting, and a custom async git prompt.
 - **Multiplexer:** Tmux with TPM and sensible defaults.
-- **System UI:** Waybar, SwayNC notifications, Dunst fallback.
+- **System UI:** Waybar and SwayNC notifications.
 - **File Manager:** Yazi (terminal-based).
 
 The repo is kept simple: config files live here directly and `setup.sh` symlinks them into place.
@@ -25,7 +25,6 @@ The repo is kept simple: config files live here directly and `setup.sh` symlinks
 ├── .tmux.conf               # Tmux configuration
 ├── .wallpaper.jpg           # Default wallpaper
 ├── .wallpaper.png           # Alternative wallpaper
-├── dunst/                   # Dunst notification daemon config
 ├── hypr/                    # Hyprland, Hypridle, Hyprlock configs
 ├── kitty/                   # Kitty terminal config
 ├── nvim/                    # Neovim config (init.lua + lua/nullst8/)
@@ -52,7 +51,23 @@ A [Nerd Font](https://www.nerdfonts.com/) is **strongly recommended** for Waybar
 
 ### Optional External Tools
 
-Some Hyprland keybindings and aliases call custom scripts that live outside this repo (e.g. `~/.scripts/tmux-sessionizer`, `~/.scripts/toggle-grayscale.sh`, `~/.scripts/wallpaper-select`, `~/.scripts/setrandwall`, `power-menu.sh`, `awww-daemon`, `quickshell-lockscreen`). The environment will work without them, but a handful of shortcuts will be no-ops.
+Some Hyprland keybindings and aliases call custom scripts that live outside this repo. The environment will work without them, but a handful of shortcuts will be no-ops.
+
+### External Scripts Reference
+
+The following scripts are referenced but **not included** in this repository. You can create your own versions in `~/.scripts/` (or update the configs to point elsewhere):
+
+| Script | Referenced by | Purpose |
+| --- | --- | --- |
+| `~/.scripts/tmux-sessionizer` | `zsh/.zshrc` (`tx` alias) | Launch or attach to a tmux session/project |
+| `~/.scripts/setrandwall` | `hypr/hyprland.lua` | Set a random wallpaper on startup |
+| `~/.scripts/wallpaper-select` | `hypr/hyprland.lua` | Interactive wallpaper picker (`SUPER + SHIFT + W`) |
+| `~/.scripts/toggle-grayscale.sh` | `hypr/hyprland.lua` | Toggle grayscale filter (`SUPER + G`) |
+| `power-menu.sh` | `hypr/hyprland.lua` | Power/session menu (`SUPER + SHIFT + P`) |
+| `awww-daemon` | `hypr/hyprland.lua` | Wallpaper daemon (AUR: `awww`) |
+| `~/.local/share/quickshell-lockscreen/lock.sh` | `hypr/hyprland.lua` | Lock screen command (`SUPER + ESCAPE`) |
+
+To make the repo self-contained, you can vendor your scripts into a `scripts/` directory and update the references.
 
 ## Installation
 
@@ -73,8 +88,10 @@ Some Hyprland keybindings and aliases call custom scripts that live outside this
 
    - Symlink the relevant directories/files into `~/.config` and `$HOME`.
    - Back up any existing dotfiles that collide.
+   - Create `~/.vim/undodir` for Neovim persistent undo.
    - Optionally install TPM (Tmux Plugin Manager).
    - On Arch Linux, optionally install the core packages via `paru`, `yay`, or `sudo pacman`.
+   - Skip package installation with `./setup.sh --no-deps`.
 
 3. Change your default shell to Zsh (if it is not already):
 
@@ -128,8 +145,8 @@ Managed by `lazy.nvim` with `lua/nullst8/` as the config namespace.
 | `folke/snacks.nvim` | Picker, lazygit, notifier, indent, etc. |
 | `nvim-treesitter` | Syntax highlighting |
 | `nvim-treesitter-context` | Sticky context lines |
-| `dark2026.nvim` | Default colorscheme |
-| `rose-pine` | Alternative colorscheme |
+| `rose-pine` | Default colorscheme |
+| `dark2026.nvim` | Alternative colorscheme |
 | `gruvbox.nvim` | Alternative colorscheme |
 | `nvim-autopairs` | Auto-pairs |
 | `telescope.nvim` | Currently disabled (snacks picker is used instead) |
@@ -197,11 +214,6 @@ Notable aliases:
 - `SUPER + Space` — Close latest notification
 - `SUPER + Shift + Space` — Toggle notification center
 
-### Dunst (`dunst/`)
-
-- Fallback notification daemon config.
-- Mostly used when SwayNC is not available.
-
 ### Yazi (`yazi/`)
 
 - `Ctrl + T` — Open a Kitty terminal at the current directory.
@@ -263,8 +275,8 @@ Notable aliases:
 | `<leader>gg` | LazyGit |
 | `<leader>s` | Replace word under cursor |
 | `<leader>x` | Make current file executable |
-| `<leader>oa` | Ask opencode |
-| `<leader>ox` | Select opencode |
+| `Ctrl + a` | Ask opencode |
+| `Ctrl + x` | Select opencode |
 | `Ctrl + .` | Toggle opencode |
 
 ## Post-Install Notes
@@ -354,7 +366,7 @@ The `hyprland.lua` file uses the **experimental Hyprland Lua DSL**. It requires 
 
 ### Missing external scripts
 
-Several shortcuts depend on custom scripts in `~/.scripts/`. Search `hyprland.lua` for `~/.scripts/` to see which ones are expected.
+Several shortcuts depend on custom scripts in `~/.scripts/`. See the [External Scripts Reference](#external-scripts-reference) table above for the full list.
 
 ## License
 
