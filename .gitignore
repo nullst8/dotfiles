@@ -6,3 +6,6 @@ yazi/*.toml-*
 
 # Editor / config backup files
 *.bak
+
+# Generated at runtime by scripts/toggle-grayscale.sh
+hypr/grayscale.glsl

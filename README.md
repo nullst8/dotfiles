@@ -28,6 +28,7 @@ The repo is kept simple: config files live here directly and `setup.sh` symlinks
 ├── hypr/                    # Hyprland, Hypridle, Hyprlock configs
 ├── kitty/                   # Kitty terminal config
 ├── nvim/                    # Neovim config (init.lua + lua/nullst8/)
+├── scripts/                 # Helper scripts for Hyprland, tmux, wallpapers
 ├── swaync/                  # SwayNC notification center config
 ├── waybar/                  # Waybar status bar config
 ├── yazi/                    # Yazi file manager config
@@ -51,23 +52,26 @@ A [Nerd Font](https://www.nerdfonts.com/) is **strongly recommended** for Waybar
 
 ### Optional External Tools
 
-Some Hyprland keybindings and aliases call custom scripts that live outside this repo. The environment will work without them, but a handful of shortcuts will be no-ops.
+A few tools referenced by the configs are still external and must be installed separately:
 
-### External Scripts Reference
+- `awww-daemon` — wallpaper daemon (AUR: `awww`)
+- `~/.local/share/quickshell-lockscreen/lock.sh` — lock screen command used by `SUPER + ESCAPE`
 
-The following scripts are referenced but **not included** in this repository. You can create your own versions in `~/.scripts/` (or update the configs to point elsewhere):
+Everything else is now vendored in the `scripts/` directory and added to `$PATH` by Zsh.
 
-| Script | Referenced by | Purpose |
+### Scripts (`scripts/`)
+
+The `scripts/` directory contains small helpers used by Hyprland and Zsh. They are automatically added to your `$PATH` when Zsh loads.
+
+| Script | Used by | Purpose |
 | --- | --- | --- |
-| `~/.scripts/tmux-sessionizer` | `zsh/.zshrc` (`tx` alias) | Launch or attach to a tmux session/project |
-| `~/.scripts/setrandwall` | `hypr/hyprland.lua` | Set a random wallpaper on startup |
-| `~/.scripts/wallpaper-select` | `hypr/hyprland.lua` | Interactive wallpaper picker (`SUPER + SHIFT + W`) |
-| `~/.scripts/toggle-grayscale.sh` | `hypr/hyprland.lua` | Toggle grayscale filter (`SUPER + G`) |
+| `tmux-sessionizer` | `zsh/.zshrc` (`tx` alias) | Fuzzy-find a directory and attach/create a tmux session |
+| `setrandwall` | `hypr/hyprland.lua` | Set a random wallpaper from `~/.dotfiles` (or `$WALLPAPER_DIR`) |
+| `wallpaper-select` | `hypr/hyprland.lua` | Interactive wallpaper picker (`SUPER + SHIFT + W`) |
+| `toggle-grayscale.sh` | `hypr/hyprland.lua` | Toggle a grayscale shader (`SUPER + G`) |
 | `power-menu.sh` | `hypr/hyprland.lua` | Power/session menu (`SUPER + SHIFT + P`) |
-| `awww-daemon` | `hypr/hyprland.lua` | Wallpaper daemon (AUR: `awww`) |
-| `~/.local/share/quickshell-lockscreen/lock.sh` | `hypr/hyprland.lua` | Lock screen command (`SUPER + ESCAPE`) |
 
-To make the repo self-contained, you can vendor your scripts into a `scripts/` directory and update the references.
+The wallpaper scripts use `awww`; the grayscale script writes a minimal GLSL shader to `~/.config/hypr/grayscale.glsl` if it does not exist.
 
 ## Installation
 
@@ -184,7 +188,7 @@ Notable aliases:
 - `grep` → `rg`
 - `p` → `paru`, `update` → `paru -Syu`
 - `g` → `git`, `gs` → `git status`, `glog` → `git log --oneline --decorate --graph`
-- `t` → `tmux`, `tx` → `~/.scripts/tmux-sessionizer`
+- `t` → `tmux`, `tx` → `tmux-sessionizer`
 
 ### Tmux (`.tmux.conf`)
 
@@ -364,9 +368,9 @@ The script is executable and should be run as `./setup.sh`. If your shell compla
 
 The `hyprland.lua` file uses the **experimental Hyprland Lua DSL**. It requires a Hyprland build that supports Lua configuration. If your build only supports the standard `hyprland.conf` syntax, you will need to convert the file or use the appropriate Hyprland version.
 
-### Missing external scripts
+### Missing scripts
 
-Several shortcuts depend on custom scripts in `~/.scripts/`. See the [External Scripts Reference](#external-scripts-reference) table above for the full list.
+Most helper scripts now live in `scripts/` and are added to `$PATH` by Zsh. The only remaining external dependencies are `awww-daemon` and `~/.local/share/quickshell-lockscreen/lock.sh`.
 
 ## License
 
