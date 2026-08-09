@@ -1,0 +1,35 @@
+#!/bin/bash
+# wallpaper-select — interactive wallpaper picker using rofi or fzf.
+
+set -euo pipefail
+
+WALLPAPER_DIR="${WALLPAPER_DIR:-$HOME/.dotfiles}"
+
+mapfile -t wallpapers < <(find "$WALLPAPER_DIR" -maxdepth 1 -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) 2>/dev/null | sort)
+
+if [[ ${#wallpapers[@]} -eq 0 ]]; then
+  echo "No wallpapers found in $WALLPAPER_DIR" >&2
+  exit 1
+fi
+
+if command -v rofi &>/dev/null; then
+  selected=$(printf '%s\n' "${wallpapers[@]##*/}" | rofi -dmenu -p 'wallpaper' -i)
+elif command -v fzf &>/dev/null; then
+  selected=$(printf '%s\n' "${wallpapers[@]##*/}" | fzf --prompt='wallpaper> ')
+else
+  echo "Install rofi or fzf for wallpaper selection" >&2
+  exit 1
+fi
+
+if [[ -z "$selected" ]]; then
+  exit 0
+fi
+
+full_path="$WALLPAPER_DIR/$selected"
+
+if command -v awww &>/dev/null; then
+  awww img "$full_path" --transition-type fade --transition-duration 0.5
+else
+  echo "awww not installed; would have set: $full_path" >&2
+  exit 1
+fi

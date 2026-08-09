@@ -1,0 +1,23 @@
+#!/bin/bash
+# setrandwall — set a random wallpaper using awww.
+# Picks from $WALLPAPER_DIR (default: ~/.dotfiles).
+
+set -euo pipefail
+
+WALLPAPER_DIR="${WALLPAPER_DIR:-$HOME/.dotfiles}"
+
+mapfile -t wallpapers < <(find "$WALLPAPER_DIR" -maxdepth 1 -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) 2>/dev/null)
+
+if [[ ${#wallpapers[@]} -eq 0 ]]; then
+  echo "No wallpapers found in $WALLPAPER_DIR" >&2
+  exit 1
+fi
+
+selected="${wallpapers[RANDOM % ${#wallpapers[@]}]}"
+
+if command -v awww &>/dev/null; then
+  awww img "$selected" --transition-type fade --transition-duration 0.5
+else
+  echo "awww not installed; would have set: $selected" >&2
+  exit 1
+fi
