@@ -1,8 +1,11 @@
 # =========================
 # Path
 # =========================
+export DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
+
 typeset -U path
 path=(
+  "$DOTFILES/scripts"
   $HOME/bin
   $HOME/.local/bin
   $HOME/.cargo/bin
@@ -127,7 +130,7 @@ alias nosleep='systemd-inhibit --what=sleep --why="Temporarily disabling suspend
 alias cjp="create-java-project"
 alias d=devour
 alias t=tmux
-alias tx="~/.scripts/tmux-sessionizer"
+alias tx="tmux-sessionizer"
 alias f='fzf'
 alias fd='fd'
 alias help='run-help'
