@@ -9,6 +9,8 @@ return {
       override = {
         "vim.lsp.util.convert_input_to_markdown",
         "vim.lsp.util.stylify_markdown",
+        -- cmp shim is provided by blink.cmp because we set
+        -- appearance.use_nvim_cmp_as_default = true.
         "cmp.entry.get_documentation",
       },
     },
