@@ -73,7 +73,6 @@ link "$DOTFILES/hypr"     "$HOME/.config/hypr"
 link "$DOTFILES/kitty"    "$HOME/.config/kitty"
 link "$DOTFILES/waybar"   "$HOME/.config/waybar"
 link "$DOTFILES/swaync"   "$HOME/.config/swaync"
-link "$DOTFILES/dunst"    "$HOME/.config/dunst"
 link "$DOTFILES/yazi"     "$HOME/.config/yazi"
 
 # Zsh
@@ -110,8 +109,16 @@ if [[ -f /etc/os-release ]]; then
 fi
 
 if [[ "$INSTALL_DEPS" == true && ("${ID:-}" == "arch" || "${ID_LIKE:-}" == *"arch"*) ]]; then
-  OFFICIAL_PKGS=(neovim kitty tmux zsh hyprland hypridle hyprlock swaync dunst yazi waybar)
-  AUR_PKGS=(antidote)
+  OFFICIAL_PKGS=(
+    neovim kitty tmux zsh
+    hyprland hypridle hyprlock
+    waybar swaync yazi
+    rofi blueman network-manager-applet
+    grim slurp hyprshot
+    playerctl brightnessctl wireplumber
+    pcmanfm
+  )
+  AUR_PKGS=(antidote hyprshot zen-browser awww i3-battery-popup)
 
   echo -e "\n${YELLOW}Arch Linux detected.${NC}"
   echo "  Official: ${OFFICIAL_PKGS[*]}"
