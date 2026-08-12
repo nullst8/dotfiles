@@ -55,6 +55,7 @@ A [Nerd Font](https://www.nerdfonts.com/) is **strongly recommended** for Waybar
 A few tools referenced by the configs are still external and must be installed separately:
 
 - `awww-daemon` — wallpaper daemon (AUR: `awww`)
+- `hyprsunset` — blue-light/gamma control for Hyprland (`brightnessctl` + `hyprsunset` handle brightness keys)
 - `~/.local/share/quickshell-lockscreen/lock.sh` — lock screen command used by `SUPER + ESCAPE`
 
 Everything else is now vendored in the `scripts/` directory and added to `$PATH` by Zsh.
@@ -72,6 +73,13 @@ The `scripts/` directory contains small helpers used by Hyprland and Zsh. They a
 | `power-menu.sh` | `hypr/hyprland.lua` | Power/session menu (`SUPER + SHIFT + P`) |
 
 The wallpaper scripts use `awww`; the grayscale script writes a minimal GLSL shader to `~/.config/hypr/grayscale.glsl` if it does not exist.
+
+There are also app-specific scripts inside config directories:
+
+| Script | Used by | Purpose |
+| --- | --- | --- |
+| `hypr/scripts/brightness-ctl.sh` | `hypr/hyprland.lua` | Handle `XF86MonBrightnessUp/Down` with hardware brightness + `hyprsunset` gamma boost |
+| `waybar/scripts/brightness.sh` | `waybar/config.jsonc` | Report brightness/gamma as JSON for the Waybar brightness module |
 
 ## Installation
 
@@ -132,7 +140,7 @@ Highlights:
 - `SUPER + D` — Open Rofi launcher
 - `SUPER + H/J/K/L` — Focus / resize windows
 - `SUPER + Print` — Region screenshot via `grim` + `slurp`
-- `XF86Audio*` / `XF86MonBrightness*` — Volume and brightness
+- `XF86Audio*` / `XF86MonBrightness*` — Volume and brightness (brightness uses `brightnessctl` + `hyprsunset` gamma boost above 100%)
 
 ### Neovim (`nvim/`)
 
@@ -208,7 +216,8 @@ Notable aliases:
 
 ### Waybar (`waybar/`)
 
-- Top bar with: Hyprland workspaces, centered clock, and a right-side block containing CPU, RAM, battery, pulseaudio, notification count, and tray.
+- Top bar with: Hyprland workspaces, centered clock, and a right-side block containing CPU, RAM, brightness, battery, pulseaudio, notification count, and tray.
+- Brightness module reports hardware brightness normally and `hyprsunset` gamma level when boosted above 100%.
 - Minimal dark theme (`style.css`).
 
 ### SwayNC (`swaync/`)
@@ -251,7 +260,7 @@ Notable aliases:
 | `XF86AudioRaiseVolume` | Volume up |
 | `XF86AudioLowerVolume` | Volume down |
 | `XF86AudioMute` | Mute |
-| `XF86MonBrightnessUp` | Brightness up |
+| `XF86MonBrightnessUp` | Brightness up (switches to `hyprsunset` gamma boost once hardware max is reached) |
 | `XF86MonBrightnessDown` | Brightness down |
 | `SUPER + Escape` | Lock screen |
 | `SUPER + Shift + C` | Exit Hyprland |

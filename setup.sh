@@ -115,7 +115,7 @@ if [[ "$INSTALL_DEPS" == true && ("${ID:-}" == "arch" || "${ID_LIKE:-}" == *"arc
     waybar swaync yazi
     rofi blueman network-manager-applet
     grim slurp hyprshot
-    playerctl brightnessctl wireplumber
+    playerctl brightnessctl wireplumber hyprsunset
     pcmanfm
   )
   AUR_PKGS=(antidote hyprshot zen-browser awww i3-battery-popup)
