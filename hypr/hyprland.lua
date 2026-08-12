@@ -26,6 +26,7 @@ hl.on("hyprland.start", function()
 			.. (os.getenv("DOTFILES") or os.getenv("HOME") .. "/.dotfiles")
 			.. "/.wallpaper.jpg --transition-type fade --transition-duration 0.5"
 	)
+	hl.exec_cmd("sh -c 'mkdir -p ~/.local/state/hypr && echo 100 > ~/.local/state/hypr/gamma; pgrep -x hyprsunset >/dev/null || nohup hyprsunset --identity --gamma_max 150 >/dev/null 2>&1 &'")
 	hl.exec_cmd("i3-battery-popup -L20")
 end)
 
@@ -244,8 +245,8 @@ hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl set 3%+"), { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 3%-"), { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness-ctl.sh up"), { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness-ctl.sh down"), { locked = true, repeating = true })
 hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true })
 hl.bind(
 	"XF86AudioRaiseVolume",
@@ -266,3 +267,5 @@ hl.bind(mainMod .. " + DOWN", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_S
 
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("swaync-client --close-latest"))
 hl.bind(mainMod .. " + SHIFT + SPACE", hl.dsp.exec_cmd("swaync-client -t"))
+
+
