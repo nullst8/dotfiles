@@ -38,12 +38,17 @@ window#waybar {
 #cpu,
 #memory,
 #pulseaudio,
+#custom-brightness,
 #tray {
   background-color: #1a1a1a;
   color: #dcdcdc;
   padding: 0 12px;
   margin: 2px;
   border: 1px solid #242424;
+}
+
+#custom-brightness.boost {
+  color: #ff5555;
 }
 
 #custom-notification {
