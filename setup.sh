@@ -83,6 +83,9 @@ link "$DOTFILES/zsh/.zsh_plugins.txt" "$HOME/.zsh_plugins.txt"
 # Tmux
 link "$DOTFILES/.tmux.conf" "$HOME/.tmux.conf"
 
+# clang-format
+link "$DOTFILES/.clang-format" "$HOME/.clang-format"
+
 # Wallpapers
 link "$DOTFILES/.wallpaper.jpg" "$HOME/.wallpaper.jpg"
 link "$DOTFILES/.wallpaper.png" "$HOME/.wallpaper.png"
