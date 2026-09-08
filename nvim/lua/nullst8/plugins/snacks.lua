@@ -21,5 +21,6 @@ return {
     { "<C-p>", function() Snacks.picker.git_files() end, desc = "Git files" },
     { "<leader>fc", function() Snacks.picker.colorschemes() end, desc = "Colorschemes" },
     { "<leader>gg", function() Snacks.lazygit() end, desc = "LazyGit" },
+    { "<leader>bb", function() Snacks.picker.buffers() end, desc = "Buffers" },
   },
 }
