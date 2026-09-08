@@ -67,8 +67,10 @@ The `scripts/` directory contains small helpers used by Hyprland and Zsh. They a
 | Script | Used by | Purpose |
 | --- | --- | --- |
 | `tmux-sessionizer` | `zsh/.zshrc` (`tx` alias) | Fuzzy-find a directory and attach/create a tmux session |
-| `setrandwall` | `hypr/hyprland.lua` | Set a random wallpaper from `~/.dotfiles` (or `$WALLPAPER_DIR`) |
-| `wallpaper-select` | `hypr/hyprland.lua` | Interactive wallpaper picker (`SUPER + SHIFT + W`) |
+| `setrandwall` | `hypr/hyprland.lua` | Set a random wallpaper from `~/.walls` (or `$WALLPAPER_DIR`) |
+| `wallpaper-select` | `hypr/hyprland.lua` | Interactive wallpaper picker from `~/.walls` (`SUPER + SHIFT + W`) |
+| `bat-threshold.sh` | `~/.config/waybar` | Battery charge mode popup (`Fast`/`Standard`/`Long_Life`) on battery-icon click |
+| `perf-mode.sh` | `~/.config/waybar` | Power profile popup (`Saver`/`Standard`/`Performance`) via `powerprofilesctl` |
 | `toggle-grayscale.sh` | `hypr/hyprland.lua` | Toggle a grayscale shader (`SUPER + G`) |
 | `power-menu.sh` | `hypr/hyprland.lua` | Power/session menu (`SUPER + SHIFT + P`) |
 

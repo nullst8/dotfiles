@@ -1,43 +1,58 @@
+# =====================================================================
+# zshrc — nullst8
+# Managed in ~/.dotfiles/zsh; symlinked from ~/.zshrc
+# =====================================================================
+
 # =========================
-# Path
+# Environment & Path
 # =========================
 export DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
 
 typeset -U path
 path=(
   "$DOTFILES/scripts"
-  $HOME/bin
-  $HOME/.local/bin
-  $HOME/.cargo/bin
-  /usr/local/bin
-  /usr/bin/vendor_perl
-  $path
+  "$HOME/bin"
+  "$HOME/.local/bin"
+  "$HOME/.cargo/bin"
+  "$HOME/.local/share/pnpm"
+  $path  # unquoted: quoted array expansion would join into a single broken word
 )
 
 export WIKIMAN_LANG=en
 export EDITOR='nvim'
 export MANPAGER="nvim +Man!"
 
+# bat theme (applies to `bat` and the `cat` alias below)
+export BAT_THEME='Catppuccin Mocha'
+
+# GNU ls colors; also feeds completion list-colors below
+(( $+commands[dircolors] )) && eval "$(dircolors -b)"
+
 # =========================
-# History
+# Options & History
 # =========================
 HISTFILE=$HOME/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
-setopt extended_history hist_ignore_dups hist_ignore_space hist_verify
-setopt inc_append_history share_history
-setopt bang_hist
 
+setopt extended_history hist_ignore_dups hist_ignore_space hist_verify
+setopt inc_append_history share_history hist_reduce_blanks hist_expire_dups_first
+setopt bang_hist autocd globdots interactivecomments
 unsetopt beep
-setopt autocd globdots interactivecomments
 
 # =========================
 # Completion
 # =========================
 autoload -Uz compinit
+
+# Rebuild the completion cache at most once a day; otherwise use the fast path.
 ZCOMPDUMP="${ZDOTDIR:-$HOME}/.zcompdump"
-compinit -C -d "$ZCOMPDUMP"
-[[ -f "$ZCOMPDUMP" ]] && zcompile "$ZCOMPDUMP"
+if [[ ! -f $ZCOMPDUMP || -n ${ZCOMPDUMP}(#qN.mh+24) ]]; then
+  compinit -d "$ZCOMPDUMP"
+else
+  compinit -C -d "$ZCOMPDUMP"
+fi
+[[ -f $ZCOMPDUMP ]] && zcompile "$ZCOMPDUMP"
 
 zmodload zsh/complist
 zstyle ':completion:*' menu select
@@ -47,20 +62,80 @@ zstyle ':completion:*' squeeze-color yes
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 # =========================
-# Aliases - System
+# Plugins (antidote)
 # =========================
-alias sudo="sudo "
+export ANTIDOTE_HOME="$HOME/.antidote"
+
+# Prefer distro package, then user install, then command on PATH.
+if [[ -f /usr/share/zsh-antidote/antidote.zsh ]]; then
+  source /usr/share/zsh-antidote/antidote.zsh
+elif [[ -f $ANTIDOTE_HOME/antidote.zsh ]]; then
+  source $ANTIDOTE_HOME/antidote.zsh
+elif (( $+commands[antidote] )); then
+  source "$(antidote home)/antidote.zsh"
+else
+  print -u2 "antidote not found — install it or set ANTIDOTE_HOME manually"
+fi
+
+# Plugin config (must be set BEFORE the plugins are sourced)
+ZVM_SYSTEM_CLIPBOARD_ENABLED=true
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#7a8599'
+(( ${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[path]=none
+ZSH_HIGHLIGHT_STYLES[path_prefix]=none
+ZSH_HIGHLIGHT_STYLES[path_prefix_pathseparator]=none
+ZSH_HIGHLIGHT_STYLES[autodirectory]='fg=green'
+
+# Bundle & source plugins (re-bundle when the plugin list changed or the
+# bundle is empty/truncated — e.g. a previous failed run)
+zsh_plugins="${ZDOTDIR:-$HOME}/.zsh_plugins"
+[[ -f ${zsh_plugins}.txt ]] || touch ${zsh_plugins}.txt
+if [[ ! -s ${zsh_plugins}.zsh || ! ${zsh_plugins}.zsh -nt ${zsh_plugins}.txt ]]; then
+  antidote bundle <${zsh_plugins}.txt >|${zsh_plugins}.zsh
+fi
+source ${zsh_plugins}.zsh
+
+# fzf shell integration: Ctrl-R history, Ctrl-T file picker, Alt-C smart cd
+(( $+commands[fzf] )) && eval "$(fzf --zsh)"
+
+# =========================
+# Keybinds
+# =========================
+# History substring search: arrows (insert) + j/k (normal mode)
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+
+# =========================
+# Prompt (synchronous git info + exit status)
+# =========================
+setopt PROMPT_SUBST
+autoload -Uz vcs_info add-zsh-hook
+zstyle ':vcs_info:git:*' formats ' %F{#af5fff}[%b]%f'
+
+_prompt_vcs() { vcs_info }
+add-zsh-hook precmd _prompt_vcs
+
+# ❯ green on success / red on failure; red # when root
+PROMPT='%F{#8be9fd}%n@%m%f %F{#bd93f9}%~%f${vcs_info_msg_0_} %(!.%F{#ff5f5f}#.%(?.%F{#50fa7b}.%F{#ff5f5f})❯)%f '
+
+# =========================
+# Aliases — System
+# =========================
+alias sudo="sudo "          # trailing space lets aliases expand after sudo
 alias vim=nvim
-alias cat="bat --theme=gruvbox-dark --pager=never"
+alias open="xdg-open"
+alias oc=opencode
+alias cat="bat --pager=never"
+
+# ls → eza
 alias ls=eza
 alias l=ls
 alias sl=ls
 alias ll='eza -l'
 alias la='eza -la'
 alias tree='eza --tree'
-alias open="mimeopen"
-alias devour="devour"
-alias oc=opencode
 
 # Safety / confirmations
 alias cp='cp -iv'
@@ -75,18 +150,18 @@ alias du='du -h'
 alias du1='du -d 1 -h'
 alias free='free -h'
 
-# grep -> ripgrep
+# grep → ripgrep
 alias grep='rg'
 alias grepi='rg -i'
 alias grepp='rg --pretty'
 
 # =========================
-# Aliases - Navigation
+# Aliases — Navigation
 # =========================
-alias mkcd='(){ mkdir -p "$1" && cd "$1" }'
+mkcd() { mkdir -p -- "$1" && cd -- "$1" }
 
 # =========================
-# Aliases - Git
+# Aliases — Git
 # =========================
 alias g=git
 alias ga='git add'
@@ -112,7 +187,7 @@ alias gr='git remote -v'
 alias gcp='git cherry-pick'
 
 # =========================
-# Aliases - Package management
+# Aliases — Package management (paru)
 # =========================
 alias p=paru
 alias update='paru -Syu'
@@ -123,125 +198,26 @@ alias files='paru -Ql'
 alias orphans='paru -Qtd'
 
 # =========================
-# Aliases - Misc
+# Aliases — Misc
 # =========================
 alias suspend="systemctl suspend"
 alias nosleep='systemd-inhibit --what=sleep --why="Temporarily disabling suspend" bash'
-alias cjp="create-java-project"
-alias d=devour
 alias t=tmux
 alias tx="tmux-sessionizer"
 alias f='fzf'
-alias fd='fd'
+
+# run-help / zmv are autoloadable zsh functions, not commands
+autoload -Uz run-help zmv
+unalias run-help 2>/dev/null   # zsh pre-aliases run-help to man
 alias help='run-help'
 alias zmv='noglob zmv'
 
+# pipx shell completion
 (( $+commands[pipx] )) && eval "$(register-python-argcomplete pipx)" 2>/dev/null
 
 # =========================
-# Antidote Plugin Manager
+# fnm (Node version manager)
 # =========================
-export ANTIDOTE_HOME="$HOME/.local/share/antidote"
-
-# Try distro-packaged antidote first, then common user install locations.
-if [[ -f /usr/share/zsh-antidote/antidote.zsh ]]; then
-  source /usr/share/zsh-antidote/antidote.zsh
-elif [[ -f "$HOME/.antidote/antidote.zsh" ]]; then
-  source "$HOME/.antidote/antidote.zsh"
-elif (( $+commands[antidote] )); then
-  source "$(antidote home)/antidote.zsh"
-else
-  echo "antidote not found — install it or set ANTIDOTE_HOME manually" >&2
-fi
-
-zsh_plugins=${ZDOTDIR:-~}/.zsh_plugins
-[[ -f ${zsh_plugins}.txt ]] || touch ${zsh_plugins}.txt
-
-if [[ ! ${zsh_plugins}.zsh -nt ${zsh_plugins}.txt ]]; then
-  antidote bundle <${zsh_plugins}.txt >|${zsh_plugins}.zsh
-fi
-
-source ${zsh_plugins}.zsh
-
-# =========================
-# History substring search keybinds
-# =========================
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-bindkey -M vicmd 'k' history-substring-search-up
-bindkey -M vicmd 'j' history-substring-search-down
-
-# =========================
-# Autosuggest / Highlight Styling
-# =========================
-ZVM_SYSTEM_CLIPBOARD_ENABLED=true
-(( ${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#7a8599'
-ZSH_HIGHLIGHT_STYLES[path]=none
-ZSH_HIGHLIGHT_STYLES[path_prefix]=none
-ZSH_HIGHLIGHT_STYLES[path_prefix_pathseparator]=none
-ZSH_HIGHLIGHT_STYLES[autodirectory]='fg=green'
-
-# =========================
-# Prompt (async git + exit status)
-# =========================
-setopt PROMPT_SUBST
-autoload -Uz vcs_info
-
-zstyle ':vcs_info:git:*' formats ' %F{#af5fff}[%b]%f'
-
-LAST_GIT_DIR=""
-CACHED_GIT=""
-
-update_git_cache() {
-  if git rev-parse --is-inside-work-tree &>/dev/null; then
-    CURRENT_GIT_DIR=$(git rev-parse --show-toplevel 2>/dev/null)
-    if [[ "$CURRENT_GIT_DIR" != "$LAST_GIT_DIR" ]]; then
-      LAST_GIT_DIR="$CURRENT_GIT_DIR"
-      vcs_info
-      CACHED_GIT="${vcs_info_msg_0_}"
-    fi
-  else
-    LAST_GIT_DIR=""
-    CACHED_GIT=""
-  fi
-}
-
-async_git_update() {
-  { update_git_cache; zle && zle reset-prompt } &!
-}
-
-precmd() {
-  LAST_EXIT=$?
-  async_git_update
-}
-
-prompt_symbol() {
-  if [[ $EUID -eq 0 ]]; then
-    echo "%F{#ff5f5f}#%f"
-  elif [[ $LAST_EXIT -ne 0 ]]; then
-    echo "%F{#ff5f5f}>%f"
-  else
-    echo "%F{#d8dee9}>%f"
-  fi
-}
-
-PROMPT='%F{#5f87ff}%~%f${CACHED_GIT} $(prompt_symbol) '
-
-# =========================
-# Transient Prompt
-# =========================
-transient_prompt() {
-  print -Pn "\r%F{#d8dee9}>%f "
-}
-
-zle-line-finish() {
-  transient_prompt
-}
-zle -N zle-line-finish
-
-# CUDA toolchain (only when installed)
-if [[ -d /opt/cuda ]]; then
-  export PATH="/opt/cuda/bin:$PATH"
-  export NVCC_CCBIN="/usr/bin/gcc"
-fi
+# Ephemeral session env is generated here — never hardcode the multishell
+# path. --use-on-cd auto-switches Node via .nvmrc / .node-version.
+(( $+commands[fnm] )) && eval "$(fnm env --use-on-cd --version-file-strategy=local --shell zsh)"

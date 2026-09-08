@@ -11,12 +11,13 @@
   "modules-center": ["clock"],
 
   "modules-right": [
-    "pulseaudio",
-    "cpu",
+    "custom/volume",
+    "custom/cpu",
     "memory",
     "custom/brightness",
-    "battery",
+    "custom/battery",
     "custom/notification",
+    "custom/nightlight",
     "tray"
   ],
 
@@ -32,10 +33,12 @@
     "interval": 60
   },
 
-  "cpu": {
-    "format": "{usage}% CPU",
-    "tooltip": false,
-    "interval": 10
+  "custom/cpu": {
+    "exec": "~/.config/waybar/scripts/cpu.sh",
+    "return-type": "json",
+    "format": "{}",
+    "interval": 3,
+    "on-click": "~/.dotfiles/scripts/perf-mode.sh popup"
   },
 
   "memory": {
@@ -51,31 +54,30 @@
     "return-type": "json"
   },
 
-  "battery": {
-    "states": {
-      "warning": 30,
-      "critical": 20
-    },
-    "format": "{capacity}% {icon}",
-    "format-charging": "{capacity}% ",
-    "format-plugged": "{capacity}% ",
-    "format-icons": ["", "", "", "", ""]
+  "custom/nightlight": {
+    "exec": "~/.config/waybar/scripts/nightlight.sh",
+    "return-type": "json",
+    "format": "{}",
+    "interval": 60,
+    "on-click": "~/.dotfiles/scripts/nightlight.sh toggle"
   },
 
-  "pulseaudio": {
-    "format": "{volume}% {icon}",
-    "format-bluetooth": "{volume}% {icon}",
-    "format-muted": "",
-    "format-icons": {
-      "headphone": "",
-      "hands-free": "",
-      "headset": "",
-      "phone": "",
-      "portable": "",
-      "car": "",
-      "default": ["", "", ""]
-    },
-    "on-click": "pavucontrol"
+  "custom/battery": {
+    "exec": "~/.config/waybar/scripts/battery.sh",
+    "return-type": "json",
+    "format": "{}",
+    "interval": 30,
+    "on-click": "~/.dotfiles/scripts/bat-threshold.sh popup"
+  },
+
+  "custom/volume": {
+    "exec": "~/.config/waybar/scripts/volume.sh",
+    "return-type": "json",
+    "tooltip": true,
+    "interval": 1,
+    "on-click": "pavucontrol",
+    "on-scroll-up": "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 1%+",
+    "on-scroll-down": "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 1%-"
   },
 
   "custom/notification": {

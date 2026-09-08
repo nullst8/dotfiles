@@ -1,7 +1,7 @@
-zsh-users/zsh-history-substring-search
+# Load order matters: zsh-syntax-highlighting must be sourced before
+# zsh-history-substring-search (see history-substring-search README).
 jeffreytse/zsh-vi-mode
 zsh-users/zsh-autosuggestions
 agkozak/zsh-z
 zsh-users/zsh-syntax-highlighting
-
-
+zsh-users/zsh-history-substring-search

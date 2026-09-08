@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-WALLPAPER_DIR="${WALLPAPER_DIR:-$HOME/.dotfiles}"
+WALLPAPER_DIR="${WALLPAPER_DIR:-$HOME/.walls}"
 
 mapfile -t wallpapers < <(find "$WALLPAPER_DIR" -maxdepth 1 -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) 2>/dev/null | sort)
 

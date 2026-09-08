@@ -9,7 +9,7 @@ declare -A actions=(
   ["Hibernate"]="systemctl hibernate"
   ["Reboot"]="systemctl reboot"
   ["Shutdown"]="systemctl poweroff"
-  ["Logout"]="hyprctl dispatch exit"
+  ["Logout"]="pkill Hyprland"
 )
 
 if command -v rofi &>/dev/null; then

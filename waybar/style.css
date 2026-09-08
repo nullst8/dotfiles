@@ -10,6 +10,7 @@
 window#waybar {
   background-color: #000000;
   color: #d6d6d6; /* brighter but not white */
+  border-radius: 0;
 }
 
 /* ===== WORKSPACES ===== */
@@ -34,10 +35,11 @@ window#waybar {
 /* ===== MODULES ===== */
 #custom-notification,
 #clock,
-#battery,
-#cpu,
+#custom-nightlight,
+#custom-battery,
+#custom-cpu,
 #memory,
-#pulseaudio,
+#custom-volume,
 #custom-brightness,
 #tray {
   background-color: #1a1a1a;
@@ -57,11 +59,6 @@ window#waybar {
 
 /* ===== STATES ===== */
 
-#pulseaudio.muted {
+#custom-volume.muted {
   color: #cc5555;
-}
-
-#battery.critical:not(.charging) {
-  background-color: #703030;
-  color: #ffffff;
 }

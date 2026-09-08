@@ -1,10 +1,10 @@
 #!/bin/bash
 # setrandwall — set a random wallpaper using awww.
-# Picks from $WALLPAPER_DIR (default: ~/.dotfiles).
+# Picks from $WALLPAPER_DIR (default: ~/.walls).
 
 set -euo pipefail
 
-WALLPAPER_DIR="${WALLPAPER_DIR:-$HOME/.dotfiles}"
+WALLPAPER_DIR="${WALLPAPER_DIR:-$HOME/.walls}"
 
 mapfile -t wallpapers < <(find "$WALLPAPER_DIR" -maxdepth 1 -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) 2>/dev/null)
 
@@ -16,6 +16,19 @@ fi
 selected="${wallpapers[RANDOM % ${#wallpapers[@]}]}"
 
 if command -v awww &>/dev/null; then
+  # Wait for the awww daemon to be ready (no-op if it's already running).
+  # On login the daemon starts async and auto-restores the last wallpaper,
+  # so applying before it's up either fails or gets overwritten.
+  waited=0
+  for _ in $(seq 1 50); do
+    awww query >/dev/null 2>&1 && break
+    waited=1
+    sleep 0.1
+  done
+  # Give a freshly-started daemon a moment to finish restoring its cache
+  # before we overwrite it with the random pick.
+  [[ "$waited" -eq 1 ]] && sleep 0.3
+
   awww img "$selected" --transition-type fade --transition-duration 0.5
 else
   echo "awww not installed; would have set: $selected" >&2
