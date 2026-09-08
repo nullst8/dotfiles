@@ -26,3 +26,9 @@ keymap.set("n", "Q", "<nop>")
 
 keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+
+keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "LSP definition" })
+keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "LSP declaration" })
+keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "LSP implementation" })
+keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP code action" })
+keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "LSP rename" })
