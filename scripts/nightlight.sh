@@ -7,6 +7,7 @@
 #     auto    → set instantly based on the current time (for login)
 #     toggle  → instant flip on/off
 #     status  → current temperature + day/night state
+#     state   → actual on/off state (based on current temperature)
 #     get     → current temperature (K)
 
 set -euo pipefail
@@ -39,6 +40,12 @@ is_night() {
     else
         (( now >= start || now < end ))
     fi
+}
+
+is_on() {
+    local t
+    t=$(get_temp)
+    [[ "$t" =~ ^[0-9]+$ ]] && (( t < DAY_K ))
 }
 
 kill_fade() {
@@ -94,11 +101,14 @@ case "${1:-status}" in
     status)
         echo "nightlight: $(is_night && echo night || echo day) · $(get_temp) K"
         ;;
+    state)
+        is_on && echo on || echo off
+        ;;
     get)
         get_temp
         ;;
     *)
-        echo "usage: nightlight.sh [on|off|auto|toggle|status|get]" >&2
+        echo "usage: nightlight.sh [on|off|auto|toggle|status|state|get]" >&2
         exit 1
         ;;
 esac

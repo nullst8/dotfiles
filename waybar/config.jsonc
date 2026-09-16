@@ -59,7 +59,8 @@
     "return-type": "json",
     "format": "{}",
     "interval": 60,
-    "on-click": "~/.dotfiles/scripts/nightlight.sh toggle"
+    "signal": 9,
+    "on-click": "~/.dotfiles/scripts/nightlight.sh toggle && pkill -SIGRTMIN+9 waybar"
   },
 
   "custom/battery": {
