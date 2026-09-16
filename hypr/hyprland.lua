@@ -29,15 +29,15 @@ hl.on("hyprland.start", function()
     -- WAYLAND_DISPLAY must be in the systemd user env for hypridle's
     -- ConditionEnvironment; start hypridle directly because
     -- graphical-session.target refuses manual start in this setup.
-    hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP && systemctl --user start hypridle")
-    hl.exec_cmd("~/.dotfiles/scripts/nightlight.sh auto")
+    hl.exec_cmd(
+    "systemctl --user import-environment WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP && systemctl --user start hypridle")
     -- Walker launcher backend (Walker itself is invoked on demand; its
     -- --gapplication-service daemon segfaults in 2.17.0, so don't use it)
     hl.exec_cmd("systemctl --user start elephant.service")
 end)
 
 -- Stop session services when Hyprland exits, so a re-login doesn't leave
--- a stale hypridle from the previous session running.
+-- stale daemons from the previous session running.
 hl.on("hyprland.shutdown", function()
     hl.exec_cmd("systemctl --user stop hypridle")
     hl.exec_cmd("systemctl --user stop elephant.service")
@@ -122,6 +122,9 @@ hl.config({
         mouse_move_enables_dpms = true,
         key_press_enables_dpms = true,
         animate_mouse_windowdragging = true,
+        -- Allow a fresh lock to be created/restored after a stale lock state
+        -- (e.g. after suspend/resume), so the resume reconciler can re-lock.
+        allow_session_lock_restore = true,
     },
     render = {
         direct_scanout = true,
@@ -261,7 +264,7 @@ hl.bind(mainMod .. " + SHIFT + Right", hl.dsp.exec_cmd("~/.config/wallpaperCarou
 hl.bind(mainMod .. " + SHIFT + Left", hl.dsp.exec_cmd("~/.config/wallpaperCarousel/wallpaper-carousel cyclePrevious"))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(menu))
-hl.bind(mainMod .. " + ESCAPE", hl.dsp.exec_cmd("~/.local/share/quickshell-lockscreen/lock.sh"))
+hl.bind(mainMod .. " + ESCAPE", hl.dsp.exec_cmd("~/.dotfiles/quickshell-lockscreen/lock.sh"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + O", hl.dsp.exec_cmd(pass))
 

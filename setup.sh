@@ -91,6 +91,17 @@ link "$DOTFILES/.clang-format" "$HOME/.clang-format"
 link "$DOTFILES/.wallpaper.jpg" "$HOME/.wallpaper.jpg"
 link "$DOTFILES/.wallpaper.png" "$HOME/.wallpaper.png"
 
+# --- Quickshell lock screen assets (qylock) ---
+LOCKSCREEN_ASSETS="$HOME/.local/share/quickshell-lockscreen"
+if [[ -d "$LOCKSCREEN_ASSETS/imports" && -d "$LOCKSCREEN_ASSETS/themes_link" ]]; then
+  info "qylock lock screen assets found at $LOCKSCREEN_ASSETS"
+else
+  warn "qylock lock screen assets not found at $LOCKSCREEN_ASSETS"
+  warn "The vendored lock screen in $DOTFILES/quickshell-lockscreen needs them."
+  warn "Install qylock first, then re-run this script:"
+  warn "  git clone https://github.com/Darkkal44/qylock && ./qylock/quickshell.sh"
+fi
+
 # --- Neovim undodir ---
 mkdir -p "$HOME/.vim/undodir"
 info "Created $HOME/.vim/undodir"

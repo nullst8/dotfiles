@@ -28,6 +28,7 @@ The repo is kept simple: config files live here directly and `setup.sh` symlinks
 ├── hypr/                    # Hyprland, Hypridle, Hyprlock configs
 ├── kitty/                   # Kitty terminal config
 ├── nvim/                    # Neovim config (init.lua + lua/nullst8/)
+├── quickshell-lockscreen/   # Vendored qylock session lock (Hyprland)
 ├── scripts/                 # Helper scripts for Hyprland, tmux, wallpapers
 ├── swaync/                  # SwayNC notification center config
 ├── waybar/                  # Waybar status bar config
@@ -56,7 +57,7 @@ A few tools referenced by the configs are still external and must be installed s
 
 - `awww-daemon` — wallpaper daemon (AUR: `awww`)
 - `hyprsunset` — blue-light/gamma control for Hyprland (`brightnessctl` + `hyprsunset` handle brightness keys)
-- `~/.local/share/quickshell-lockscreen/lock.sh` — lock screen command used by `SUPER + ESCAPE`
+- qylock assets (`~/.local/share/quickshell-lockscreen/imports` + `themes_link`) — used by the vendored lock screen in `quickshell-lockscreen/` (see below)
 
 Everything else is now vendored in the `scripts/` directory and added to `$PATH` by Zsh.
 
@@ -143,6 +144,29 @@ Highlights:
 - `SUPER + H/J/K/L` — Focus / resize windows
 - `SUPER + Print` — Region screenshot via `grim` + `slurp`
 - `XF86Audio*` / `XF86MonBrightness*` — Volume and brightness (brightness uses `brightnessctl` + `hyprsunset` gamma boost above 100%)
+
+### Quickshell lock screen (`quickshell-lockscreen/`)
+
+The qylock-based session lock is vendored here so local fixes survive a qylock
+reinstall. It reuses qylock's assets from `~/.local/share/quickshell-lockscreen`
+(QML imports and themes), which must be installed separately:
+
+```bash
+git clone https://github.com/Darkkal44/qylock
+./qylock/quickshell.sh
+```
+
+- `lock.sh` — launcher (single-instance `flock` guard); used by `SUPER + Escape`, `hypridle`'s `lock_cmd`, and `before_sleep_cmd`.
+- `lock_shell.qml` — the Quickshell session lock; releases the lock before exiting.
+- `shim/SddmShim.qml` — SDDM-compatible user/session/PAM shim used by the themes.
+- `resume-lock.sh` — runs on resume (`hypridle`'s `after_sleep_cmd`): kills any stale lock client, clears Hyprland's stale session-lock state, and re-locks. Works around [hyprwm/Hyprland#13184](https://github.com/hyprwm/Hyprland/discussions/13184), where the compositor's session-lock state desyncs across suspend/resume and can leave a stuck lock surface.
+
+If a stuck lock surface appears anyway, recover from a TTY with:
+
+```bash
+hyprctl eval 'hl.clear_crashed_lockscreen()'
+pkill -f lock_shell.qml
+```
 
 ### Neovim (`nvim/`)
 
@@ -381,7 +405,7 @@ The `hyprland.lua` file uses the **experimental Hyprland Lua DSL**. It requires 
 
 ### Missing scripts
 
-Most helper scripts now live in `scripts/` and are added to `$PATH` by Zsh. The only remaining external dependencies are `awww-daemon` and `~/.local/share/quickshell-lockscreen/lock.sh`.
+Most helper scripts now live in `scripts/` and are added to `$PATH` by Zsh. The only remaining external dependencies are `awww-daemon` and the qylock assets used by `quickshell-lockscreen/` (`~/.local/share/quickshell-lockscreen/imports` and `themes_link`).
 
 ## License
 
