@@ -1,9 +1,10 @@
 local terminal = "kitty"
 local fileManager = "kitty -e env EDITOR=nvim VISUAL=nvim yazi"
 local fileManagerG = "pcmanfm"
-local menu = 'rofi -show run -font "JetBrains Mono Nerd Font 12"'
+local menu = "walker"
 local browser = "zen-browser"
 local power = "~/.dotfiles/scripts/power-menu.sh"
+local pass = "~/.dotfiles/scripts/pass-walker"
 local ss = "hyprshot -m output"
 local ssr = "hyprshot --clipboard -m region"
 
@@ -30,12 +31,16 @@ hl.on("hyprland.start", function()
     -- graphical-session.target refuses manual start in this setup.
     hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP && systemctl --user start hypridle")
     hl.exec_cmd("~/.dotfiles/scripts/nightlight.sh auto")
+    -- Walker launcher backend (Walker itself is invoked on demand; its
+    -- --gapplication-service daemon segfaults in 2.17.0, so don't use it)
+    hl.exec_cmd("systemctl --user start elephant.service")
 end)
 
 -- Stop session services when Hyprland exits, so a re-login doesn't leave
 -- a stale hypridle from the previous session running.
 hl.on("hyprland.shutdown", function()
     hl.exec_cmd("systemctl --user stop hypridle")
+    hl.exec_cmd("systemctl --user stop elephant.service")
 end)
 
 hl.monitor({
@@ -258,6 +263,7 @@ hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + ESCAPE", hl.dsp.exec_cmd("~/.local/share/quickshell-lockscreen/lock.sh"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
+hl.bind(mainMod .. " + O", hl.dsp.exec_cmd(pass))
 
 hl.bind(mainMod .. " + Tab", hl.dsp.focus({ workspace = "previous" }))
 

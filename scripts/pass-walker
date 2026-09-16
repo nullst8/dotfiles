@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# pass-walker — GNU pass picker built on Walker's dmenu mode.
+set -euo pipefail
+
+STORE="${PASSWORD_STORE_DIR:-$HOME/.password-store}"
+
+command -v walker >/dev/null || { echo "walker not found" >&2; exit 1; }
+command -v pass >/dev/null || { echo "pass not found" >&2; exit 1; }
+
+menu() { walker --dmenu --placeholder "$1"; }
+
+mapfile -t entries < <(
+  find "$STORE" -type f -name '*.gpg' 2>/dev/null \
+    | sed -e "s|^${STORE}/||" -e 's|\.gpg$||' \
+    | sort
+)
+
+if [[ ${#entries[@]} -eq 0 ]]; then
+  echo "No pass entries found in $STORE" >&2
+  exit 1
+fi
+
+entry=$(printf '%s\n' "${entries[@]}" | menu 'pass') || exit 0
+[[ -n "$entry" ]] || exit 0
+
+action=$(printf 'password\nusername\n' | menu 'copy') || exit 0
+[[ -n "$action" ]] || exit 0
+
+case "$action" in
+  password) pass show -c "$entry" ;;
+  username) pass show "$entry" | sed -n '2p' | tr -d '\n' | wl-copy ;;
+  *) exit 0 ;;
+esac
+
+if command -v notify-send >/dev/null; then
+  notify-send -a pass "GNU pass" "Copied $action for '$entry'"
+fi

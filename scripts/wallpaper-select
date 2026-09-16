@@ -12,12 +12,14 @@ if [[ ${#wallpapers[@]} -eq 0 ]]; then
   exit 1
 fi
 
-if command -v rofi &>/dev/null; then
-  selected=$(printf '%s\n' "${wallpapers[@]##*/}" | rofi -dmenu -p 'wallpaper' -i)
+if command -v walker &>/dev/null; then
+  selected=$(printf '%s\n' "${wallpapers[@]##*/}" | walker --dmenu --placeholder 'wallpaper' || true)
+elif command -v rofi &>/dev/null; then
+  selected=$(printf '%s\n' "${wallpapers[@]##*/}" | rofi -dmenu -p 'wallpaper' -i || true)
 elif command -v fzf &>/dev/null; then
   selected=$(printf '%s\n' "${wallpapers[@]##*/}" | fzf --prompt='wallpaper> ')
 else
-  echo "Install rofi or fzf for wallpaper selection" >&2
+  echo "Install walker, rofi, or fzf for wallpaper selection" >&2
   exit 1
 fi
 

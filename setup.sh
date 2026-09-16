@@ -74,6 +74,7 @@ link "$DOTFILES/kitty"    "$HOME/.config/kitty"
 link "$DOTFILES/waybar"   "$HOME/.config/waybar"
 link "$DOTFILES/swaync"   "$HOME/.config/swaync"
 link "$DOTFILES/yazi"     "$HOME/.config/yazi"
+link "$DOTFILES/walker"   "$HOME/.config/walker"
 
 # Zsh
 link "$DOTFILES/zsh/.zshrc"           "$HOME/.zshrc"
@@ -116,12 +117,15 @@ if [[ "$INSTALL_DEPS" == true && ("${ID:-}" == "arch" || "${ID_LIKE:-}" == *"arc
     neovim kitty tmux zsh
     hyprland hypridle hyprlock
     waybar swaync yazi
-    rofi blueman network-manager-applet
+    rofi blueman network-manager-applet walker
     grim slurp hyprshot
     playerctl brightnessctl wireplumber hyprsunset
     pcmanfm
   )
-  AUR_PKGS=(antidote hyprshot zen-browser awww i3-battery-popup)
+  AUR_PKGS=(antidote hyprshot zen-browser awww i3-battery-popup
+    elephant-bin elephant-desktopapplications-bin elephant-runner-bin
+    elephant-providerlist-bin elephant-calc-bin elephant-websearch-bin
+    elephant-clipboard-bin elephant-files-bin)
 
   echo -e "\n${YELLOW}Arch Linux detected.${NC}"
   echo "  Official: ${OFFICIAL_PKGS[*]}"
