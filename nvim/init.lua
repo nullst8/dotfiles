@@ -19,17 +19,13 @@ vim.deprecate = function(name, alternative, version, plugin, backtrace)
   return _deprecate(name, alternative, version, plugin, backtrace)
 end
 
--- Neovim 0.12.3's built-in markdown parser has a bug in injection processing
--- (markdown_inline) that causes "attempt to call method 'range' (a nil value)".
--- Disable injections for markdown to avoid the bug while keeping basic parsing.
-for _, lang in ipairs({ "markdown", "markdown_inline" }) do
-  local path = vim.fn.stdpath("data") .. "/lazy/nvim-treesitter/parser/" .. lang .. ".so"
-  if not vim.uv.fs_stat(path) then
-    path = "/usr/share/nvim/runtime/parser/" .. lang .. ".so"
-  end
-  if vim.uv.fs_stat(path) then
-    vim.treesitter.language.add(lang, { path = path, injections = false })
-  end
+-- Neovim 0.12's treesitter injection handling calls `range` on a nil node
+-- ("attempt to call method 'range' (a nil value)") for some injected languages:
+-- markdown (inline content) and bash (heredocs, e.g. `cat <<'EOF'`).
+-- `vim.treesitter.language.add()` accepts no `injections` option, so disable the
+-- injection queries directly instead.
+for _, lang in ipairs({ "markdown", "bash" }) do
+  vim.treesitter.query.set(lang, "injections", "")
 end
 
 require("nullst8.core")
