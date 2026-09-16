@@ -86,6 +86,8 @@ link "$DOTFILES/.tmux.conf" "$HOME/.tmux.conf"
 
 # systemd user units
 link "$DOTFILES/systemd/user/power-mode-watch.service" "$HOME/.config/systemd/user/power-mode-watch.service"
+link "$DOTFILES/systemd/user/tmux.service.d/override.conf" "$HOME/.config/systemd/user/tmux.service.d/override.conf"
+
 # clang-format
 link "$DOTFILES/.clang-format" "$HOME/.clang-format"
 
