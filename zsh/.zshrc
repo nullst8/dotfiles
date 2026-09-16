@@ -46,7 +46,9 @@ unsetopt beep
 autoload -Uz compinit
 
 # Rebuild the completion cache at most once a day; otherwise use the fast path.
-ZCOMPDUMP="${ZDOTDIR:-$HOME}/.zcompdump"
+# Kept in the XDG cache dir (not $HOME) so dumps don't clutter the home folder.
+ZCOMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-$ZSH_VERSION"
+mkdir -p -- ${ZCOMPDUMP:h}
 if [[ ! -f $ZCOMPDUMP || -n ${ZCOMPDUMP}(#qN.mh+24) ]]; then
   compinit -d "$ZCOMPDUMP"
 else
@@ -117,8 +119,17 @@ zstyle ':vcs_info:git:*' formats ' %F{#af5fff}[%b]%f'
 _prompt_vcs() { vcs_info }
 add-zsh-hook precmd _prompt_vcs
 
+# Indicator flips direction with the vi mode (❯ insert / ❮ normal)
+_zvm_prompt_char='❯'
+function zvm_after_select_vi_mode() {
+  case $ZVM_MODE in
+    $ZVM_MODE_NORMAL) _zvm_prompt_char='❮' ;;
+    *)                _zvm_prompt_char='❯' ;;
+  esac
+}
+
 # ❯ green on success / red on failure; red # when root
-PROMPT='%F{#8be9fd}%n@%m%f %F{#bd93f9}%~%f${vcs_info_msg_0_} %(!.%F{#ff5f5f}#.%(?.%F{#50fa7b}.%F{#ff5f5f})❯)%f '
+PROMPT='%F{#8be9fd}%n@%m%f %F{#bd93f9}%~%f${vcs_info_msg_0_} %(!.%F{#ff5f5f}#.%(?.%F{#50fa7b}.%F{#ff5f5f})${_zvm_prompt_char})%f '
 
 # =========================
 # Aliases — System
