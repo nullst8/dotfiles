@@ -84,6 +84,8 @@ link "$DOTFILES/zsh/.zsh_plugins.txt" "$HOME/.zsh_plugins.txt"
 # Tmux
 link "$DOTFILES/.tmux.conf" "$HOME/.tmux.conf"
 
+# systemd user units
+link "$DOTFILES/systemd/user/power-mode-watch.service" "$HOME/.config/systemd/user/power-mode-watch.service"
 # clang-format
 link "$DOTFILES/.clang-format" "$HOME/.clang-format"
 
@@ -131,6 +133,7 @@ if [[ "$INSTALL_DEPS" == true && ("${ID:-}" == "arch" || "${ID_LIKE:-}" == *"arc
     rofi blueman network-manager-applet walker
     grim slurp hyprshot
     playerctl brightnessctl wireplumber hyprsunset
+    greetd greetd-tuigreet powertop
     pcmanfm
   )
   AUR_PKGS=(antidote hyprshot zen-browser awww i3-battery-popup

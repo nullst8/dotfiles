@@ -1,0 +1,12 @@
+[Unit]
+Description=Toggle Hyprland cosmetics and backlight on AC/battery
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.dotfiles/scripts/power-mode-watch.sh
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target

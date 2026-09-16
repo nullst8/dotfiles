@@ -34,6 +34,8 @@ hl.on("hyprland.start", function()
     -- Walker launcher backend (Walker itself is invoked on demand; its
     -- --gapplication-service daemon segfaults in 2.17.0, so don't use it)
     hl.exec_cmd("systemctl --user start elephant.service")
+    -- AC/battery watcher: drops blur/shadows/animations + dims on battery
+    hl.exec_cmd("systemctl --user start power-mode-watch.service")
 end)
 
 -- Stop session services when Hyprland exits, so a re-login doesn't leave
@@ -41,6 +43,7 @@ end)
 hl.on("hyprland.shutdown", function()
     hl.exec_cmd("systemctl --user stop hypridle")
     hl.exec_cmd("systemctl --user stop elephant.service")
+    hl.exec_cmd("systemctl --user stop power-mode-watch.service")
 end)
 
 hl.monitor({
