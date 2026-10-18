@@ -2,8 +2,9 @@ return {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
-    "williamboman/mason.nvim",
-    "williamboman/mason-lspconfig.nvim",
+    "mason-org/mason.nvim",
+    "mason-org/mason-lspconfig.nvim",
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
     "saghen/blink.cmp",
   },
 
@@ -13,6 +14,11 @@ return {
     local capabilities = require("blink.cmp").get_lsp_capabilities()
 
     mason.setup()
+
+    -- Formatters and tools used elsewhere in the config (conform, treesitter).
+    require("mason-tool-installer").setup({
+      ensure_installed = { "stylua", "black", "prettierd", "prettier", "tree-sitter-cli" },
+    })
 
     -- rust_analyzer is managed by rustaceanvim, but install the binary via Mason
     -- bacon_ls provides cargo check diagnostics for Rust
