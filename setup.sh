@@ -88,6 +88,32 @@ link "$DOTFILES/.tmux.conf" "$HOME/.tmux.conf"
 link "$DOTFILES/systemd/user/power-mode-watch.service" "$HOME/.config/systemd/user/power-mode-watch.service"
 link "$DOTFILES/systemd/user/tmux.service.d/override.conf" "$HOME/.config/systemd/user/tmux.service.d/override.conf"
 
+# --- gnome-keyring ---
+# greetd never runs pam_gnome_keyring.so, so ~/.dotfiles/scripts/keyring-unlock.sh
+# starts and unlocks the keyring at session start instead. That only works if
+# nothing else starts a daemon first, so mask the units and suppress the XDG
+# autostart entries (systemd-xdg-autostart-generator ignores OnlyShowIn=GNOME
+# and would otherwise start a second, conflicting daemon).
+mkdir -p "$HOME/.config/autostart"
+for _kr in gnome-keyring-pkcs11 gnome-keyring-secrets; do
+    cat >"$HOME/.config/autostart/$_kr.desktop" <<'EOF'
+[Desktop Entry]
+Type=Application
+Hidden=true
+EOF
+done
+systemctl --user mask gnome-keyring-daemon.socket gnome-keyring-daemon.service 2>/dev/null ||
+    warn "could not mask gnome-keyring units (run it again inside your session)"
+
+# The unlock password is deliberately NOT in this repo. Create it yourself:
+#   printf 'your-password' > ~/.config/gnome-keyring/unlock.pass
+#   chmod 600 ~/.config/gnome-keyring/unlock.pass
+if [[ ! -r "$HOME/.config/gnome-keyring/unlock.pass" ]]; then
+    warn "missing ~/.config/gnome-keyring/unlock.pass - keyring will not auto-unlock"
+    warn "  printf 'your-password' > ~/.config/gnome-keyring/unlock.pass"
+    warn "  chmod 600 ~/.config/gnome-keyring/unlock.pass"
+fi
+
 # clang-format
 link "$DOTFILES/.clang-format" "$HOME/.clang-format"
 
