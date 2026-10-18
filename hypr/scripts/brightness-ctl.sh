@@ -17,15 +17,22 @@ gamma_pct() {
     echo "$g"
 }
 
+osd() { # osd <fraction 0-1> <label>
+    swayosd-client --custom-icon display-brightness-symbolic \
+        --custom-progress "$1" --custom-progress-text "$2" >/dev/null 2>&1 || true
+}
+
 case "$1" in
     up)
         if [ "$(hw_pct)" -lt 100 ]; then
-            brightnessctl set 3%+
+            brightnessctl set 3%+ >/dev/null
+            osd "$(awk -v p="$(hw_pct)" 'BEGIN{print p/100}')" "$(hw_pct)%"
         else
             g=$(gamma_pct)
             ng=$(( g + 10 ))
             [ "$ng" -gt 150 ] && ng=150
             hyprctl hyprsunset gamma "$ng"
+            osd "$(awk -v g="$ng" 'BEGIN{print g/150}')" "${ng}%"
         fi
         ;;
     down)
@@ -34,8 +41,10 @@ case "$1" in
             ng=$(( g - 10 ))
             [ "$ng" -lt 100 ] && ng=100
             hyprctl hyprsunset gamma "$ng"
+            osd "$(awk -v g="$ng" 'BEGIN{print g/150}')" "${ng}%"
         else
-            brightnessctl set 3%-
+            brightnessctl set 3%- >/dev/null
+            osd "$(awk -v p="$(hw_pct)" 'BEGIN{print p/100}')" "$(hw_pct)%"
         fi
         ;;
     *)

@@ -4,9 +4,25 @@ local fileManagerG = "pcmanfm"
 local menu = "walker"
 local browser = "zen-browser"
 local power = "~/.dotfiles/scripts/power-menu.sh"
+-- Falls back to brightnessctl so the keys still work if the script is missing.
+local brightnessScript = "~/.config/hypr/scripts/brightness-ctl.sh"
+local function brightness(dir)
+    local fallback = "brightnessctl set 5%" .. (dir == "up" and "+" or "-")
+    return hl.dsp.exec_cmd("if [ -x " .. brightnessScript .. " ]; then " .. brightnessScript .. " " .. dir
+        .. "; else " .. fallback .. "; fi")
+end
+-- Volume goes through SwayOSD so the on-screen bar shows (max 150%, as before).
+local volUp = "swayosd-client --max-volume 150 --output-volume +3"
+local volDown = "swayosd-client --max-volume 150 --output-volume -3"
 local pass = "~/.dotfiles/scripts/pass-walker"
-local ss = "hyprshot -m output"
 local ssr = "hyprshot --clipboard -m region"
+-- Screenshot dir is created on demand: if it is missing, grim used to fail
+-- silently (no notification) and the keybind looked completely dead.
+local ssDir = "~/pics/ss"
+local ssFull = "mkdir -p " .. ssDir .. " && grim " .. ssDir
+    .. "/Screenshot-$(date +'%Y-%m-%d-%H%M%S').png"
+local ssRegion = "mkdir -p " .. ssDir .. " && grim -g \"$(slurp)\" " .. ssDir
+    .. "/Screenshot-$(date +'%Y-%m-%d-%H%M%S').png"
 
 hl.env("XCURSOR_THEME", "GoogleDot-Black")
 hl.env("XCURSOR_SIZE", "18")
@@ -14,36 +30,44 @@ hl.env("GTK_ICON_THEME", "Tela-black")
 hl.env("QT_QPA_PLATFORMTHEME", "qt5ct")
 hl.env("HYPRCURSOR_THEME", "GoogleDot-Black")
 hl.env("HYPRCURSOR_SIZE", "18")
-hl.env("WLR_NO_HARDWARE_CURSORS", "1")
+
+-- Session services are restarted (not started) so a unit that outlived the
+-- previous Hyprland session picks up the new instance's environment.
+local session_services = { "hypridle", "elephant.service", "power-mode-watch.service" }
 
 hl.on("hyprland.start", function()
-    hl.exec_cmd("waybar")
-    hl.exec_cmd("blueman-applet")
-    hl.exec_cmd("swaync")
-    hl.exec_cmd("nm-applet")
-    hl.exec_cmd("awww-daemon")
-    hl.exec_cmd("qs -p ~/.config/wallpaperCarousel")
-    hl.exec_cmd("~/.dotfiles/scripts/setrandwall")
-    hl.exec_cmd(
-        "sh -c 'mkdir -p ~/.local/state/hypr && echo 100 > ~/.local/state/hypr/gamma; pgrep -x hyprsunset >/dev/null || nohup hyprsunset --temperature 6500 --gamma_max 150 >/dev/null 2>&1 &'")
+    -- Must come first, and must be the only thing that starts gnome-keyring.
+    -- greetd never runs pam_gnome_keyring.so, so the login keyring would stay
+    -- locked all session and Secret Service callers would hang or fail. The
+    -- systemd units are masked so this isn't a race with a second daemon.
+    hl.exec_cmd("~/.dotfiles/scripts/keyring-unlock.sh")
+    hl.exec_cmd("swayosd-server")
+    for _, cmd in ipairs({
+        "waybar",
+        "blueman-applet",
+        "swaync",
+        "nm-applet",
+        "awww-daemon",
+        "qs -p ~/.config/wallpaperCarousel",
+        "~/.dotfiles/scripts/setrandwall",
+        "sh -c 'mkdir -p ~/.local/state/hypr && echo 100 > ~/.local/state/hypr/gamma; pgrep -x hyprsunset >/dev/null || nohup hyprsunset --temperature 6500 --gamma_max 150 >/dev/null 2>&1 &'",
+    }) do
+        hl.exec_cmd(cmd)
+    end
     -- WAYLAND_DISPLAY must be in the systemd user env for hypridle's
     -- ConditionEnvironment; start hypridle directly because
     -- graphical-session.target refuses manual start in this setup.
-    hl.exec_cmd(
-    "systemctl --user import-environment WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP && systemctl --user start hypridle")
-    -- Walker launcher backend (Walker itself is invoked on demand; its
-    -- --gapplication-service daemon segfaults in 2.17.0, so don't use it)
-    hl.exec_cmd("systemctl --user start elephant.service")
-    -- AC/battery watcher: drops blur/shadows/animations + dims on battery
-    hl.exec_cmd("systemctl --user start power-mode-watch.service")
+    -- Walker itself is invoked on demand (its --gapplication-service daemon
+    -- segfaults in 2.17.0); elephant is its backend.
+    -- power-mode-watch drops blur/shadows/animations + dims on battery.
+    hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP && systemctl --user restart "
+        .. table.concat(session_services, " "))
 end)
 
 -- Stop session services when Hyprland exits, so a re-login doesn't leave
 -- stale daemons from the previous session running.
 hl.on("hyprland.shutdown", function()
-    hl.exec_cmd("systemctl --user stop hypridle")
-    hl.exec_cmd("systemctl --user stop elephant.service")
-    hl.exec_cmd("systemctl --user stop power-mode-watch.service")
+    hl.exec_cmd("systemctl --user stop " .. table.concat(session_services, " "))
 end)
 
 hl.monitor({
@@ -107,9 +131,6 @@ hl.config({
             "border, 1, 5, smoothOut",
         },
     },
-    dwindle = {
-        preserve_split = true,
-    },
     binds = {
         allow_workspace_cycles = true,
     },
@@ -122,6 +143,8 @@ hl.config({
         disable_hyprland_logo = true,
         enable_swallow = true,
         swallow_regex = "^(Alacritty|kitty|footclient)$",
+        -- Adaptive sync only for fullscreen apps (panel reports vrr_capable, 40-60Hz).
+        vrr = 2,
         mouse_move_enables_dpms = true,
         key_press_enables_dpms = true,
         animate_mouse_windowdragging = true,
@@ -153,26 +176,13 @@ hl.device({
     sensitivity = -0.5,
 })
 
-local high_opacity_apps = {
-    "^(steam_proton)$",
-    "^(virt-manager)$",
-    "^(burp-StartBurp)$",
-    "^(gimp)$",
-    "^(DBeaver)$",
-    "^(obsidian)$",
-    "^(org.wireshark.Wireshark)$",
-    "^(libreoffice-.*)$",
-    "^(org.gnome.Evince)$",
-    "^(mpv)$",
-}
-
-for _, class in ipairs(high_opacity_apps) do
-    hl.window_rule({
-        name = class .. "-opacity",
-        match = { class = class },
-        opacity = "1 1",
-    })
-end
+hl.window_rule({
+    name = "opaque-apps",
+    match = {
+        class = "^(steam_proton|virt-manager|burp-StartBurp|gimp|DBeaver|obsidian|org\\.wireshark\\.Wireshark|libreoffice-.*|org\\.gnome\\.Evince|mpv)$",
+    },
+    opacity = "1 1",
+})
 
 hl.window_rule({
     name = "mpv-noblur-noshadow",
@@ -182,38 +192,13 @@ hl.window_rule({
 })
 
 hl.window_rule({
-    name = "xwaylandvideobridge-opacity",
+    name = "xwaylandvideobridge",
     match = { class = "^(xwaylandvideobridge)$" },
     opacity = "0 0",
-})
-
-hl.window_rule({
-    name = "xwaylandvideobridge-noblur",
-    match = { class = "^(xwaylandvideobridge)$" },
     no_blur = true,
-})
-
-hl.window_rule({
-    name = "xwaylandvideobridge-noanim",
-    match = { class = "^(xwaylandvideobridge)$" },
     no_anim = true,
-})
-
-hl.window_rule({
-    name = "xwaylandvideobridge-nofocus",
-    match = { class = "^(xwaylandvideobridge)$" },
     no_focus = true,
-})
-
-hl.window_rule({
-    name = "xwaylandvideobridge-maxsize",
-    match = { class = "^(xwaylandvideobridge)$" },
     max_size = { 1, 1 },
-})
-
-hl.window_rule({
-    name = "xwaylandvideobridge-noinitfocus",
-    match = { class = "^(xwaylandvideobridge)$" },
     no_initial_focus = true,
 })
 
@@ -221,6 +206,12 @@ hl.window_rule({
     name = "zen-workspace",
     match = { class = "^(zen)$" },
     workspace = 2,
+})
+
+hl.window_rule({
+    name = "claude-ai",
+    match = { class = "^(com.anthropic.Claude)$" },
+    workspace = 7,
 })
 
 hl.window_rule({
@@ -247,17 +238,20 @@ hl.window_rule({
 
 local mainMod = "SUPER"
 
+-- Touchpad: 3-finger horizontal swipe switches workspaces.
+hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
+
 hl.bind(mainMod .. " + RETURN", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
 hl.bind(mainMod .. " + G", hl.dsp.exec_cmd("~/.dotfiles/scripts/toggle-grayscale.sh"))
 
-hl.bind("Print", hl.dsp.exec_cmd("grim ~/ss/Screenshot-$(date +'%Y-%m-%d-%H%M%S').png"))
-hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd("grim -g \"$(slurp)\" ~/ss/Screenshot-$(date +'%Y-%m-%d-%H%M%S').png"))
-hl.bind(mainMod .. " + SEMICOLON", hl.dsp.exec_cmd("grim ~/ss/Screenshot-$(date +'%Y-%m-%d-%H%M%S').png"))
+hl.bind("Print", hl.dsp.exec_cmd(ssFull))
+hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd(ssRegion))
+hl.bind(mainMod .. " + SEMICOLON", hl.dsp.exec_cmd(ssFull))
 hl.bind(mainMod .. " + SHIFT + SEMICOLON", hl.dsp.exec_cmd(ssr))
 
-hl.bind(mainMod .. " + SHIFT + C", hl.dsp.exec_cmd("pkill Hyprland"))
+hl.bind(mainMod .. " + SHIFT + C", hl.dsp.exit())
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManagerG))
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd(power))
@@ -298,27 +292,27 @@ hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness-ctl.sh up"),
+hl.bind("XF86MonBrightnessUp", brightness("up"),
     { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness-ctl.sh down"),
+hl.bind("XF86MonBrightnessDown", brightness("down"),
     { locked = true, repeating = true })
-hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true })
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"), { locked = true })
 hl.bind(
     "XF86AudioRaiseVolume",
-    hl.dsp.exec_cmd("wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 3%+"),
+    hl.dsp.exec_cmd(volUp),
     { locked = true, repeating = true }
 )
 hl.bind(
     "XF86AudioLowerVolume",
-    hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%-"),
+    hl.dsp.exec_cmd(volDown),
     { locked = true, repeating = true }
 )
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 
-hl.bind(mainMod .. " + UP", hl.dsp.exec_cmd("wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 3%+"), { repeating = true })
-hl.bind(mainMod .. " + DOWN", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%-"), { repeating = true })
+hl.bind(mainMod .. " + UP", hl.dsp.exec_cmd(volUp), { repeating = true })
+hl.bind(mainMod .. " + DOWN", hl.dsp.exec_cmd(volDown), { repeating = true })
 
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("swaync-client --close-latest"))
 hl.bind(mainMod .. " + SHIFT + SPACE", hl.dsp.exec_cmd("swaync-client -t"))
