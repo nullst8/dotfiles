@@ -36,6 +36,8 @@ window#waybar {
 #custom-notification,
 #clock,
 #custom-nightlight,
+#custom-caffeine,
+#custom-media,
 #custom-battery,
 #custom-cpu,
 #memory,
@@ -61,4 +63,23 @@ window#waybar {
 
 #custom-volume.muted {
   color: #cc5555;
+}
+
+#custom-caffeine.off {
+  color: #6b6b6b;
+}
+
+#custom-caffeine.on {
+  color: #f0c674;
+}
+
+#custom-media.paused {
+  color: #8a8a8a;
+}
+
+#custom-media.stopped {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
 }
